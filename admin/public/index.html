@@ -308,7 +308,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
   <script>
-    // Initialize Supabase - FIXED: Removed extra spaces
+    // Initialize Supabase
     const supabase = window.supabase.createClient(
       'https://bkgagnttyqgtnxamvhcx.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
@@ -350,7 +350,7 @@
       });
     }
 
-    // Check session on load - FIXED: Correct syntax
+    // Check session on load
     async function checkSession() {
       try {
         const {  { session } } = await supabase.auth.getSession();
@@ -383,7 +383,7 @@
         
         if (error) {
           loginSuccess.textContent = '';
-          loginError.textContent = error.message || 'Login failed. Please check your credentials.';
+          loginError.textContent = error.message;
         } else {
           loginError.textContent = '';
           loginSuccess.textContent = 'Login successful!';
@@ -394,7 +394,7 @@
         }
       } catch (error) {
         loginSuccess.textContent = '';
-        loginError.textContent = 'Login failed: ' + (error.message || 'Unknown error occurred');
+        loginError.textContent = 'Login failed: ' + error.message;
         console.error('Login error:', error);
       }
     }
@@ -492,7 +492,7 @@
 
     async function editPackage(id) {
       try {
-        const {  { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
         const { data, error } = await supabase
@@ -584,7 +584,7 @@
     async function handleSubmit(e) {
       e.preventDefault();
       
-      const { data: { user } } = await supabase.auth.getUser();
+      const {  { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('Please log in first');
         return;
