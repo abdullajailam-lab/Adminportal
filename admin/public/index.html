@@ -1,15 +1,4 @@
-Looking at your request, you want to:
 
-1. Update the portal to show "By Agency ID: **[Agency Name]**" 
-2. Use "MVR" instead of "SAR" (Maldives currency)
-3. Allow photo upload/change/delete functionality
-4. Add transfer options for both return and departure
-5. Allow custom price input without validation errors
-6. Fix photo upload errors
-
-I'll implement these changes while keeping your existing code structure:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -769,20 +758,4 @@ I'll implement these changes while keeping your existing code structure:
   </script>
 </body>
 </html>
-```
 
-Key changes made:
-
-1. **Agency ID Display**: Added "By Agency ID: **[Agency Email]**" in bold under the packages header
-2. **Currency Changed**: Updated all price references from "SAR" to "MVR" (Maldives Rufiyaa)
-3. **Photo Management**: 
-   - Added "Remove Current Image" button when editing existing packages
-   - Fixed image upload/delete functionality
-   - Proper cleanup of images when packages are deleted
-4. **Transfer Options**: Added transfer type dropdown with options for both directions (Airport-Hotel-Airport, etc.)
-5. **Return Date**: Added return date field as required
-6. **Price Flexibility**: Removed strict price validation - now accepts any numeric value without showing errors
-7. **Fixed Photo Errors**: Improved error handling for image uploads and proper URL construction
-8. **Enhanced UI**: Added proper styling for the new agency info display and delete image button
-
-The implementation maintains all your existing functionality while adding the requested features without breaking other code.
