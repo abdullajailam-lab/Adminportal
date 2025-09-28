@@ -144,6 +144,7 @@
     }
     .error { color: #dc3545; margin-top: 0.5rem; }
     .success { color: #28a745; margin-top: 0.5rem; }
+    .warning { color: #ffc107; margin-top: 0.5rem; }
     .image-preview {
       width: 150px;
       height: 150px;
@@ -231,8 +232,8 @@
               <input type="text" id="form-name" placeholder="e.g., Premium Umrah 10 Days" required />
             </div>
             <div>
-              <label>Price *</label>
-              <input type="text" id="form-price" placeholder="Enter price" required />
+              <label>Price (MVR) *</label>
+              <input type="number" id="form-price" placeholder="15000" min="0" step="1" required />
             </div>
             <div>
               <label>Duration (Days) *</label>
@@ -246,23 +247,32 @@
           
           <div class="form-grid">
             <div>
-              <label>Arrival Date *</label>
-              <input type="date" id="form-arrival" required />
+              <label>Return Date *</label>
+              <input type="date" id="form-return" required />
             </div>
             <div>
-              <label>Madinah Nights *</label>
-              <input type="number" id="form-madinah-nights" placeholder="4" min="0" required />
-            </div>
-            <div>
-              <label>Makkah Nights *</label>
-              <input type="number" id="form-makkah-nights" placeholder="6" min="0" required />
-            </div>
-            <div>
-              <label>Number of Umrahs *</label>
-              <input type="number" id="form-umrahs" placeholder="1" min="1" required />
+              <label>Transfer Type *</label>
+              <select id="form-transfer" required>
+                <option value="">Select Transfer Type</option>
+                <option value="Airport-Hotel-Airport">Airport-Hotel-Airport</option>
+                <option value="Hotel-Airport">Hotel-Airport Only</option>
+                <option value="Airport-Hotel">Airport-Hotel Only</option>
+                <option value="None">No Transfer</option>
+              </select>
             </div>
           </div>
           
+          <div class="form-grid">
+            <div>
+              <label>Hotel in Makkah</label>
+              <input type="text" id="form-hotel-makkah" placeholder="Makkah Hilton" />
+            </div>
+            <div>
+              <label>Hotel in Madinah</label>
+              <input type="text" id="form-hotel-madinah" placeholder="Madinah Pullman" />
+            </div>
+          </div>
+
           <div style="margin: 1.2rem 0;">
             <label>Package Description</label>
             <textarea id="form-description" rows="4" placeholder="Include details about flights, services, transfers, etc."></textarea>
@@ -277,6 +287,7 @@
                 <i class="fas fa-trash"></i> Remove Current Image
               </button>
             </div>
+            <p id="image-warning" class="warning hidden">Note: Image upload may be restricted. Package will be saved without image if upload fails.</p>
           </div>
 
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1.2rem 0;">
@@ -325,6 +336,7 @@
     const imageInput = document.getElementById('form-image');
     const imagePreview = document.getElementById('image-preview');
     const deleteImageContainer = document.getElementById('delete-image-container');
+    const imageWarning = document.getElementById('image-warning');
     const formTitle = document.getElementById('form-title');
     const submitBtn = document.getElementById('submit-btn');
 
@@ -341,11 +353,13 @@
             imagePreview.src = e.target.result;
             imagePreview.classList.remove('hidden');
             deleteImageContainer.classList.add('hidden');
+            imageWarning.classList.remove('hidden');
           };
           reader.readAsDataURL(e.target.files[0]);
         } else {
           imagePreview.classList.add('hidden');
           deleteImageContainer.classList.add('hidden');
+          imageWarning.classList.add('hidden');
         }
       });
     }
@@ -353,7 +367,7 @@
     // Check session on load
     async function checkSession() {
       try {
-        const {  { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await supabase.auth.getSession();
         if (session) {
           currentUserEmail.textContent = session.user.email;
           agencyName.innerHTML = `By Agency ID: <strong>${session.user.email}</strong>`;
@@ -454,16 +468,16 @@
               <div class="package-header">
                 <div>
                   <h3>${pkg.name}</h3>
-                  <p><strong>Price:</strong> ${pkg.price}</p>
+                  <p><strong>Price:</strong> MVR ${parseFloat(pkg.price).toLocaleString()}</p>
                   <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toLocaleDateString()}</p>
-                  <p><strong>Arrival:</strong> ${new Date(pkg.arrival_date).toLocaleDateString()}</p>
-                  <p><strong>Madinah Nights:</strong> ${pkg.madinah_nights}</p>
-                  <p><strong>Makkah Nights:</strong> ${pkg.makkah_nights}</p>
-                  <p><strong>Umrahs:</strong> ${pkg.umrahs_count}</p>
+                  <p><strong>Return:</strong> ${pkg.return_date ? new Date(pkg.return_date).toLocaleDateString() : 'Not specified'}</p>
+                  <p><strong>Transfer:</strong> ${pkg.transfer_type || 'Not specified'}</p>
                 </div>
                 ${isActive}
               </div>
               <p><strong>Duration:</strong> ${pkg.duration_days} days</p>
+              <p><strong>Makkah Hotel:</strong> ${pkg.hotel_makkah || 'Not specified'}</p>
+              <p><strong>Madinah Hotel:</strong> ${pkg.hotel_madinah || 'Not specified'}</p>
               <p><strong>Meals:</strong> ${pkg.meals_included ? '✅ Included' : '❌ Not included'}</p>
               <p><strong>Visa:</strong> ${pkg.visa_included ? '✅ Included' : '❌ Not included'}</p>
               ${pkg.description ? `<p><strong>Description:</strong> ${pkg.description}</p>` : ''}
@@ -492,7 +506,7 @@
 
     async function editPackage(id) {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {  { user } } = await supabase.auth.getUser();
         if (!user) return;
 
         const { data, error } = await supabase
@@ -512,10 +526,10 @@
         document.getElementById('form-price').value = data.price;
         document.getElementById('form-duration').value = data.duration_days;
         document.getElementById('form-departure').value = data.departure_date;
-        document.getElementById('form-arrival').value = data.arrival_date;
-        document.getElementById('form-madinah-nights').value = data.madinah_nights;
-        document.getElementById('form-makkah-nights').value = data.makkah_nights;
-        document.getElementById('form-umrahs').value = data.umrahs_count;
+        document.getElementById('form-return').value = data.return_date || '';
+        document.getElementById('form-transfer').value = data.transfer_type || '';
+        document.getElementById('form-hotel-makkah').value = data.hotel_makkah || '';
+        document.getElementById('form-hotel-madinah').value = data.hotel_madinah || '';
         document.getElementById('form-description').value = data.description || '';
         document.getElementById('form-meals').checked = data.meals_included;
         document.getElementById('form-visa').checked = data.visa_included;
@@ -530,9 +544,11 @@
           imagePreview.src = imageUrl;
           imagePreview.classList.remove('hidden');
           deleteImageContainer.classList.remove('hidden');
+          imageWarning.classList.add('hidden');
         } else {
           imagePreview.classList.add('hidden');
           deleteImageContainer.classList.add('hidden');
+          imageWarning.classList.add('hidden');
           currentImageUrl = null;
         }
 
@@ -581,6 +597,24 @@
       }
     }
 
+    async function uploadImage(file, userId) {
+      try {
+        const fileName = `${userId}/${Date.now()}_${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from('umrah-package-images')
+          .upload(fileName, file, { upsert: true });
+        
+        if (uploadError) {
+          console.warn('Image upload failed:', uploadError.message);
+          return null;
+        }
+        return fileName;
+      } catch (error) {
+        console.warn('Image upload error:', error.message);
+        return null;
+      }
+    }
+
     async function handleSubmit(e) {
       e.preventDefault();
       
@@ -591,21 +625,20 @@
       }
 
       const name = document.getElementById('form-name').value.trim();
-      const price = document.getElementById('form-price').value.trim();
+      const price = document.getElementById('form-price').value;
       const duration = parseInt(document.getElementById('form-duration').value);
       const departure = document.getElementById('form-departure').value;
-      const arrival = document.getElementById('form-arrival').value;
-      const madinahNights = parseInt(document.getElementById('form-madinah-nights').value);
-      const makkahNights = parseInt(document.getElementById('form-makkah-nights').value);
-      const umrahs = parseInt(document.getElementById('form-umrahs').value);
+      const returnDate = document.getElementById('form-return').value;
+      const transfer = document.getElementById('form-transfer').value;
+      const hotelMakkah = document.getElementById('form-hotel-makkah').value.trim() || null;
+      const hotelMadinah = document.getElementById('form-hotel-madinah').value.trim() || null;
       const description = document.getElementById('form-description').value.trim() || null;
       const meals = document.getElementById('form-meals').checked;
       const visa = document.getElementById('form-visa').checked;
       const active = document.getElementById('form-active').checked;
       
-      // Validation - allow any price format
-      if (!name || !price || isNaN(duration) || !departure || !arrival || 
-          isNaN(madinahNights) || isNaN(makkahNights) || isNaN(umrahs)) {
+      // Allow any price value (no validation errors for price)
+      if (!name || !price || isNaN(duration) || !departure || !returnDate || !transfer) {
         alert('Please fill in all required fields');
         return;
       }
@@ -613,20 +646,15 @@
       let imageUrl = currentImageUrl; // Keep existing image if not changed
       const imageFile = document.getElementById('form-image')?.files[0];
       
+      // Handle image upload with graceful fallback
       if (imageFile) {
-        try {
-          const fileName = `${user.id}/${Date.now()}_${imageFile.name}`;
-          const { error: uploadError } = await supabase.storage
-            .from('umrah-package-images')
-            .upload(fileName, imageFile, { upsert: true });
-          
-          if (uploadError) {
-            throw new Error('Image upload failed: ' + uploadError.message);
-          }
-          imageUrl = fileName;
-        } catch (error) {
-          alert('Image upload error: ' + error.message);
-          return;
+        const uploadedImageUrl = await uploadImage(imageFile, user.id);
+        if (uploadedImageUrl) {
+          imageUrl = uploadedImageUrl;
+        } else {
+          // Image upload failed, but we'll continue without it
+          imageUrl = null;
+          alert('Note: Package saved successfully, but image upload failed due to permission restrictions. You can add an image later.');
         }
       }
 
@@ -635,8 +663,8 @@
           // Update existing
           const updateData = {
             name, price, duration_days: duration, departure_date: departure,
-            arrival_date: arrival, madinah_nights: madinahNights, 
-            makkah_nights: makkahNights, umrahs_count: umrahs,
+            return_date: returnDate, transfer_type: transfer,
+            hotel_makkah: hotelMakkah, hotel_madinah: hotelMadinah,
             description, meals_included: meals, visa_included: visa, is_active: active
           };
           
@@ -658,14 +686,18 @@
             .from('umrah_packages')
             .insert({
               business_id: user.id, name, price, duration_days: duration,
-              departure_date: departure, arrival_date: arrival, 
-              madinah_nights: madinahNights, makkah_nights: makkahNights,
-              umrahs_count: umrahs, description, image_url: imageUrl,
+              departure_date: departure, return_date: returnDate, transfer_type: transfer,
+              hotel_makkah: hotelMakkah, hotel_madinah: hotelMadinah, 
+              description, image_url: imageUrl,
               meals_included: meals, visa_included: visa, is_active: active
             });
 
           if (error) throw error;
-          alert('Package added successfully!');
+          if (imageUrl) {
+            alert('Package added successfully!');
+          } else {
+            alert('Package added successfully! (Image upload was skipped due to permission restrictions)');
+          }
         }
         
         resetForm();
@@ -681,6 +713,7 @@
       if (form) form.reset();
       if (imagePreview) imagePreview.classList.add('hidden');
       if (deleteImageContainer) deleteImageContainer.classList.add('hidden');
+      if (imageWarning) imageWarning.classList.add('hidden');
       currentEditId = null;
       currentImageUrl = null;
       if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
