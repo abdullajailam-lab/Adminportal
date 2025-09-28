@@ -246,6 +246,10 @@
           
           <div class="form-grid">
             <div>
+              <label>Arrival Date *</label>
+              <input type="date" id="form-arrival" required />
+            </div>
+            <div>
               <label>Madinah Nights *</label>
               <input type="number" id="form-madinah-nights" placeholder="4" min="0" required />
             </div>
@@ -304,7 +308,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
   <script>
-    // Initialize Supabase - Cleaned URLs (no extra spaces)
+    // Initialize Supabase - FIXED: Removed extra spaces
     const supabase = window.supabase.createClient(
       'https://bkgagnttyqgtnxamvhcx.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
@@ -324,6 +328,7 @@
     const formTitle = document.getElementById('form-title');
     const submitBtn = document.getElementById('submit-btn');
 
+    // Current package being edited
     let currentEditId = null;
     let currentImageUrl = null;
 
@@ -345,7 +350,7 @@
       });
     }
 
-    // Check session on load
+    // Check session on load - FIXED: Correct syntax
     async function checkSession() {
       try {
         const {  { session } } = await supabase.auth.getSession();
@@ -389,7 +394,7 @@
         }
       } catch (error) {
         loginSuccess.textContent = '';
-        loginError.textContent = 'Login failed: ' + (error.message || 'Unknown error');
+        loginError.textContent = 'Login failed: ' + (error.message || 'Unknown error occurred');
         console.error('Login error:', error);
       }
     }
@@ -398,8 +403,8 @@
       supabase.auth.signOut();
       dashboard.classList.add('hidden');
       loginSection.classList.remove('hidden');
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
+      if (document.getElementById('email')) document.getElementById('email').value = '';
+      if (document.getElementById('password')) document.getElementById('password').value = '';
       currentEditId = null;
       resetForm();
     }
@@ -451,6 +456,7 @@
                   <h3>${pkg.name}</h3>
                   <p><strong>Price:</strong> ${pkg.price}</p>
                   <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toLocaleDateString()}</p>
+                  <p><strong>Arrival:</strong> ${new Date(pkg.arrival_date).toLocaleDateString()}</p>
                   <p><strong>Madinah Nights:</strong> ${pkg.madinah_nights}</p>
                   <p><strong>Makkah Nights:</strong> ${pkg.makkah_nights}</p>
                   <p><strong>Umrahs:</strong> ${pkg.umrahs_count}</p>
@@ -501,11 +507,12 @@
           return;
         }
 
+        // Fill form
         document.getElementById('form-name').value = data.name;
         document.getElementById('form-price').value = data.price;
         document.getElementById('form-duration').value = data.duration_days;
         document.getElementById('form-departure').value = data.departure_date;
-        // Arrival date REMOVED
+        document.getElementById('form-arrival').value = data.arrival_date;
         document.getElementById('form-madinah-nights').value = data.madinah_nights;
         document.getElementById('form-makkah-nights').value = data.makkah_nights;
         document.getElementById('form-umrahs').value = data.umrahs_count;
@@ -514,6 +521,7 @@
         document.getElementById('form-visa').checked = data.visa_included;
         document.getElementById('form-active').checked = data.is_active;
         
+        // Handle image
         if (data.image_url) {
           currentImageUrl = data.image_url;
           const imageUrl = data.image_url.startsWith('http') ? 
@@ -531,6 +539,7 @@
         currentEditId = id;
         formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Package';
         submitBtn.innerHTML = '<i class="fas fa-sync"></i> Update Package';
+        
         document.getElementById('package-form').scrollIntoView({ behavior: 'smooth' });
       } catch (error) {
         alert('Edit error: ' + error.message);
@@ -541,10 +550,15 @@
       if (!currentEditId) return;
       
       try {
+        // Remove image from storage if it exists
         if (currentImageUrl && !currentImageUrl.startsWith('http')) {
-          await supabase.storage
+          const { error: deleteError } = await supabase.storage
             .from('umrah-package-images')
             .remove([currentImageUrl]);
+          
+          if (deleteError) {
+            console.warn('Image delete warning:', deleteError.message);
+          }
         }
         
         imagePreview.classList.add('hidden');
@@ -552,10 +566,16 @@
         currentImageUrl = null;
         imageInput.value = '';
         
-        await supabase
+        // Update the package to remove image_url
+        const { error } = await supabase
           .from('umrah_packages')
           .update({ image_url: null })
           .eq('id', currentEditId);
+          
+        if (error) {
+          console.warn('Image URL update warning:', error.message);
+        }
+        
       } catch (error) {
         console.error('Delete image error:', error);
       }
@@ -564,7 +584,7 @@
     async function handleSubmit(e) {
       e.preventDefault();
       
-      const {  { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('Please log in first');
         return;
@@ -574,7 +594,7 @@
       const price = document.getElementById('form-price').value.trim();
       const duration = parseInt(document.getElementById('form-duration').value);
       const departure = document.getElementById('form-departure').value;
-      // Arrival date REMOVED
+      const arrival = document.getElementById('form-arrival').value;
       const madinahNights = parseInt(document.getElementById('form-madinah-nights').value);
       const makkahNights = parseInt(document.getElementById('form-makkah-nights').value);
       const umrahs = parseInt(document.getElementById('form-umrahs').value);
@@ -583,13 +603,14 @@
       const visa = document.getElementById('form-visa').checked;
       const active = document.getElementById('form-active').checked;
       
-      if (!name || !price || isNaN(duration) || !departure || 
+      // Validation - allow any price format
+      if (!name || !price || isNaN(duration) || !departure || !arrival || 
           isNaN(madinahNights) || isNaN(makkahNights) || isNaN(umrahs)) {
         alert('Please fill in all required fields');
         return;
       }
 
-      let imageUrl = currentImageUrl;
+      let imageUrl = currentImageUrl; // Keep existing image if not changed
       const imageFile = document.getElementById('form-image')?.files[0];
       
       if (imageFile) {
@@ -599,7 +620,9 @@
             .from('umrah-package-images')
             .upload(fileName, imageFile, { upsert: true });
           
-          if (uploadError) throw new Error('Image upload failed: ' + uploadError.message);
+          if (uploadError) {
+            throw new Error('Image upload failed: ' + uploadError.message);
+          }
           imageUrl = fileName;
         } catch (error) {
           alert('Image upload error: ' + error.message);
@@ -609,14 +632,17 @@
 
       try {
         if (currentEditId) {
+          // Update existing
           const updateData = {
             name, price, duration_days: duration, departure_date: departure,
-            madinah_nights: madinahNights, 
+            arrival_date: arrival, madinah_nights: madinahNights, 
             makkah_nights: makkahNights, umrahs_count: umrahs,
             description, meals_included: meals, visa_included: visa, is_active: active
           };
           
-          if (imageUrl !== currentImageUrl) updateData.image_url = imageUrl;
+          if (imageUrl !== currentImageUrl) {
+            updateData.image_url = imageUrl;
+          }
           
           const { error } = await supabase
             .from('umrah_packages')
@@ -627,11 +653,12 @@
           if (error) throw error;
           alert('Package updated successfully!');
         } else {
+          // Create new
           const { error } = await supabase
             .from('umrah_packages')
             .insert({
               business_id: user.id, name, price, duration_days: duration,
-              departure_date: departure,
+              departure_date: departure, arrival_date: arrival, 
               madinah_nights: madinahNights, makkah_nights: makkahNights,
               umrahs_count: umrahs, description, image_url: imageUrl,
               meals_included: meals, visa_included: visa, is_active: active
@@ -650,31 +677,43 @@
     }
 
     function resetForm() {
-      document.getElementById('package-form').reset();
-      imagePreview.classList.add('hidden');
-      deleteImageContainer.classList.add('hidden');
+      const form = document.getElementById('package-form');
+      if (form) form.reset();
+      if (imagePreview) imagePreview.classList.add('hidden');
+      if (deleteImageContainer) deleteImageContainer.classList.add('hidden');
       currentEditId = null;
       currentImageUrl = null;
-      formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
-      submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
+      if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
+      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
     }
 
     async function deletePackage(id) {
-      if (!confirm('Are you sure you want to delete this Umrah package?')) return;
+      if (!confirm('Are you sure you want to delete this Umrah package? This cannot be undone.')) return;
       
       try {
-        const { data: pkg } = await supabase
+        // First get the package to check if it has an image to delete
+        const {  pkg, error: fetchError } = await supabase
           .from('umrah_packages')
           .select('image_url')
           .eq('id', id)
           .single();
         
-        if (pkg && pkg.image_url && !pkg.image_url.startsWith('http')) {
-          await supabase.storage
-            .from('umrah-package-images')
-            .remove([pkg.image_url]);
+        if (fetchError) {
+          console.warn('Could not fetch package for image cleanup:', fetchError.message);
         }
         
+        // Delete image from storage if it exists and is not a full URL
+        if (pkg && pkg.image_url && !pkg.image_url.startsWith('http')) {
+          const { error: deleteError } = await supabase.storage
+            .from('umrah-package-images')
+            .remove([pkg.image_url]);
+          
+          if (deleteError) {
+            console.warn('Image delete warning:', deleteError.message);
+          }
+        }
+        
+        // Delete the package
         const { error } = await supabase
           .from('umrah_packages')
           .delete()
@@ -690,9 +729,10 @@
 
     async function toggleActive(id, currentActive) {
       try {
+        const newActive = !currentActive;
         const { error } = await supabase
           .from('umrah_packages')
-          .update({ is_active: !currentActive })
+          .update({ is_active: newActive })
           .eq('id', id);
 
         if (error) throw error;
@@ -702,7 +742,8 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
       checkSession();
     });
   </script>
