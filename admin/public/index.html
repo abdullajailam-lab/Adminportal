@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Umrah Package Manager</title>
-  <!-- Load Supabase with explicit version to avoid issues -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
+  <!-- Use UNPKG CDN for better reliability -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -242,11 +242,18 @@
   </div>
 
   <script>
-    // Initialize Supabase - THIS IS THE KEY FIX!
-    const supabase = window.supabase.createClient(
-      'https://bkgagnttyqgtnxamvhcx.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
-    );
+    // Initialize Supabase with error handling
+    let supabase;
+    try {
+      supabase = window.supabase.createClient(
+        'https://bkgagnttyqgtnxamvhcx.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
+      );
+      console.log('✅ Supabase initialized successfully');
+    } catch (error) {
+      console.error('❌ Supabase initialization failed:', error);
+      document.getElementById('login-error').textContent = 'Failed to load authentication system. Please refresh the page.';
+    }
 
     // DOM Elements
     const loginSection = document.getElementById('login-section');
@@ -255,32 +262,14 @@
     const loginError = document.getElementById('login-error');
     const loginSuccess = document.getElementById('login-success');
     const currentUserEmail = document.getElementById('current-user-email');
-    const imageInput = document.getElementById('form-image');
-    const imagePreview = document.getElementById('image-preview');
-    const formTitle = document.getElementById('form-title');
-    const submitBtn = document.getElementById('submit-btn');
 
     // Current package being edited
     let currentEditId = null;
 
-    // Image preview
-    if (imageInput) {
-      imageInput.addEventListener('change', (e) => {
-        if (e.target.files[0]) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            imagePreview.src = e.target.result;
-            imagePreview.classList.remove('hidden');
-          };
-          reader.readAsDataURL(e.target.files[0]);
-        } else {
-          imagePreview.classList.add('hidden');
-        }
-      });
-    }
-
     // Check session on load
     async function checkSession() {
+      if (!supabase) return;
+      
       try {
         const {  { session } } = await supabase.auth.getSession();
         if (session) {
@@ -294,6 +283,11 @@
     }
 
     async function login() {
+      if (!supabase) {
+        loginError.textContent = 'Authentication system not loaded. Please refresh the page.';
+        return;
+      }
+      
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       
@@ -327,6 +321,8 @@
     }
 
     function logout() {
+      if (!supabase) return;
+      
       supabase.auth.signOut();
       dashboard.classList.add('hidden');
       loginSection.classList.remove('hidden');
@@ -342,6 +338,8 @@
     }
 
     async function loadPackages() {
+      if (!supabase) return;
+      
       try {
         const {  { user } } = await supabase.auth.getUser();
         if (!user) {
@@ -414,6 +412,8 @@
     }
 
     async function editPackage(id) {
+      if (!supabase) return;
+      
       try {
         const {  { user } } = await supabase.auth.getUser();
         if (!user) return;
@@ -442,20 +442,25 @@
         document.getElementById('form-visa').checked = data.visa_included;
         document.getElementById('form-active').checked = data.is_active;
         
-        // Handle image
+        // Handle image preview
+        const imagePreview = document.getElementById('image-preview');
         if (data.image_url) {
           const imageUrl = data.image_url.startsWith('http') ? 
             data.image_url : 
             `https://bkgagnttyqgtnxamvhcx.supabase.co/storage/v1/object/public/umrah-package-images/${data.image_url}`;
-          imagePreview.src = imageUrl;
-          imagePreview.classList.remove('hidden');
-        } else {
+          if (imagePreview) {
+            imagePreview.src = imageUrl;
+            imagePreview.classList.remove('hidden');
+          }
+        } else if (imagePreview) {
           imagePreview.classList.add('hidden');
         }
 
         currentEditId = id;
-        formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Package';
-        submitBtn.innerHTML = '<i class="fas fa-sync"></i> Update Package';
+        const formTitle = document.getElementById('form-title');
+        const submitBtn = document.getElementById('submit-btn');
+        if (formTitle) formTitle.innerHTML = '<i class="fas fa-edit"></i> Edit Package';
+        if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-sync"></i> Update Package';
         
         document.getElementById('package-form').scrollIntoView({ behavior: 'smooth' });
       } catch (error) {
@@ -465,6 +470,10 @@
 
     async function handleSubmit(e) {
       e.preventDefault();
+      if (!supabase) {
+        alert('Please refresh the page and try again.');
+        return;
+      }
       
       const {  { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -553,14 +562,18 @@
     function resetForm() {
       const form = document.getElementById('package-form');
       if (form) form.reset();
+      const imagePreview = document.getElementById('image-preview');
       if (imagePreview) imagePreview.classList.add('hidden');
       currentEditId = null;
+      const formTitle = document.getElementById('form-title');
+      const submitBtn = document.getElementById('submit-btn');
       if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
       if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
     }
 
     async function deletePackage(id) {
       if (!confirm('Are you sure you want to delete this Umrah package? This cannot be undone.')) return;
+      if (!supabase) return;
       
       try {
         const { error } = await supabase
@@ -577,6 +590,8 @@
     }
 
     async function toggleActive(id, currentActive) {
+      if (!supabase) return;
+      
       try {
         const newActive = !currentActive;
         const { error } = await supabase
@@ -592,9 +607,11 @@
     }
 
     // Initialize when page loads
-    document.addEventListener('DOMContentLoaded', function() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkSession);
+    } else {
       checkSession();
-    });
+    }
   </script>
 </body>
 </html>
