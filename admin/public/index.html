@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Umrah Package Manager</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <!-- Load Supabase with explicit version to avoid issues -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -153,9 +154,7 @@
         </div>
         <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
         <p id="login-error" class="error"></p>
-        <p style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;">
-          <i class="fas fa-lock"></i> Secure login - only you can access your packages
-        </p>
+        <p id="login-success" class="success"></p>
       </div>
     </div>
 
@@ -243,8 +242,8 @@
   </div>
 
   <script>
-    // ✅ YOUR SUPABASE CONFIGURATION
-    const supabase = supabase.createClient(
+    // Initialize Supabase - THIS IS THE KEY FIX!
+    const supabase = window.supabase.createClient(
       'https://bkgagnttyqgtnxamvhcx.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
     );
@@ -254,6 +253,7 @@
     const dashboard = document.getElementById('dashboard');
     const packagesContainer = document.getElementById('packages-container');
     const loginError = document.getElementById('login-error');
+    const loginSuccess = document.getElementById('login-success');
     const currentUserEmail = document.getElementById('current-user-email');
     const imageInput = document.getElementById('form-image');
     const imagePreview = document.getElementById('image-preview');
@@ -264,18 +264,20 @@
     let currentEditId = null;
 
     // Image preview
-    imageInput.addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          imagePreview.src = e.target.result;
-          imagePreview.classList.remove('hidden');
-        };
-        reader.readAsDataURL(e.target.files[0]);
-      } else {
-        imagePreview.classList.add('hidden');
-      }
-    });
+    if (imageInput) {
+      imageInput.addEventListener('change', (e) => {
+        if (e.target.files[0]) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+          };
+          reader.readAsDataURL(e.target.files[0]);
+        } else {
+          imagePreview.classList.add('hidden');
+        }
+      });
+    }
 
     // Check session on load
     async function checkSession() {
@@ -297,22 +299,28 @@
       
       if (!email || !password) {
         loginError.textContent = 'Please enter email and password';
+        loginSuccess.textContent = '';
         return;
       }
 
       try {
-        loginError.textContent = 'Logging in...';
+        loginError.textContent = '';
+        loginSuccess.textContent = 'Logging in...';
+        
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         
         if (error) {
+          loginSuccess.textContent = '';
           loginError.textContent = error.message;
         } else {
           loginError.textContent = '';
+          loginSuccess.textContent = 'Login successful!';
           currentUserEmail.textContent = data.user.email;
           showDashboard();
           loadPackages();
         }
       } catch (error) {
+        loginSuccess.textContent = '';
         loginError.textContent = 'Login failed: ' + error.message;
         console.error('Login error:', error);
       }
@@ -322,8 +330,8 @@
       supabase.auth.signOut();
       dashboard.classList.add('hidden');
       loginSection.classList.remove('hidden');
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
+      if (document.getElementById('email')) document.getElementById('email').value = '';
+      if (document.getElementById('password')) document.getElementById('password').value = '';
       currentEditId = null;
       resetForm();
     }
@@ -458,7 +466,7 @@
     async function handleSubmit(e) {
       e.preventDefault();
       
-      const { data: { user } } = await supabase.auth.getUser();
+      const {  { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('Please log in first');
         return;
@@ -481,7 +489,7 @@
       }
 
       let imageUrl = null;
-      const imageFile = document.getElementById('form-image').files[0];
+      const imageFile = document.getElementById('form-image')?.files[0];
       
       if (imageFile) {
         try {
@@ -543,11 +551,12 @@
     }
 
     function resetForm() {
-      document.getElementById('package-form').reset();
-      imagePreview.classList.add('hidden');
+      const form = document.getElementById('package-form');
+      if (form) form.reset();
+      if (imagePreview) imagePreview.classList.add('hidden');
       currentEditId = null;
-      formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
-      submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
+      if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
+      if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
     }
 
     async function deletePackage(id) {
@@ -582,8 +591,10 @@
       }
     }
 
-    // Initialize
-    checkSession();
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      checkSession();
+    });
   </script>
 </body>
 </html>
