@@ -144,7 +144,6 @@
     }
     .error { color: #dc3545; margin-top: 0.5rem; }
     .success { color: #28a745; margin-top: 0.5rem; }
-    .warning { color: #ffc107; margin-top: 0.5rem; }
     .image-preview {
       width: 150px;
       height: 150px;
@@ -287,7 +286,6 @@
                 <i class="fas fa-trash"></i> Remove Current Image
               </button>
             </div>
-            <p id="image-warning" class="warning hidden">Note: Image upload may be restricted. Package will be saved without image if upload fails.</p>
           </div>
 
           <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1.2rem 0;">
@@ -336,7 +334,6 @@
     const imageInput = document.getElementById('form-image');
     const imagePreview = document.getElementById('image-preview');
     const deleteImageContainer = document.getElementById('delete-image-container');
-    const imageWarning = document.getElementById('image-warning');
     const formTitle = document.getElementById('form-title');
     const submitBtn = document.getElementById('submit-btn');
 
@@ -353,13 +350,11 @@
             imagePreview.src = e.target.result;
             imagePreview.classList.remove('hidden');
             deleteImageContainer.classList.add('hidden');
-            imageWarning.classList.remove('hidden');
           };
           reader.readAsDataURL(e.target.files[0]);
         } else {
           imagePreview.classList.add('hidden');
           deleteImageContainer.classList.add('hidden');
-          imageWarning.classList.add('hidden');
         }
       });
     }
@@ -367,7 +362,7 @@
     // Check session on load
     async function checkSession() {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {  { session } } = await supabase.auth.getSession();
         if (session) {
           currentUserEmail.textContent = session.user.email;
           agencyName.innerHTML = `By Agency ID: <strong>${session.user.email}</strong>`;
@@ -544,11 +539,9 @@
           imagePreview.src = imageUrl;
           imagePreview.classList.remove('hidden');
           deleteImageContainer.classList.remove('hidden');
-          imageWarning.classList.add('hidden');
         } else {
           imagePreview.classList.add('hidden');
           deleteImageContainer.classList.add('hidden');
-          imageWarning.classList.add('hidden');
           currentImageUrl = null;
         }
 
@@ -597,24 +590,6 @@
       }
     }
 
-    async function uploadImage(file, userId) {
-      try {
-        const fileName = `${userId}/${Date.now()}_${file.name}`;
-        const { error: uploadError } = await supabase.storage
-          .from('umrah-package-images')
-          .upload(fileName, file, { upsert: true });
-        
-        if (uploadError) {
-          console.warn('Image upload failed:', uploadError.message);
-          return null;
-        }
-        return fileName;
-      } catch (error) {
-        console.warn('Image upload error:', error.message);
-        return null;
-      }
-    }
-
     async function handleSubmit(e) {
       e.preventDefault();
       
@@ -646,15 +621,20 @@
       let imageUrl = currentImageUrl; // Keep existing image if not changed
       const imageFile = document.getElementById('form-image')?.files[0];
       
-      // Handle image upload with graceful fallback
       if (imageFile) {
-        const uploadedImageUrl = await uploadImage(imageFile, user.id);
-        if (uploadedImageUrl) {
-          imageUrl = uploadedImageUrl;
-        } else {
-          // Image upload failed, but we'll continue without it
-          imageUrl = null;
-          alert('Note: Package saved successfully, but image upload failed due to permission restrictions. You can add an image later.');
+        try {
+          const fileName = `${user.id}/${Date.now()}_${imageFile.name}`;
+          const { error: uploadError } = await supabase.storage
+            .from('umrah-package-images')
+            .upload(fileName, imageFile, { upsert: true });
+          
+          if (uploadError) {
+            throw new Error('Image upload failed: ' + uploadError.message);
+          }
+          imageUrl = fileName;
+        } catch (error) {
+          alert('Image upload error: ' + error.message);
+          return;
         }
       }
 
@@ -693,11 +673,7 @@
             });
 
           if (error) throw error;
-          if (imageUrl) {
-            alert('Package added successfully!');
-          } else {
-            alert('Package added successfully! (Image upload was skipped due to permission restrictions)');
-          }
+          alert('Package added successfully!');
         }
         
         resetForm();
@@ -713,7 +689,6 @@
       if (form) form.reset();
       if (imagePreview) imagePreview.classList.add('hidden');
       if (deleteImageContainer) deleteImageContainer.classList.add('hidden');
-      if (imageWarning) imageWarning.classList.add('hidden');
       currentEditId = null;
       currentImageUrl = null;
       if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
@@ -725,7 +700,7 @@
       
       try {
         // First get the package to check if it has an image to delete
-        const {  pkg, error: fetchError } = await supabase
+        const { data: pkg, error: fetchError } = await supabase
           .from('umrah_packages')
           .select('image_url')
           .eq('id', id)
