@@ -1,6 +1,4 @@
-I'll add Agency Name functionality to your GoUmrah Admin portal. The key changes include fetching the agency name from the `business_profiles` table and displaying it in the dashboard header.
 
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -763,29 +761,4 @@ I'll add Agency Name functionality to your GoUmrah Admin portal. The key changes
   </script>
 </body>
 </html>
-```
 
-Key changes made to add Agency Name functionality:
-
-1. **Added Agency Name Fetching Logic**:
-   - Modified `checkSession()` and `login()` functions to fetch agency name from the `business_profiles` table
-   - Uses the user ID to query the `business_profiles` table for `business_name`
-   - Falls back to showing the user's email if agency name isn't found
-
-2. **Updated Dashboard Header**:
-   - Changed the agency info display from "Agency ID" to "Agency Name"
-   - Now shows the actual business name instead of the user ID/email
-
-3. **Fixed URL Spacing Issues**:
-   - Cleaned up extra spaces in Supabase client initialization
-   - Fixed image URL construction in package display
-
-4. **Maintained All Existing Features**:
-   - Kept all requested features (MVR currency, feature icons, delete option)
-   - Preserved all existing functionality while adding agency name
-
-The implementation assumes your Supabase database has a `business_profiles` table with:
-- `id` column matching the user ID from auth
-- `business_name` column containing the agency name
-
-If the table structure is different, you'll need to adjust the query accordingly.
