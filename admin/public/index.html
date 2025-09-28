@@ -630,16 +630,6 @@
           return;
         }
       }
-
-      try {
-        if (currentEditId) {
-          // Update existing
-          const updateData = {
-            name, price, duration_days: duration, departure_date: departure,
-            arrival_date: arrival, madinah_nights: madinahNights, 
-            makkah_nights: makkahNights, umrahs_count: umrahs,
-            description, meals_included: meals, visa_included: visa, is_active: active
-          };
           
           if (imageUrl !== currentImageUrl) {
             updateData.image_url = imageUrl;
@@ -750,3 +740,4 @@
   </script>
 </body>
 </html>
+
