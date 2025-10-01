@@ -695,7 +695,7 @@
       }
     }
 
-    // === BOOKINGS ===
+    // === BOOKINGS === (UPDATED TO MATCH YOUR TABLE STRUCTURE)
     async function loadBookings() {
       try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -704,19 +704,24 @@
         const bookingsContainer = document.getElementById('bookings-container');
         bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
 
+        // Fetch bookings by joining with umrah_packages to get business_id
         const { data, error } = await supabase
           .from('bookings')
           .select(`
             id,
-            customer_name,
-            customer_email,
-            customer_phone,
+            package_id,
+            package_name,
+            user_email,
+            passenger_count,
+            user_phone,
+            pilgrim_names,
+            pilgrim_dobs,
+            special_requests,
             status,
-            travel_date,
             created_at,
-            umrah_packages(name)
+            umrah_packages(business_id)
           `)
-          .eq('business_id', user.id)
+          .eq('umrah_packages.business_id', user.id)
           .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -730,13 +735,25 @@
             if (b.status === 'confirmed') statusClass = 'status-confirmed';
             else if (b.status === 'cancelled') statusClass = 'status-cancelled';
 
+            // Parse JSON arrays safely
+            let pilgrimNames = '—';
+            let pilgrimDobs = '—';
+            try {
+              if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
+              if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
+            } catch (e) {
+              console.warn('Failed to parse pilgrim data', e);
+            }
+
             html += `
               <div class="card booking-item">
-                <h4>${b.customer_name}</h4>
-                <p><strong>Email:</strong> ${b.customer_email}</p>
-                <p><strong>Phone:</strong> ${b.customer_phone || '—'}</p>
-                <p><strong>Package:</strong> ${b.umrah_packages?.name || 'N/A'}</p>
-                <p><strong>Travel Date:</strong> ${b.travel_date ? new Date(b.travel_date).toLocaleDateString() : '—'}</p>
+                <h4>${pilgrimNames}</h4>
+                <p><strong>Email:</strong> ${b.user_email}</p>
+                <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
+                <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
+                <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
+                <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
+                <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
                 <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
                 <p><small>Booked on: ${new Date(b.created_at).toLocaleDateString()}</small></p>
               </div>
