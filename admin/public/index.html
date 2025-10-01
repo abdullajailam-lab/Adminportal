@@ -751,7 +751,7 @@
                 <p><strong>Email:</strong> ${b.user_email}</p>
                 <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
                 <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
-                <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
+                <p><strong>Passengers:</strong> ${b.passengers || '1'}</p>
                 <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
                 <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
                 <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
@@ -773,3 +773,4 @@
   </script>
 </body>
 </html>
+
