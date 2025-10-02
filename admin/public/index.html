@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -269,7 +270,7 @@
                 <input type="text" id="form-name" placeholder="e.g., Premium Umrah 10 Days" required />
               </div>
               <div>
-                <label>Price (SAR) *</label>
+                <label>Price (MVR) *</label>
                 <input type="number" id="form-price" placeholder="15000" min="0" step="100" required />
               </div>
               <div>
@@ -498,7 +499,7 @@
               <div class="package-header">
                 <div>
                   <h3>${pkg.name}</h3>
-                  <p><strong>Price:</strong> SAR ${parseFloat(pkg.price).toLocaleString()}</p>
+                  <p><strong>Price:</strong> MVR ${parseFloat(pkg.price).toLocaleString()}</p>
                   <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toLocaleDateString()}</p>
                 </div>
                 ${isActive}
@@ -773,5 +774,3 @@
   </script>
 </body>
 </html>
-
-
