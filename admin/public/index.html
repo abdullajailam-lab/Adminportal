@@ -271,7 +271,7 @@
               </div>
               <div>
                 <label>Price (MVR) *</label>
-                <input type="number" id="form-price" placeholder="15000" min="0" step="100" required />
+                <input type="number" id="form-price" placeholder="15000" min="0" step="any" required />
               </div>
               <div>
                 <label>Duration (Days) *</label>
@@ -345,7 +345,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
   <script>
-    // Initialize Supabase (FIXED: no extra spaces)
+    // Initialize Supabase
     const supabase = window.supabase.createClient(
       'https://bkgagnttyqgtnxamvhcx.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2FnbnR0eXFndG54YW12aGN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5ODMxNzIsImV4cCI6MjA3NDU1OTE3Mn0.dlY2Wlg5ZMuio9esi4-qwfOkcBSSExptvVf_pVviLtQ'
@@ -493,13 +493,19 @@
               (pkg.image_url.startsWith('http') ? pkg.image_url : `https://bkgagnttyqgtnxamvhcx.supabase.co/storage/v1/object/public/umrah-package-images/${pkg.image_url}`) : 
               'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image';
             
+            // Format price to 2 decimal places for display
+            const formattedPrice = parseFloat(pkg.price).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            });
+            
             const pkgDiv = document.createElement('div');
             pkgDiv.className = 'card package-item';
             pkgDiv.innerHTML = `
               <div class="package-header">
                 <div>
                   <h3>${pkg.name}</h3>
-                  <p><strong>Price:</strong> MVR ${parseFloat(pkg.price).toLocaleString()}</p>
+                  <p><strong>Price:</strong> MVR ${formattedPrice}</p>
                   <p><strong>Departure:</strong> ${new Date(pkg.departure_date).toLocaleDateString()}</p>
                 </div>
                 ${isActive}
@@ -600,8 +606,9 @@
       const visa = document.getElementById('form-visa').checked;
       const active = document.getElementById('form-active').checked;
       
+      // Only validate that price is a valid number (not NaN)
       if (!name || isNaN(price) || isNaN(duration) || !departure) {
-        alert('Please fill in all required fields');
+        alert('Please fill in all required fields with valid values');
         return;
       }
 
@@ -628,9 +635,16 @@
       try {
         if (currentEditId) {
           const updateData = {
-            name, price, duration_days: duration, departure_date: departure,
-            hotel_makkah: hotelMakkah, hotel_madinah: hotelMadinah,
-            description, meals_included: meals, visa_included: visa, is_active: active
+            name, 
+            price, 
+            duration_days: duration, 
+            departure_date: departure,
+            hotel_makkah: hotelMakkah, 
+            hotel_madinah: hotelMadinah,
+            description, 
+            meals_included: meals, 
+            visa_included: visa, 
+            is_active: active
           };
           if (imageUrl) updateData.image_url = imageUrl;
           
@@ -645,10 +659,18 @@
           const { error } = await supabase
             .from('umrah_packages')
             .insert({
-              business_id: user.id, name, price, duration_days: duration,
-              departure_date: departure, hotel_makkah: hotelMakkah,
-              hotel_madinah: hotelMadinah, description, image_url: imageUrl,
-              meals_included: meals, visa_included: visa, is_active: active
+              business_id: user.id, 
+              name, 
+              price, 
+              duration_days: duration,
+              departure_date: departure, 
+              hotel_makkah: hotelMakkah,
+              hotel_madinah: hotelMadinah, 
+              description, 
+              image_url: imageUrl,
+              meals_included: meals, 
+              visa_included: visa, 
+              is_active: active
             });
           if (error) throw error;
           alert('Package added successfully!');
@@ -696,7 +718,7 @@
       }
     }
 
-    // === BOOKINGS === (UPDATED TO MATCH YOUR TABLE STRUCTURE)
+    // === BOOKINGS ===
     async function loadBookings() {
       try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -705,7 +727,6 @@
         const bookingsContainer = document.getElementById('bookings-container');
         bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
 
-        // Fetch bookings by joining with umrah_packages to get business_id
         const { data, error } = await supabase
           .from('bookings')
           .select(`
@@ -736,7 +757,6 @@
             if (b.status === 'confirmed') statusClass = 'status-confirmed';
             else if (b.status === 'cancelled') statusClass = 'status-cancelled';
 
-            // Parse JSON arrays safely
             let pilgrimNames = '—';
             let pilgrimDobs = '—';
             try {
@@ -752,7 +772,7 @@
                 <p><strong>Email:</strong> ${b.user_email}</p>
                 <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
                 <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
-                <p><strong>Passengers:</strong> ${b.passengers || '1'}</p>
+                <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
                 <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
                 <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
                 <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
