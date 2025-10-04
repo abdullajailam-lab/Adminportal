@@ -957,16 +957,38 @@
 
             let pilgrimNames = '—';
             let pilgrimDobs = '—';
+            let customerName = 'Customer';
+            
             try {
-              if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
-              if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
+              // Parse pilgrim names from JSON string
+              if (b.pilgrim_names) {
+                // Handle case where it's already a JSON string
+                const parsedNames = JSON.parse(b.pilgrim_names);
+                if (Array.isArray(parsedNames)) {
+                  pilgrimNames = parsedNames.join(', ');
+                  customerName = parsedNames[0] || 'Customer';
+                } else {
+                  pilgrimNames = b.pilgrim_names;
+                  customerName = b.pilgrim_names;
+                }
+              }
+              
+              if (b.pilgrim_dobs) {
+                const parsedDobs = JSON.parse(b.pilgrim_dobs);
+                if (Array.isArray(parsedDobs)) {
+                  pilgrimDobs = parsedDobs.join(', ');
+                } else {
+                  pilgrimDobs = b.pilgrim_dobs;
+                }
+              }
             } catch (e) {
               console.warn('Failed to parse pilgrim data', e);
+              // If parsing fails, use the raw value
+              pilgrimNames = b.pilgrim_names || '—';
+              pilgrimDobs = b.pilgrim_dobs || '—';
+              customerName = b.pilgrim_names || 'Customer';
             }
 
-            // Use pilgrim names as customer name
-            const customerName = pilgrimNames !== '—' ? pilgrimNames : 'Customer';
-            
             html += `
               <div class="booking-card">
                 <div class="booking-header">
