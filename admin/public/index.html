@@ -928,8 +928,7 @@
             special_requests,
             status,
             created_at,
-            package_name,
-            full_name
+            package_name
           `)
           .in('package_id', packageIds)
           .order('created_at', { ascending: false });
@@ -965,8 +964,8 @@
               console.warn('Failed to parse pilgrim data', e);
             }
 
-            // Get customer name from full_name field
-            const customerName = b.full_name || 'Unknown Customer';
+            // Use pilgrim names as customer name
+            const customerName = pilgrimNames !== '—' ? pilgrimNames : 'Customer';
             
             html += `
               <div class="booking-card">
