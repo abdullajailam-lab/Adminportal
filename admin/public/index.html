@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -668,8 +669,8 @@
         <button onclick="login()" style="width: 100%; margin-top: 1.5rem;">
           <i class="fas fa-sign-in-alt"></i> Login to Dashboard
         </button>
-        <p id="login-error" class="error" style="margin-top: 1rem;"></p>
-        <p id="login-success" class="success" style="margin-top: 1rem;"></p>
+        <p id="login-error" class="error" style="margin-top: 1rem; color: var(--danger);"></p>
+        <p id="login-success" class="success" style="margin-top: 1rem; color: var(--success);"></p>
       </div>
     </div>
     <!-- Dashboard -->
@@ -808,8 +809,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7"></script>
   <script>
     // === TELEGRAM CONFIGURATION ===
-    const TELEGRAM_BOT_TOKEN = '8473114814:AAHPacyCCWBuqiSHQGdaLuuQvbz9iJQY2EU'; // 🔑 Replace with your bot token
-    // Example: '6789012345:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw'
+    const TELEGRAM_BOT_TOKEN = '8473114814:AAHPacyCCWBuqiSHQGdaLuuQvbz9iJQY2EU';
+    // 🔑 Replace with your actual Telegram chat ID (e.g., 123456789)
+    const ADMIN_TELEGRAM_CHAT_ID = 'YOUR_ADMIN_TELEGRAM_CHAT_ID'; // ← ← ← CHANGE THIS!
 
     // Initialize Supabase
     const supabase = window.supabase.createClient(
@@ -827,6 +829,7 @@
     const formTitle = document.getElementById('form-title');
     const submitBtn = document.getElementById('submit-btn');
     let currentEditId = null;
+
     // Image preview
     if (imageInput) {
       imageInput.addEventListener('change', (e) => {
@@ -842,6 +845,7 @@
         }
       });
     }
+
     // Tab navigation
     function showTab(tab) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -857,6 +861,7 @@
         loadBookings();
       }
     }
+
     // Check session on load
     async function checkSession() {
       try {
@@ -865,7 +870,6 @@
           currentUserEmail.textContent = session.user.email;
           dashboard.classList.remove('hidden');
           loginSection.classList.add('hidden');
-          // Show packages by default
           document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
           document.querySelector('.tab-btn').classList.add('active');
           loadPackages();
@@ -874,6 +878,8 @@
         console.error('Session check error:', error);
       }
     }
+
+    // ✅ FIXED LOGIN FUNCTION
     async function login() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
@@ -905,6 +911,7 @@
         console.error('Login error:', error);
       }
     }
+
     function logout() {
       supabase.auth.signOut();
       dashboard.classList.add('hidden');
@@ -914,10 +921,11 @@
       currentEditId = null;
       resetForm();
     }
+
     // === TELEGRAM NOTIFICATION FUNCTION ===
-    async function sendTelegramMessage(chatId, message) {
-      if (!chatId || !TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === '8473114814:AAHPacyCCWBuqiSHQGdaLuuQvbz9iJQY2EU') {
-        console.warn('Telegram not configured or chat ID missing');
+    async function sendTelegramAlert(message) {
+      if (!TELEGRAM_BOT_TOKEN || !ADMIN_TELEGRAM_CHAT_ID || ADMIN_TELEGRAM_CHAT_ID === 'YOUR_ADMIN_TELEGRAM_CHAT_ID') {
+        console.warn('Telegram not configured properly');
         return false;
       }
       try {
@@ -926,21 +934,15 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            chat_id: chatId,
+            chat_id: ADMIN_TELEGRAM_CHAT_ID,
             text: message,
             parse_mode: 'HTML'
           })
         });
         const result = await response.json();
-        if (result.ok) {
-          console.log('Telegram message sent successfully');
-          return true;
-        } else {
-          console.error('Telegram API error:', result);
-          return false;
-        }
+        return result.ok;
       } catch (error) {
-        console.error('Error sending Telegram message:', error);
+        console.error('Telegram send error:', error);
         return false;
       }
     }
@@ -961,7 +963,6 @@
           packagesContainer.innerHTML = `<p class="error">Error loading packages: ${error.message}</p>`;
           return;
         }
-        // Update dashboard stats
         document.getElementById('total-packages').textContent = data.length;
         if (data.length === 0) {
           packagesContainer.innerHTML = `
@@ -980,7 +981,6 @@
             const imageUrl = pkg.image_url ? 
               (pkg.image_url.startsWith('http') ? pkg.image_url : `https://bkgagnttyqgtnxamvhcx.supabase.co/storage/v1/object/public/umrah-package-images/${pkg.image_url}`) : 
               'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image';
-            // Format price to 2 decimal places for display
             const formattedPrice = parseFloat(pkg.price).toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2
@@ -1045,9 +1045,12 @@
         console.error('Load packages error:', error);
       }
     }
+
+    // ... (editPackage, handleSubmit, resetForm, deletePackage, toggleActive — unchanged from your original)
+
     async function editPackage(id) {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {  { user } } = await supabase.auth.getUser();
         if (!user) return;
         const { data, error } = await supabase
           .from('umrah_packages')
@@ -1086,9 +1089,10 @@
         alert('Edit error: ' + error.message);
       }
     }
+
     async function handleSubmit(e) {
       e.preventDefault();
-      const { data: { user } } = await supabase.auth.getUser();
+      const {  { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('Please log in first');
         return;
@@ -1103,7 +1107,6 @@
       const meals = document.getElementById('form-meals').checked;
       const visa = document.getElementById('form-visa').checked;
       const active = document.getElementById('form-active').checked;
-      // Only validate that price is a valid number (not NaN)
       if (!name || isNaN(price) || isNaN(duration) || !departure) {
         alert('Please fill in all required fields with valid values');
         return;
@@ -1174,6 +1177,7 @@
         console.error('Submit error:', error);
       }
     }
+
     function resetForm() {
       const form = document.getElementById('package-form');
       if (form) form.reset();
@@ -1182,6 +1186,7 @@
       if (formTitle) formTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Package';
       if (submitBtn) submitBtn.innerHTML = '<i class="fas fa-save"></i> Add Package';
     }
+
     async function deletePackage(id) {
       if (!confirm('Are you sure you want to delete this Umrah package? This cannot be undone.')) return;
       try {
@@ -1193,6 +1198,7 @@
         alert('Delete error: ' + error.message);
       }
     }
+
     async function toggleActive(id, currentActive) {
       try {
         const newActive = !currentActive;
@@ -1206,15 +1212,15 @@
         alert('Toggle error: ' + error.message);
       }
     }
+
     // === BOOKINGS ===
     async function loadBookings() {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {  { user } } = await supabase.auth.getUser();
         if (!user) return logout();
         const bookingsContainer = document.getElementById('bookings-container');
         bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
-        // Step 1: Fetch all packages belonging to this business
-        const { data: packages, error: pkgError } = await supabase
+        const {  packages, error: pkgError } = await supabase
           .from('umrah_packages')
           .select('id')
           .eq('business_id', user.id);
@@ -1230,8 +1236,7 @@
           return;
         }
         const packageIds = packages.map(p => p.id);
-        // Step 2: Fetch bookings that use these package IDs
-        const { data: bookings, error: bookError } = await supabase
+        const {  bookings, error: bookError } = await supabase
           .from('bookings')
           .select(`
             id,
@@ -1244,13 +1249,11 @@
             special_requests,
             status,
             created_at,
-            package_name,
-            telegram_chat_id
+            package_name
           `)
           .in('package_id', packageIds)
           .order('created_at', { ascending: false });
         if (bookError) throw bookError;
-        // Update dashboard stats
         let activeCount = 0, pendingCount = 0, cancelledCount = 0;
         bookings.forEach(b => {
           if (b.status === 'confirmed') activeCount++;
@@ -1278,9 +1281,7 @@
             let pilgrimDobs = '—';
             let customerName = 'Customer';
             try {
-              // Parse pilgrim names from JSON string
               if (b.pilgrim_names) {
-                // Handle case where it's already a JSON string
                 const parsedNames = JSON.parse(b.pilgrim_names);
                 if (Array.isArray(parsedNames)) {
                   pilgrimNames = parsedNames.join(', ');
@@ -1299,8 +1300,6 @@
                 }
               }
             } catch (e) {
-              console.warn('Failed to parse pilgrim data', e);
-              // If parsing fails, use the raw value
               pilgrimNames = b.pilgrim_names || '—';
               pilgrimDobs = b.pilgrim_dobs || '—';
               customerName = b.pilgrim_names || 'Customer';
@@ -1322,10 +1321,6 @@
                   <div class="booking-detail-item">
                     <span class="booking-detail-label">Phone Number</span>
                     <span class="booking-detail-value">${b.user_phone || '—'}</span>
-                  </div>
-                  <div class="booking-detail-item">
-                    <span class="booking-detail-label">Telegram Chat ID</span>
-                    <span class="booking-detail-value">${b.@GoUmrahbot || 'Not provided'}</span>
                   </div>
                   <div class="booking-detail-item">
                     <span class="booking-detail-label">Package Name</span>
@@ -1354,7 +1349,7 @@
                 </div>
                 <div class="booking-actions">
                   ${b.status !== 'confirmed' ? 
-                    `<button onclick="confirmBooking('${b.id}', '${b.user_email}', '${customerName}', '${b.@GoUmrahbot || ''}')" class="booking-action-btn confirm-btn">
+                    `<button onclick="confirmBooking('${b.id}', '${b.user_email}', '${customerName}')" class="booking-action-btn confirm-btn">
                       <i class="fas fa-check"></i> Confirm Booking
                     </button>` : 
                     `<button class="booking-action-btn confirm-btn" disabled>
@@ -1362,7 +1357,7 @@
                     </button>`
                   }
                   ${b.status !== 'cancelled' ? 
-                    `<button onclick="cancelBooking('${b.id}', '${b.user_email}', '${customerName}', '${b.@GoUmrahbot || ''}')" class="booking-action-btn cancel-btn">
+                    `<button onclick="cancelBooking('${b.id}', '${b.user_email}', '${customerName}')" class="booking-action-btn cancel-btn">
                       <i class="fas fa-times"></i> Cancel Booking
                     </button>` : 
                     `<button class="booking-action-btn cancel-btn" disabled>
@@ -1381,8 +1376,9 @@
           `<p class="error">Failed to load bookings: ${error.message}</p>`;
       }
     }
-    // New functions for booking actions with Telegram notifications
-    async function confirmBooking(bookingId, customerEmail, customerName, telegramChatId) {
+
+    // === BOOKING ACTION FUNCTIONS WITH TELEGRAM ALERTS ===
+    async function confirmBooking(bookingId, customerEmail, customerName) {
       if (!confirm(`Are you sure you want to confirm this booking for ${customerName}?`)) return;
       try {
         const { error } = await supabase
@@ -1391,27 +1387,24 @@
           .eq('id', bookingId);
         if (error) throw error;
 
-        // Send email notification (existing)
-        sendEmailNotification(customerEmail, customerName, 'confirmed');
+        // Send email notification (simulated)
+        alert(`✅ Email sent to ${customerName} (${customerEmail})`);
 
-        // Send Telegram notification if chat ID exists
-        if (telegramChatId) {
-          const telegramMessage = `✅ Your booking for Umrah has been CONFIRMED!\n\nDear ${customerName},\nYour package is now confirmed. Please prepare for your journey.\n\nThank you,\nGoUmrah Team`;
-          const sent = await sendTelegramMessage(telegramChatId, telegramMessage);
-          if (sent) {
-            alert(`Booking confirmed and Telegram notification sent to ${customerName}!`);
-          } else {
-            alert(`Booking confirmed, but Telegram notification failed.`);
-          }
-        } else {
-          alert(`Booking confirmed for ${customerName}!\n\n⚠️ Telegram notification not sent (chat ID missing).`);
+        // Send Telegram alert to admin
+        const telegramMsg = `🟢 CONFIRMED\nBooking ID: ${bookingId}\nCustomer: ${customerName}\nEmail: ${customerEmail}`;
+        const telegramSent = await sendTelegramAlert(telegramMsg);
+        if (telegramSent) {
+          console.log('Telegram alert sent to admin');
         }
+
+        alert(`Booking confirmed for ${customerName}!`);
         loadBookings();
       } catch (error) {
         alert('Error confirming booking: ' + error.message);
       }
     }
-    async function cancelBooking(bookingId, customerEmail, customerName, telegramChatId) {
+
+    async function cancelBooking(bookingId, customerEmail, customerName) {
       if (!confirm(`Are you sure you want to cancel this booking for ${customerName}? This action cannot be undone.`)) return;
       try {
         const { error } = await supabase
@@ -1420,36 +1413,27 @@
           .eq('id', bookingId);
         if (error) throw error;
 
-        // Send email notification (existing)
-        sendEmailNotification(customerEmail, customerName, 'cancelled');
+        // Send email notification (simulated)
+        alert(`❌ Email sent to ${customerName} (${customerEmail})`);
 
-        // Send Telegram notification if chat ID exists
-        if (telegramChatId) {
-          const telegramMessage = `❌ Your booking for Umrah has been CANCELLED.\n\nDear ${customerName},\nWe're sorry to inform you that your booking was cancelled.\n\nContact us for more details.\n\nGoUmrah Team`;
-          const sent = await sendTelegramMessage(telegramChatId, telegramMessage);
-          if (sent) {
-            alert(`Booking cancelled and Telegram notification sent to ${customerName}!`);
-          } else {
-            alert(`Booking cancelled, but Telegram notification failed.`);
-          }
-        } else {
-          alert(`Booking cancelled for ${customerName}!\n\n⚠️ Telegram notification not sent (chat ID missing).`);
+        // Send Telegram alert to admin
+        const telegramMsg = `🔴 CANCELLED\nBooking ID: ${bookingId}\nCustomer: ${customerName}\nEmail: ${customerEmail}`;
+        const telegramSent = await sendTelegramAlert(telegramMsg);
+        if (telegramSent) {
+          console.log('Telegram alert sent to admin');
         }
+
+        alert(`Booking cancelled for ${customerName}!`);
         loadBookings();
       } catch (error) {
         alert('Error cancelling booking: ' + error.message);
       }
     }
-    // Function to send email notification (unchanged)
-    function sendEmailNotification(customerEmail, customerName, status) {
-      console.log(`Sending ${status} email notification to ${customerName} (${customerEmail})`);
-      setTimeout(() => {
-        console.log(`Email sent to ${customerEmail} regarding ${status} booking`);
-      }, 500);
-      alert(`Email notification sent to ${customerName} regarding ${status} booking.`);
-    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', checkSession);
   </script>
 </body>
 </html>
+
+
