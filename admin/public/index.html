@@ -307,6 +307,140 @@
       box-shadow: 0 6px 15px rgba(220, 53, 69, 0.4);
     }
     
+    /* Package Card */
+    .package-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      border-left: 5px solid var(--secondary);
+      position: relative;
+      overflow: hidden;
+    }
+    .package-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-hover);
+    }
+    .package-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--secondary);
+    }
+    .package-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(201, 167, 94, 0.15);
+    }
+    .package-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+    .package-status {
+      font-weight: 700;
+      padding: 0.5rem 1.2rem;
+      border-radius: 24px;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-active {
+      background: rgba(40, 167, 69, 0.15);
+      color: var(--success);
+    }
+    .status-inactive {
+      background: rgba(220, 53, 69, 0.15);
+      color: var(--danger);
+    }
+    
+    /* Package Details */
+    .package-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .detail-label {
+      font-weight: 700;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .detail-value {
+      font-size: 1.1rem;
+      color: var(--dark);
+      word-break: break-word;
+    }
+    
+    /* Package Actions */
+    .package-actions {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .package-action-btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 1.1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .package-action-btn:hover {
+      transform: translateY(-2px);
+    }
+    .edit-btn {
+      background: #6c757d;
+      color: white;
+      border-color: #5a6268;
+    }
+    .edit-btn:hover {
+      background: #5a6268;
+      border-color: #4e555b;
+    }
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+      border-color: #c82333;
+    }
+    .delete-btn:hover {
+      background: #c82333;
+      border-color: #be1e2d;
+    }
+    .toggle-btn {
+      background: #28a745;
+      color: white;
+      border-color: #218838;
+    }
+    .toggle-btn:hover {
+      background: #218838;
+      border-color: #1e7e34;
+    }
+    
     /* Booking Card */
     .booking-card {
       background: white;
@@ -336,8 +470,8 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 1.8rem;
-      padding-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
       border-bottom: 2px solid rgba(201, 167, 94, 0.15);
     }
     .booking-title {
@@ -373,13 +507,13 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
-    .detail-item {
+    .booking-detail-item {
       display: flex;
       flex-direction: column;
     }
-    .detail-label {
+    .booking-detail-label {
       font-weight: 700;
       color: var(--gray);
       margin-bottom: 0.5rem;
@@ -387,7 +521,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .detail-value {
+    .booking-detail-value {
       font-size: 1.1rem;
       color: var(--dark);
       word-break: break-word;
@@ -398,8 +532,9 @@
       display: flex;
       gap: 1.2rem;
       flex-wrap: wrap;
+      margin-top: 1.5rem;
     }
-    .action-btn {
+    .booking-action-btn {
       flex: 1;
       min-width: 200px;
       padding: 1.1rem;
@@ -411,20 +546,31 @@
       justify-content: center;
       gap: 0.8rem;
       transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .booking-action-btn:hover {
+      transform: translateY(-2px);
+    }
+    .confirm-btn {
+      background: #28a745;
+      color: white;
+      border-color: #218838;
+    }
+    .confirm-btn:hover {
+      background: #218838;
+      border-color: #1e7e34;
+    }
+    .cancel-btn {
+      background: #dc3545;
+      color: white;
+      border-color: #c82333;
+    }
+    .cancel-btn:hover {
+      background: #c82333;
+      border-color: #be1e2d;
     }
     
-    /* Package Item */
-    .package-item {
-      border-left: none;
-      padding-left: 0;
-      margin-bottom: 2rem;
-    }
-    .package-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-    }
+    /* Package Image */
     .package-image {
       width: 100%;
       height: 220px;
@@ -432,23 +578,21 @@
       border-radius: 16px;
       margin: 1.5rem 0;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border: 2px solid #e9ecef;
     }
     
-    /* Status Badges */
-    .status-badge {
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      display: inline-block;
+    /* Description */
+    .package-description {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(201, 167, 94, 0.05);
+      border-radius: 16px;
+      border-left: 4px solid var(--secondary);
     }
-    .status-active {
-      background: rgba(40, 167, 69, 0.15);
-      color: var(--success);
-    }
-    .status-inactive {
-      background: rgba(220, 53, 69, 0.15);
-      color: var(--danger);
+    .description-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
     }
     
     /* Responsive Design */
@@ -467,13 +611,13 @@
         width: 100%;
         text-align: center;
       }
-      .booking-details { 
+      .package-details, .booking-details { 
         grid-template-columns: 1fr; 
       }
-      .booking-actions {
+      .package-actions, .booking-actions {
         flex-direction: column;
       }
-      .action-btn {
+      .package-action-btn, .booking-action-btn {
         width: 100%;
         min-width: auto;
       }
@@ -843,8 +987,8 @@
           packagesContainer.innerHTML = '';
           data.forEach(pkg => {
             const isActive = pkg.is_active ? 
-              '<span class="status-badge status-active">Active</span>' : 
-              '<span class="status-badge status-inactive">Inactive</span>';
+              '<span class="package-status status-active">Active</span>' : 
+              '<span class="package-status status-inactive">Inactive</span>';
             
             const imageUrl = pkg.image_url ? 
               (pkg.image_url.startsWith('http') ? pkg.image_url : `https://bkgagnttyqgtnxamvhcx.supabase.co/storage/v1/object/public/umrah-package-images/${pkg.image_url}`) : 
@@ -857,32 +1001,57 @@
             });
             
             const pkgDiv = document.createElement('div');
-            pkgDiv.className = 'card package-item fade-in';
+            pkgDiv.className = 'package-card fade-in';
             pkgDiv.innerHTML = `
               <div class="package-header">
                 <div>
-                  <h3>${pkg.name}</h3>
+                  <h3 class="package-title">${pkg.name}</h3>
                   <p style="margin: 0.5rem 0;"><strong>Price:</strong> MVR ${formattedPrice}</p>
                   <p style="margin: 0.5rem 0;"><strong>Departure:</strong> ${new Date(pkg.departure_date).toLocaleDateString()}</p>
                 </div>
                 ${isActive}
               </div>
-              <p style="margin: 0.8rem 0;"><strong>Duration:</strong> ${pkg.duration_days} days</p>
-              <p style="margin: 0.8rem 0;"><strong>Makkah Hotel:</strong> ${pkg.hotel_makkah || 'Not specified'}</p>
-              <p style="margin: 0.8rem 0;"><strong>Madinah Hotel:</strong> ${pkg.hotel_madinah || 'Not specified'}</p>
-              <p style="margin: 0.8rem 0;"><strong>Meals:</strong> ${pkg.meals_included ? '✅ Included' : '❌ Not included'}</p>
-              <p style="margin: 0.8rem 0;"><strong>Visa:</strong> ${pkg.visa_included ? '✅ Included' : '❌ Not included'}</p>
-              ${pkg.description ? `<p style="margin: 0.8rem 0;"><strong>Description:</strong> ${pkg.description}</p>` : ''}
+              
+              <div class="package-details">
+                <div class="detail-item">
+                  <span class="detail-label">Duration</span>
+                  <span class="detail-value">${pkg.duration_days} days</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Makkah Hotel</span>
+                  <span class="detail-value">${pkg.hotel_makkah || '-'}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Madinah Hotel</span>
+                  <span class="detail-value">${pkg.hotel_madinah || '-'}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Meals</span>
+                  <span class="detail-value">${pkg.meals_included ? '<i class="fas fa-check" style="color: #28a745;"></i> Included' : '<i class="fas fa-times" style="color: #dc3545;"></i> Not included'}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Visa</span>
+                  <span class="detail-value">${pkg.visa_included ? '<i class="fas fa-check" style="color: #28a745;"></i> Included' : '<i class="fas fa-times" style="color: #dc3545;"></i> Not included'}</span>
+                </div>
+              </div>
+              
+              ${pkg.description ? `
+                <div class="package-description">
+                  <div class="description-title">Description:</div>
+                  <div class="detail-value">${pkg.description}</div>
+                </div>
+              ` : ''}
+              
               <img src="${imageUrl}" alt="${pkg.name}" class="package-image" onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Error'">
               
-              <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                <button onclick="editPackage('${pkg.id}')" class="btn-secondary" style="flex: 1; min-width: 150px;">
+              <div class="package-actions">
+                <button onclick="editPackage('${pkg.id}')" class="package-action-btn edit-btn">
                   <i class="fas fa-edit"></i> Edit
                 </button>
-                <button onclick="deletePackage('${pkg.id}')" class="btn-secondary" style="flex: 1; min-width: 150px;">
+                <button onclick="deletePackage('${pkg.id}')" class="package-action-btn delete-btn">
                   <i class="fas fa-trash"></i> Delete
                 </button>
-                <button onclick="toggleActive('${pkg.id}', ${pkg.is_active})" class="${pkg.is_active ? 'btn-secondary' : 'btn-success'}" style="flex: 1; min-width: 150px;">
+                <button onclick="toggleActive('${pkg.id}', ${pkg.is_active})" class="package-action-btn toggle-btn">
                   <i class="fas fa-${pkg.is_active ? 'times' : 'check'}"></i> ${pkg.is_active ? 'Deactivate' : 'Activate'}
                 </button>
               </div>
@@ -1197,54 +1366,54 @@
                 </div>
                 
                 <div class="booking-details">
-                  <div class="detail-item">
-                    <span class="detail-label">Email Address</span>
-                    <span class="detail-value">${b.user_email}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Email Address</span>
+                    <span class="booking-detail-value">${b.user_email}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Phone Number</span>
-                    <span class="detail-value">${b.user_phone || '—'}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Phone Number</span>
+                    <span class="booking-detail-value">${b.user_phone || '—'}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Package Name</span>
-                    <span class="detail-value">${b.package_name || 'N/A'}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Package Name</span>
+                    <span class="booking-detail-value">${b.package_name || 'N/A'}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Passenger Count</span>
-                    <span class="detail-value">${b.passenger_count || '1'}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Passenger Count</span>
+                    <span class="booking-detail-value">${b.passenger_count || '1'}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Pilgrim Names</span>
-                    <span class="detail-value">${pilgrimNames}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Pilgrim Names</span>
+                    <span class="booking-detail-value">${pilgrimNames}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Date of Birth</span>
-                    <span class="detail-value">${pilgrimDobs}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Date of Birth</span>
+                    <span class="booking-detail-value">${pilgrimDobs}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Special Requests</span>
-                    <span class="detail-value">${b.special_requests || 'None'}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Special Requests</span>
+                    <span class="booking-detail-value">${b.special_requests || 'None'}</span>
                   </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Booking Date</span>
-                    <span class="detail-value">${new Date(b.created_at).toLocaleDateString()}</span>
+                  <div class="booking-detail-item">
+                    <span class="booking-detail-label">Booking Date</span>
+                    <span class="booking-detail-value">${new Date(b.created_at).toLocaleDateString()}</span>
                   </div>
                 </div>
                 
                 <div class="booking-actions">
                   ${b.status !== 'confirmed' ? 
-                    `<button onclick="confirmBooking('${b.id}', '${b.user_email}', '${customerName}')" class="action-btn btn-success">
+                    `<button onclick="confirmBooking('${b.id}', '${b.user_email}', '${customerName}')" class="booking-action-btn confirm-btn">
                       <i class="fas fa-check"></i> Confirm Booking
                     </button>` : 
-                    `<button class="action-btn btn-success" disabled>
+                    `<button class="booking-action-btn confirm-btn" disabled>
                       <i class="fas fa-check"></i> Confirmed
                     </button>`
                   }
                   ${b.status !== 'cancelled' ? 
-                    `<button onclick="cancelBooking('${b.id}', '${b.user_email}', '${customerName}')" class="action-btn btn-danger">
+                    `<button onclick="cancelBooking('${b.id}', '${b.user_email}', '${customerName}')" class="booking-action-btn cancel-btn">
                       <i class="fas fa-times"></i> Cancel Booking
                     </button>` : 
-                    `<button class="action-btn btn-danger" disabled>
+                    `<button class="booking-action-btn cancel-btn" disabled>
                       <i class="fas fa-times"></i> Cancelled
                     </button>`
                   }
@@ -1273,8 +1442,11 @@
           
         if (error) throw error;
         
-        // Send confirmation notification
-        sendNotification(customerEmail, customerName, 'confirmed');
+        // Send confirmation notification via email
+        sendEmailNotification(customerEmail, customerName, 'confirmed');
+        
+        // Send confirmation notification via Telegram
+        sendTelegramNotification(customerEmail, customerName, 'confirmed');
         
         alert(`Booking confirmed successfully for ${customerName}!`);
         loadBookings();
@@ -1294,8 +1466,11 @@
           
         if (error) throw error;
         
-        // Send cancellation notification
-        sendNotification(customerEmail, customerName, 'cancelled');
+        // Send cancellation notification via email
+        sendEmailNotification(customerEmail, customerName, 'cancelled');
+        
+        // Send cancellation notification via Telegram
+        sendTelegramNotification(customerEmail, customerName, 'cancelled');
         
         alert(`Booking cancelled successfully for ${customerName}!`);
         loadBookings();
@@ -1304,17 +1479,32 @@
       }
     }
 
-    // Function to send notification via email or Telegram
-    function sendNotification(customerEmail, customerName, status) {
-      // In a real application, you would integrate with an email service or Telegram API
+    // Function to send email notification
+    function sendEmailNotification(customerEmail, customerName, status) {
+      // In a real application, you would integrate with an email service
       // For now, we'll simulate this with a console log and alert
       
-      console.log(`Sending ${status} notification to ${customerName} (${customerEmail})`);
+      console.log(`Sending ${status} email notification to ${customerName} (${customerEmail})`);
       
       // Simulate sending email
       setTimeout(() => {
         console.log(`Email sent to ${customerEmail} regarding ${status} booking`);
       }, 500);
+      
+      // In a production environment, you would use:
+      // 1. A mail service like SendGrid, Mailgun, or SMTP
+      // 2. Or implement both based on customer preferences
+      
+      // For demo purposes, show a success message
+      alert(`Email notification sent to ${customerName} regarding ${status} booking.`);
+    }
+
+    // Function to send Telegram notification
+    function sendTelegramNotification(customerEmail, customerName, status) {
+      // In a real application, you would integrate with Telegram Bot API
+      // For now, we'll simulate this with a console log and alert
+      
+      console.log(`Sending ${status} Telegram notification to ${customerName} (${customerEmail})`);
       
       // Simulate sending Telegram message
       setTimeout(() => {
@@ -1322,12 +1512,11 @@
       }, 1000);
       
       // In a production environment, you would:
-      // 1. Use a mail service like SendGrid, Mailgun, or SMTP
-      // 2. Or use Telegram Bot API to send messages
-      // 3. Or implement both based on customer preferences
+      // 1. Use Telegram Bot API to send messages
+      // 2. Or implement both email and Telegram based on customer preferences
       
       // For demo purposes, show a success message
-      alert(`Notification sent to ${customerName} via email and Telegram.`);
+      alert(`Telegram notification sent to ${customerName} regarding ${status} booking.`);
     }
 
     // Initialize
