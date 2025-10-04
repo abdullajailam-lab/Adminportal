@@ -719,78 +719,94 @@
     }
 
     // === BOOKINGS ===
-    async function loadBookings() {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return logout();
+async function loadBookings() {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return logout();
 
-        const bookingsContainer = document.getElementById('bookings-container');
-        bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
+    const bookingsContainer = document.getElementById('bookings-container');
+    bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
 
-        const { data, error } = await supabase
-          .from('bookings')
-          .select(`
-            id,
-            package_id,
-            package_name,
-            user_email,
-            passenger_count,
-            user_phone,
-            pilgrim_names,
-            pilgrim_dobs,
-            special_requests,
-            status,
-            created_at,
-            umrah_packages(business_id)
-          `)
-          .eq('umrah_packages.business_id', user.id)
-          .order('created_at', { ascending: false });
+    // Step 1: Fetch all packages belonging to this business
+    const { data: packages, error: pkgError } = await supabase
+      .from('umrah_packages')
+      .select('id')
+      .eq('business_id', user.id);
 
-        if (error) throw error;
+    if (pkgError) throw pkgError;
 
-        if (data.length === 0) {
-          bookingsContainer.innerHTML = '<p>No customer bookings yet.</p>';
-        } else {
-          let html = '';
-          data.forEach(b => {
-            let statusClass = 'status-pending';
-            if (b.status === 'confirmed') statusClass = 'status-confirmed';
-            else if (b.status === 'cancelled') statusClass = 'status-cancelled';
-
-            let pilgrimNames = '—';
-            let pilgrimDobs = '—';
-            try {
-              if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
-              if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
-            } catch (e) {
-              console.warn('Failed to parse pilgrim data', e);
-            }
-
-            html += `
-              <div class="card booking-item">
-                <h4>${pilgrimNames}</h4>
-                <p><strong>Email:</strong> ${b.user_email}</p>
-                <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
-                <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
-                <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
-                <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
-                <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
-                <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
-                <p><small>Booked on: ${new Date(b.created_at).toLocaleDateString()}</small></p>
-              </div>
-            `;
-          });
-          bookingsContainer.innerHTML = html;
-        }
-      } catch (error) {
-        console.error('Error loading bookings:', error);
-        document.getElementById('bookings-container').innerHTML = 
-          `<p class="error">Failed to load bookings: ${error.message}</p>`;
-      }
+    if (packages.length === 0) {
+      bookingsContainer.innerHTML = '<p>No packages found. Bookings will appear once customers book your packages.</p>';
+      return;
     }
+
+    const packageIds = packages.map(p => p.id);
+
+    // Step 2: Fetch bookings that use these package IDs
+    const { data: bookings, error: bookError } = await supabase
+      .from('bookings')
+      .select(`
+        id,
+        package_id,
+        user_email,
+        passenger_count,
+        user_phone,
+        pilgrim_names,
+        pilgrim_dobs,
+        special_requests,
+        status,
+        created_at,
+        package_name
+      `)
+      .in('package_id', packageIds)
+      .order('created_at', { ascending: false });
+
+    if (bookError) throw bookError;
+
+    if (bookings.length === 0) {
+      bookingsContainer.innerHTML = '<p>No customer bookings yet.</p>';
+    } else {
+      let html = '';
+      bookings.forEach(b => {
+        let statusClass = 'status-pending';
+        if (b.status === 'confirmed') statusClass = 'status-confirmed';
+        else if (b.status === 'cancelled') statusClass = 'status-cancelled';
+
+        let pilgrimNames = '—';
+        let pilgrimDobs = '—';
+        try {
+          if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
+          if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
+        } catch (e) {
+          console.warn('Failed to parse pilgrim data', e);
+        }
+
+        html += `
+          <div class="card booking-item">
+            <h4>${pilgrimNames}</h4>
+            <p><strong>Email:</strong> ${b.user_email}</p>
+            <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
+            <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
+            <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
+            <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
+            <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
+            <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
+            <p><small>Booked on: ${new Date(b.created_at).toLocaleDateString()}</small></p>
+          </div>
+        `;
+      });
+      bookingsContainer.innerHTML = html;
+    }
+  } catch (error) {
+    console.error('Error loading bookings:', error);
+    document.getElementById('bookings-container').innerHTML = 
+      `<p class="error">Failed to load bookings: ${error.message}</p>`;
+  }
+}
 
     // Initialize
     document.addEventListener('DOMContentLoaded', checkSession);
   </script>
 </body>
 </html>
+
