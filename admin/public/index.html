@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,6 +55,11 @@
       padding: 1.8rem;
       margin-bottom: 1.8rem;
       box-shadow: var(--card-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-hover);
     }
     .form-grid {
       display: grid;
@@ -102,6 +106,13 @@
     }
     .btn-success:hover {
       background: #218838;
+    }
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #c82333;
     }
     .package-item, .booking-item {
       border-left: 4px solid var(--secondary);
@@ -206,10 +217,45 @@
       background: var(--secondary);
       color: var(--primary-dark);
     }
+    
+    /* Dashboard layout improvements */
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin: 0.5rem 0;
+    }
+    .stat-label {
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+    
+    /* Booking actions */
+    .booking-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    
     @media (max-width: 768px) {
       .form-grid { grid-template-columns: 1fr; }
       .user-info { flex-direction: column; gap: 1rem; text-align: center; }
       .tabs { justify-content: center; }
+      .dashboard-stats { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -250,6 +296,26 @@
           <button onclick="logout()" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Stats -->
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="total-packages">0</div>
+          <div class="stat-label">Total Packages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="active-bookings">0</div>
+          <div class="stat-label">Active Bookings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="pending-bookings">0</div>
+          <div class="stat-label">Pending Bookings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="cancelled-bookings">0</div>
+          <div class="stat-label">Cancelled Bookings</div>
         </div>
       </div>
 
@@ -480,6 +546,9 @@
           return;
         }
 
+        // Update dashboard stats
+        document.getElementById('total-packages').textContent = data.length;
+        
         if (data.length === 0) {
           packagesContainer.innerHTML = '<p>No packages found. Add your first Umrah package!</p>';
         } else {
@@ -719,94 +788,159 @@
     }
 
     // === BOOKINGS ===
-async function loadBookings() {
-  try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return logout();
+    async function loadBookings() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return logout();
 
-    const bookingsContainer = document.getElementById('bookings-container');
-    bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
+        const bookingsContainer = document.getElementById('bookings-container');
+        bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
 
-    // Step 1: Fetch all packages belonging to this business
-    const { data: packages, error: pkgError } = await supabase
-      .from('umrah_packages')
-      .select('id')
-      .eq('business_id', user.id);
+        // Step 1: Fetch all packages belonging to this business
+        const { data: packages, error: pkgError } = await supabase
+          .from('umrah_packages')
+          .select('id')
+          .eq('business_id', user.id);
 
-    if (pkgError) throw pkgError;
+        if (pkgError) throw pkgError;
 
-    if (packages.length === 0) {
-      bookingsContainer.innerHTML = '<p>No packages found. Bookings will appear once customers book your packages.</p>';
-      return;
-    }
-
-    const packageIds = packages.map(p => p.id);
-
-    // Step 2: Fetch bookings that use these package IDs
-    const { data: bookings, error: bookError } = await supabase
-      .from('bookings')
-      .select(`
-        id,
-        package_id,
-        user_email,
-        passenger_count,
-        user_phone,
-        pilgrim_names,
-        pilgrim_dobs,
-        special_requests,
-        status,
-        created_at,
-        package_name
-      `)
-      .in('package_id', packageIds)
-      .order('created_at', { ascending: false });
-
-    if (bookError) throw bookError;
-
-    if (bookings.length === 0) {
-      bookingsContainer.innerHTML = '<p>No customer bookings yet.</p>';
-    } else {
-      let html = '';
-      bookings.forEach(b => {
-        let statusClass = 'status-pending';
-        if (b.status === 'confirmed') statusClass = 'status-confirmed';
-        else if (b.status === 'cancelled') statusClass = 'status-cancelled';
-
-        let pilgrimNames = '—';
-        let pilgrimDobs = '—';
-        try {
-          if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
-          if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
-        } catch (e) {
-          console.warn('Failed to parse pilgrim data', e);
+        if (packages.length === 0) {
+          bookingsContainer.innerHTML = '<p>No packages found. Bookings will appear once customers book your packages.</p>';
+          return;
         }
 
-        html += `
-          <div class="card booking-item">
-            <h4>${pilgrimNames}</h4>
-            <p><strong>Email:</strong> ${b.user_email}</p>
-            <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
-            <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
-            <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
-            <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
-            <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
-            <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
-            <p><small>Booked on: ${new Date(b.created_at).toLocaleDateString()}</small></p>
-          </div>
-        `;
-      });
-      bookingsContainer.innerHTML = html;
+        const packageIds = packages.map(p => p.id);
+
+        // Step 2: Fetch bookings that use these package IDs
+        const { data: bookings, error: bookError } = await supabase
+          .from('bookings')
+          .select(`
+            id,
+            package_id,
+            user_email,
+            passenger_count,
+            user_phone,
+            pilgrim_names,
+            pilgrim_dobs,
+            special_requests,
+            status,
+            created_at,
+            package_name
+          `)
+          .in('package_id', packageIds)
+          .order('created_at', { ascending: false });
+
+        if (bookError) throw bookError;
+
+        // Update dashboard stats
+        let activeCount = 0, pendingCount = 0, cancelledCount = 0;
+        bookings.forEach(b => {
+          if (b.status === 'confirmed') activeCount++;
+          else if (b.status === 'pending') pendingCount++;
+          else if (b.status === 'cancelled') cancelledCount++;
+        });
+        document.getElementById('active-bookings').textContent = activeCount;
+        document.getElementById('pending-bookings').textContent = pendingCount;
+        document.getElementById('cancelled-bookings').textContent = cancelledCount;
+
+        if (bookings.length === 0) {
+          bookingsContainer.innerHTML = '<p>No customer bookings yet.</p>';
+        } else {
+          let html = '';
+          bookings.forEach(b => {
+            let statusClass = 'status-pending';
+            if (b.status === 'confirmed') statusClass = 'status-confirmed';
+            else if (b.status === 'cancelled') statusClass = 'status-cancelled';
+
+            let pilgrimNames = '—';
+            let pilgrimDobs = '—';
+            try {
+              if (b.pilgrim_names) pilgrimNames = JSON.parse(b.pilgrim_names).join(', ');
+              if (b.pilgrim_dobs) pilgrimDobs = JSON.parse(b.pilgrim_dobs).join(', ');
+            } catch (e) {
+              console.warn('Failed to parse pilgrim data', e);
+            }
+
+            html += `
+              <div class="card booking-item">
+                <h4>${pilgrimNames}</h4>
+                <p><strong>Email:</strong> ${b.user_email}</p>
+                <p><strong>Phone:</strong> ${b.user_phone || '—'}</p>
+                <p><strong>Package:</strong> ${b.package_name || 'N/A'}</p>
+                <p><strong>Passengers:</strong> ${b.passenger_count || '1'}</p>
+                <p><strong>Date of Birth:</strong> ${pilgrimDobs}</p>
+                <p><strong>Special Requests:</strong> ${b.special_requests || 'None'}</p>
+                <p><strong>Status:</strong> <span class="${statusClass}">${b.status}</span></p>
+                <p><small>Booked on: ${new Date(b.created_at).toLocaleDateString()}</small></p>
+                
+                <!-- Added Confirm and Cancel buttons -->
+                <div class="booking-actions">
+                  ${b.status !== 'confirmed' ? 
+                    `<button onclick="confirmBooking('${b.id}')" class="btn-success">
+                      <i class="fas fa-check"></i> Confirm Booking
+                    </button>` : 
+                    `<button class="btn-success" disabled>
+                      <i class="fas fa-check"></i> Confirmed
+                    </button>`
+                  }
+                  ${b.status !== 'cancelled' ? 
+                    `<button onclick="cancelBooking('${b.id}')" class="btn-danger">
+                      <i class="fas fa-times"></i> Cancel Booking
+                    </button>` : 
+                    `<button class="btn-danger" disabled>
+                      <i class="fas fa-times"></i> Cancelled
+                    </button>`
+                  }
+                </div>
+              </div>
+            `;
+          });
+          bookingsContainer.innerHTML = html;
+        }
+      } catch (error) {
+        console.error('Error loading bookings:', error);
+        document.getElementById('bookings-container').innerHTML = 
+          `<p class="error">Failed to load bookings: ${error.message}</p>`;
+      }
     }
-  } catch (error) {
-    console.error('Error loading bookings:', error);
-    document.getElementById('bookings-container').innerHTML = 
-      `<p class="error">Failed to load bookings: ${error.message}</p>`;
-  }
-}
+
+    // New functions for booking actions
+    async function confirmBooking(bookingId) {
+      if (!confirm('Are you sure you want to confirm this booking?')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('bookings')
+          .update({ status: 'confirmed' })
+          .eq('id', bookingId);
+          
+        if (error) throw error;
+        alert('Booking confirmed successfully!');
+        loadBookings();
+      } catch (error) {
+        alert('Error confirming booking: ' + error.message);
+      }
+    }
+
+    async function cancelBooking(bookingId) {
+      if (!confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) return;
+      
+      try {
+        const { error } = await supabase
+          .from('bookings')
+          .update({ status: 'cancelled' })
+          .eq('id', bookingId);
+          
+        if (error) throw error;
+        alert('Booking cancelled successfully!');
+        loadBookings();
+      } catch (error) {
+        alert('Error cancelling booking: ' + error.message);
+      }
+    }
 
     // Initialize
     document.addEventListener('DOMContentLoaded', checkSession);
   </script>
 </body>
 </html>
-
