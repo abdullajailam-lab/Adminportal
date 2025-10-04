@@ -811,7 +811,7 @@
     // === PACKAGES ===
     async function loadPackages() {
       try {
-        const {  { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await supabase.auth.getUser();
         if (!user) return logout();
 
         const packagesContainer = document.getElementById('packages-container');
@@ -946,7 +946,7 @@
     async function handleSubmit(e) {
       e.preventDefault();
       
-      const {  { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         alert('Please log in first');
         return;
@@ -1078,14 +1078,14 @@
     // === BOOKINGS ===
     async function loadBookings() {
       try {
-        const {  { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await supabase.auth.getUser();
         if (!user) return logout();
 
         const bookingsContainer = document.getElementById('bookings-container');
         bookingsContainer.innerHTML = '<p>Loading customer bookings...</p>';
 
         // Step 1: Fetch all packages belonging to this business
-        const {  packages, error: pkgError } = await supabase
+        const { data: packages, error: pkgError } = await supabase
           .from('umrah_packages')
           .select('id')
           .eq('business_id', user.id);
@@ -1106,7 +1106,7 @@
         const packageIds = packages.map(p => p.id);
 
         // Step 2: Fetch bookings that use these package IDs
-        const {  bookings, error: bookError } = await supabase
+        const { data: bookings, error: bookError } = await supabase
           .from('bookings')
           .select(`
             id,
