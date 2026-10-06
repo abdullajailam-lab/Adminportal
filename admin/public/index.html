@@ -181,7 +181,7 @@
         .page { display: none; width: 100%; }
         .page.active { display: block; animation: fadeIn 0.35s ease; }
 
-        /* ===== STATS - MOBILE FRIENDLY ===== */
+        /* ===== STATS ===== */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
@@ -233,7 +233,6 @@
         .stat-card .stat-value { font-size: 1.8em; font-weight: 900; line-height: 1; color: var(--text); }
         .stat-card .stat-label { font-size: 0.8em; color: var(--text-light); margin-top: 6px; font-weight: 600; }
 
-        /* ===== CARDS ===== */
         .card { 
             background: white; 
             border-radius: 16px; 
@@ -255,7 +254,6 @@
         .card-header h3 { font-size: 1.05em; font-weight: 800; }
         .card-body { padding: 18px; }
 
-        /* ===== GROUP CARDS - MOBILE FRIENDLY ===== */
         .groups-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
@@ -318,7 +316,6 @@
         }
         .group-card .student-count { font-size: 0.85em; color: var(--primary); font-weight: 700; margin-bottom: 12px; }
 
-        /* ===== BUTTONS ===== */
         .btn { 
             padding: 9px 18px; 
             border: none; 
@@ -342,7 +339,6 @@
         .btn-lg { padding: 14px 28px; font-size: 1em; }
         .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
-        /* ===== TABLES ===== */
         .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         table th { 
@@ -369,7 +365,6 @@
         .score-mid { color: var(--warning); }
         .score-low { color: var(--danger); }
 
-        /* ===== FORMS ===== */
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; font-weight: 700; font-size: 0.85em; margin-bottom: 5px; }
         .form-control { 
@@ -385,7 +380,6 @@
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
 
-        /* ===== MODAL ===== */
         .modal-overlay { 
             display: none; 
             position: fixed; 
@@ -423,7 +417,7 @@
         .modal-body { padding: 20px; }
         .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 
-        /* ===== FULLSCREEN COMPETITION ===== */
+        /* ===== FULLSCREEN COMPETITION - MUCH BIGGER ===== */
         .fullscreen-comp {
             display: none;
             position: fixed;
@@ -483,59 +477,60 @@
             position: relative;
         }
 
+        /* MUCH BIGGER QUESTION CARD */
         .fs-question-card {
             background: white;
-            border-radius: 24px;
-            padding: 35px 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            border-radius: 32px;
+            padding: 50px 30px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
             text-align: center;
-            width: 100%;
-            max-width: 600px;
-            min-height: 200px;
+            width: 95%;
+            max-width: 900px;
+            min-height: 55vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
-            margin-bottom: 14px;
-            animation: scaleIn 0.35s ease;
+            margin-bottom: 16px;
+            animation: scaleIn 0.4s ease;
         }
 
         .fs-q-number {
             position: absolute;
-            top: 14px;
-            left: 14px;
-            font-size: 0.85em;
+            top: 20px;
+            left: 20px;
+            font-size: 1.1em;
             font-weight: 800;
             color: var(--primary);
             background: linear-gradient(135deg, #ccfbf1, #99f6e4);
-            padding: 6px 12px;
-            border-radius: 16px;
+            padding: 8px 16px;
+            border-radius: 20px;
         }
 
         .fs-q-word {
             font-family: 'Fredoka One', cursive;
             color: var(--text);
             word-break: break-word;
-            line-height: 1.2;
+            line-height: 1.1;
             width: 100%;
-            padding: 0 12px;
+            padding: 0 20px;
         }
 
-        .fs-q-word.size-letter { font-size: 6em; }
-        .fs-q-word.size-word { font-size: 4em; }
-        .fs-q-word.size-sentence { font-size: 2em; }
+        .fs-q-word.size-letter { font-size: 12em; }
+        .fs-q-word.size-word { font-size: 8em; }
+        .fs-q-word.size-sentence { font-size: 3.5em; }
 
         .fs-exit-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 12px;
+            right: 12px;
             background: rgba(255,255,255,0.95);
             border: none;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 1.2em;
+            width: 40px;
+            height: 40px;
+            font-size: 1.3em;
             cursor: pointer;
             box-shadow: 0 3px 12px rgba(0,0,0,0.2);
             transition: all 0.25s;
@@ -546,40 +541,39 @@
 
         .fs-actions {
             background: rgba(255,255,255,0.98);
-            border-radius: 18px;
-            padding: 14px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-            width: 100%;
-            max-width: 600px;
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            width: 95%;
+            max-width: 900px;
             animation: slideUp 0.4s ease;
         }
 
-        .fs-actions h4 { text-align: center; margin-bottom: 10px; font-size: 0.95em; color: var(--text); font-weight: 800; }
+        .fs-actions h4 { text-align: center; margin-bottom: 12px; font-size: 1.05em; color: var(--text); font-weight: 800; }
 
-        .fs-action-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .fs-action-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
         .fs-action-btn {
-            padding: 12px 16px;
+            padding: 18px 24px;
             border: 3px solid transparent;
-            border-radius: 14px;
+            border-radius: 16px;
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
-            font-size: 0.95em;
+            font-size: 1.1em;
             cursor: pointer;
             transition: all 0.25s;
             flex: 1;
-            min-width: 90px;
-            max-width: 180px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            min-width: 120px;
+            max-width: 220px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
 
-        .fs-action-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .fs-action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .fs-action-btn:active { transform: scale(0.95); }
         .fs-action-btn.correct-btn { background: linear-gradient(135deg, #16a34a, #15803d); border-color: #166534; color: white; }
         .fs-action-btn.wrong-btn { background: linear-gradient(135deg, #dc2626, #b91c1c); border-color: #991b1b; color: white; }
         .fs-action-btn.skip-btn { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #b45309; color: white; }
 
-        /* ===== RESULTS ===== */
         .result-hero {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             border-radius: 20px;
@@ -605,7 +599,6 @@
         .breakdown-item.bi-skipped { background: linear-gradient(135deg, #fef3c7, #fde68a); }
         .breakdown-item .bi-status { font-size: 0.82em; font-weight: 800; }
 
-        /* ===== LEADERBOARD ===== */
         .leaderboard-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin-bottom: 20px; padding: 15px; flex-wrap: wrap; }
         .podium-item { text-align: center; padding: 15px 12px; border-radius: 14px 14px 0 0; min-width: 100px; transition: transform 0.3s; }
         .podium-item:hover { transform: translateY(-4px); }
@@ -647,7 +640,7 @@
 
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; }
 
-        /* ===== MOBILE RESPONSIVE - COMPLETE FIX ===== */
+        /* ===== MOBILE RESPONSIVE ===== */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); width: 240px; }
             .sidebar.open { transform: translateX(0); }
@@ -670,13 +663,17 @@
             .fs-stat-box { padding: 6px 10px; min-width: 68px; }
             .fs-stat-box .fs-value { font-size: 1.3em; }
             
-            .fs-question-card { padding: 28px 14px; min-height: 180px; }
-            .fs-q-word.size-letter { font-size: 5em; }
-            .fs-q-word.size-word { font-size: 3.2em; }
-            .fs-q-word.size-sentence { font-size: 1.6em; }
+            .fs-question-card { 
+                padding: 40px 20px; 
+                min-height: 50vh;
+                border-radius: 24px;
+            }
+            .fs-q-word.size-letter { font-size: 8em; }
+            .fs-q-word.size-word { font-size: 5em; }
+            .fs-q-word.size-sentence { font-size: 2.2em; }
             
-            .fs-action-btn { padding: 11px 14px; font-size: 0.88em; min-width: 85px; }
-            .fs-actions { padding: 12px; }
+            .fs-action-btn { padding: 14px 16px; font-size: 1em; min-width: 100px; }
+            .fs-actions { padding: 14px; }
             
             .topbar h1 { font-size: 1em; }
         }
@@ -690,16 +687,20 @@
             .fs-info { text-align: center; }
             .fs-stats { justify-content: center; }
             
-            .fs-question-card { padding: 24px 12px; min-height: 160px; border-radius: 18px; }
-            .fs-q-word.size-letter { font-size: 4em; }
-            .fs-q-word.size-word { font-size: 2.6em; }
-            .fs-q-word.size-sentence { font-size: 1.3em; }
+            .fs-question-card { 
+                padding: 35px 15px; 
+                min-height: 45vh;
+                border-radius: 20px;
+            }
+            .fs-q-word.size-letter { font-size: 6em; }
+            .fs-q-word.size-word { font-size: 4em; }
+            .fs-q-word.size-sentence { font-size: 1.8em; }
             
-            .fs-action-btns { gap: 6px; }
-            .fs-action-btn { padding: 10px 10px; font-size: 0.82em; min-width: 75px; }
+            .fs-action-btns { gap: 8px; }
+            .fs-action-btn { padding: 12px 12px; font-size: 0.9em; min-width: 90px; }
             
-            .fs-q-number { top: 10px; left: 10px; font-size: 0.78em; padding: 5px 10px; }
-            .fs-exit-btn { top: 8px; right: 8px; width: 32px; height: 32px; font-size: 1em; }
+            .fs-q-number { top: 12px; left: 12px; font-size: 0.9em; padding: 6px 12px; }
+            .fs-exit-btn { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1.1em; }
             
             .card-header { padding: 12px 14px; }
             .card-body { padding: 14px; }
@@ -710,32 +711,32 @@
         }
 
         @media (max-width: 360px) {
-            .fs-q-word.size-letter { font-size: 3.5em; }
-            .fs-q-word.size-word { font-size: 2.2em; }
-            .fs-q-word.size-sentence { font-size: 1.15em; }
+            .fs-q-word.size-letter { font-size: 5em; }
+            .fs-q-word.size-word { font-size: 3.2em; }
+            .fs-q-word.size-sentence { font-size: 1.5em; }
             
-            .fs-action-btn { padding: 9px 8px; font-size: 0.78em; min-width: 70px; }
-            .fs-actions h4 { font-size: 0.88em; }
+            .fs-action-btn { padding: 10px 10px; font-size: 0.85em; min-width: 80px; }
+            .fs-actions h4 { font-size: 0.9em; }
             
             .stat-card .stat-value { font-size: 1.2em; }
             .stat-card .stat-label { font-size: 0.7em; }
         }
 
         @media (max-height: 600px) and (orientation: portrait) {
-            .fs-question-card { min-height: 140px; padding: 20px 12px; }
-            .fs-q-word.size-letter { font-size: 4em; }
-            .fs-q-word.size-word { font-size: 2.6em; }
-            .fs-q-word.size-sentence { font-size: 1.3em; }
+            .fs-question-card { min-height: 40vh; padding: 30px 15px; }
+            .fs-q-word.size-letter { font-size: 6em; }
+            .fs-q-word.size-word { font-size: 4em; }
+            .fs-q-word.size-sentence { font-size: 1.8em; }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
             .fs-main { padding: 8px; }
-            .fs-question-card { min-height: 120px; padding: 16px; margin-bottom: 8px; }
-            .fs-q-word.size-letter { font-size: 3.5em; }
-            .fs-q-word.size-word { font-size: 2.4em; }
-            .fs-q-word.size-sentence { font-size: 1.15em; }
+            .fs-question-card { min-height: 35vh; padding: 25px 15px; margin-bottom: 8px; }
+            .fs-q-word.size-letter { font-size: 5em; }
+            .fs-q-word.size-word { font-size: 3.5em; }
+            .fs-q-word.size-sentence { font-size: 1.5em; }
             .fs-actions { padding: 10px; }
-            .fs-action-btn { padding: 8px 10px; font-size: 0.82em; }
+            .fs-action-btn { padding: 10px 12px; font-size: 0.88em; }
         }
 
         @media print {
@@ -752,19 +753,19 @@
         <div class="sidebar-header">
             <div class="logo-icon">🎓</div>
             <h2>Gems Fluent Minds</h2>
-            <p>✨ Competition Portal 2026 </p>
+            <p>✨ Competition Portal 2026 ✨</p>
         </div>
         <nav class="sidebar-nav">
             <div class="nav-section-title">📌 Main Menu</div>
-            <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon"></span> Dashboard</div>
+            <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
             <div class="nav-item" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
-            <div class="nav-item" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
+            <div class="nav-item" onclick="showPage('students')"><span class="icon">👨🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
             <div class="nav-section-title">🏆 Competition</div>
             <div class="nav-item" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
-            <div class="nav-item" onclick="showPage('results')"><span class="icon"></span> Results</div>
+            <div class="nav-item" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
             <div class="nav-item" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
             <div class="nav-section-title">⚙️ System</div>
-            <div class="nav-item" onclick="showPage('settings')"><span class="icon"></span> Settings</div>
+            <div class="nav-item" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
         </nav>
     </aside>
 
@@ -780,10 +781,10 @@
         <div class="content-area">
             <div class="page active" id="page-dashboard">
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
                     <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-                    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
-                    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
+                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
                 </div>
                 <div class="groups-grid" id="dashGroupsGrid"></div>
                 <div class="card">
@@ -797,7 +798,7 @@
 
             <div class="page" id="page-groups">
                 <div class="groups-grid" id="groupsPageGrid"></div>
-                <div class="card"><div class="card-header"><h3>📋 Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light);">Click on a group card above to view its rules.</p></div></div>
+                <div class="card"><div class="card-header"><h3> Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light);">Click on a group card above to view its rules.</p></div></div>
             </div>
 
             <div class="page" id="page-students">
@@ -843,11 +844,11 @@
 
             <div class="page" id="page-leaderboard">
                 <div class="card">
-                    <div class="card-header"><h3> Leaderboard</h3><select id="leaderboardGroup" onchange="renderLeaderboard()" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600;"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
+                    <div class="card-header"><h3>🥇 Leaderboard</h3><select id="leaderboardGroup" onchange="renderLeaderboard()" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600;"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
                     <div class="card-body">
                         <div class="leaderboard-podium" id="leaderboardPodium"></div>
                         <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
+                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon"></div><h4>No results yet</h4></div>
                     </div>
                 </div>
             </div>
@@ -856,7 +857,7 @@
                 <div class="card">
                     <div class="card-header"><h3>🔧 Settings</h3></div>
                     <div class="card-body">
-                        <h4 style="margin-bottom:12px;"> Question Pool Management</h4>
+                        <h4 style="margin-bottom:12px;">📝 Question Pool Management</h4>
                         <p style="color:var(--text-light);margin-bottom:16px;">Each student receives <strong>randomized questions</strong> from the pool below.</p>
                         <div class="form-group"><label>Select Group to Edit Questions</label><select class="form-control" id="settingsGroupSelect" onchange="loadSettingsQuestions()"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
                         <div id="settingsQuestionsList" style="margin-bottom:16px;"></div>
@@ -897,7 +898,7 @@
     <div class="fs-main">
         <div class="fs-question-card" id="fsQuestionCard">
             <div class="fs-q-number" id="fsQNumber">Q1/10</div>
-            <div class="fs-q-word" id="fsQWord">P p</div>
+            <div class="fs-q-word" id="fsQWord">W w</div>
         </div>
 
         <div class="fs-actions">
@@ -927,7 +928,7 @@
 
 <div class="modal-overlay" id="resultDetailModal">
     <div class="modal" style="max-width:600px;">
-        <div class="modal-header"><h3>📋 Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')">✕</button></div>
+        <div class="modal-header"><h3> Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')"></button></div>
         <div class="modal-body" id="resultDetailContent"></div>
     </div>
 </div>
@@ -1027,7 +1028,7 @@ const QUESTION_POOLS = {
     ]
 };
 
-// CORRECT STUDENT GROUPINGS FROM DOCUMENT
+// ALL 53 STUDENTS CORRECTLY GROUPED
 const INITIAL_STUDENTS = [
     // GROUP 1 - 20 students
     { id: 1, name: "Niha", class: "", idNum: "", group: 1 },
@@ -1110,7 +1111,7 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const titles = { dashboard: '📊 Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: '🎯 Competition', results: ' Results', leaderboard: '🥇 Leaderboard', settings: '🔧 Settings' };
+    const titles = { dashboard: '📊 Dashboard', groups: ' Groups', students: '👨‍ Students', compete: '🎯 Competition', results: '📋 Results', leaderboard: ' Leaderboard', settings: '🔧 Settings' };
     document.getElementById('pageTitle').textContent = titles[pageId] || '';
     refreshAll();
     closeSidebar();
@@ -1139,7 +1140,7 @@ function renderDashboard() {
         gridHTML += `
             <div class="group-card" onclick="showPage('groups')">
                 <div class="group-color-bar"></div>
-                <div class="group-icon">${['🔤','📖','💬',''][i-1]}</div>
+                <div class="group-icon">${['🔤','📖','💬','🔄'][i-1]}</div>
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
@@ -1390,7 +1391,7 @@ function markCompAnswer(status) {
 
     const card = document.getElementById('fsQuestionCard');
     const colors = { correct: '#16a34a', wrong: '#dc2626', skipped: '#f59e0b' };
-    card.style.boxShadow = `0 0 0 5px ${colors[status]}, 0 20px 50px rgba(0,0,0,0.35)`;
+    card.style.boxShadow = `0 0 0 5px ${colors[status]}, 0 30px 80px rgba(0,0,0,0.4)`;
     setTimeout(() => { card.style.boxShadow = ''; }, 350);
 
     setTimeout(() => {
@@ -1451,7 +1452,7 @@ function finishCompetition() {
     document.getElementById('fullscreenComp').classList.remove('active');
     activeComp = null;
 
-    showToast('🏆 Competition completed!', 'success');
+    showToast(' Competition completed!', 'success');
     refreshAll();
     setTimeout(() => showResultDetail(result), 400);
 }
@@ -1538,7 +1539,7 @@ function deleteResult(id) {
 }
 
 function clearAllResults() {
-    if (!confirm('️ Delete ALL results? This cannot be undone!')) return;
+    if (!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
     results = [];
     saveResults();
     showToast('All results cleared', 'success');
@@ -1585,9 +1586,9 @@ function renderLeaderboard() {
 
     if (sorted.length >= 3) {
         podium.innerHTML = `
-            <div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">${sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total} (${Math.round(sorted[1].score/sorted[1].total*100)}%)</div></div>
-            <div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">${sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total} (${Math.round(sorted[0].score/sorted[0].total*100)}%)</div></div>
-            <div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">${sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total} (${Math.round(sorted[1].score/sorted[1].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total} (${Math.round(sorted[0].score/sorted[0].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
         `;
     } else { podium.innerHTML = ''; }
 
@@ -1680,7 +1681,6 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') quitCompetition();
 });
 
-// Close sidebar when clicking outside on mobile
 document.addEventListener('click', (e) => {
     const sidebar = document.getElementById('sidebar');
     if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !e.target.classList.contains('mobile-menu-btn')) {
