@@ -562,9 +562,9 @@
             <!-- DASHBOARD -->
             <div class="page active" id="page-dashboard">
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
                     <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-                    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
                     <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
                 </div>
                 <div class="groups-grid" id="dashGroupsGrid"></div>
@@ -586,14 +586,14 @@
             <!-- STUDENTS -->
             <div class="page" id="page-students">
                 <div class="card">
-                    <div class="card-header"><h3>👨‍ Student Management</h3><button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button></div>
+                    <div class="card-header"><h3>‍🎓 Student Management</h3><button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button></div>
                     <div class="card-body">
                         <div class="filter-bar">
                             <select id="filterGroup" onchange="renderStudents()"><option value="all">All Groups</option><option value="1">Group 1 - Letter & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past to Present</option></select>
-                            <input type="text" id="searchStudent" placeholder="🔍 Search student..." oninput="renderStudents()">
+                            <input type="text" id="searchStudent" placeholder=" Search student..." oninput="renderStudents()">
                         </div>
                         <div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
-                        <div class="empty-state" id="studentsEmpty" style="display:none;"><div class="empty-icon">👨‍🎓</div><h4>No students added yet</h4><p>Click "Add Student" to get started</p></div>
+                        <div class="empty-state" id="studentsEmpty" style="display:none;"><div class="empty-icon">👨‍</div><h4>No students added yet</h4><p>Click "Add Student" to get started</p></div>
                     </div>
                 </div>
             </div>
@@ -615,14 +615,14 @@
             <!-- RESULTS -->
             <div class="page" id="page-results">
                 <div class="card">
-                    <div class="card-header"><h3> All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()">📥 Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
+                    <div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()"> Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">️ Clear All</button></div></div>
                     <div class="card-body">
                         <div class="filter-bar">
                             <select id="resultFilterGroup" onchange="renderResults()"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
                             <input type="text" id="resultSearch" placeholder="🔍 Search..." oninput="renderResults()">
                         </div>
                         <div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
-                        <div class="empty-state" id="resultsEmpty" style="display:none;"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
+                        <div class="empty-state" id="resultsEmpty" style="display:none;"><div class="empty-icon"></div><h4>No results yet</h4></div>
                     </div>
                 </div>
             </div>
@@ -634,7 +634,7 @@
                     <div class="card-body">
                         <div class="leaderboard-podium" id="leaderboardPodium"></div>
                         <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
+                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon"></div><h4>No results yet</h4></div>
                     </div>
                 </div>
             </div>
@@ -655,7 +655,7 @@
                         <button class="btn btn-primary" onclick="addQuestionToPool()">+ Add Question</button>
                         <hr style="margin:30px 0;border:none;border-top:1px solid var(--border);">
                         <h4 style="margin-bottom:15px;">⚠️ Danger Zone</h4>
-                        <div class="btn-group"><button class="btn btn-warning" onclick="resetAllData()">🔄 Reset All Data</button><button class="btn btn-danger" onclick="clearAllResults()">🗑️ Delete All Results</button></div>
+                        <div class="btn-group"><button class="btn btn-warning" onclick="resetAllData()"> Reset All Data</button><button class="btn btn-danger" onclick="clearAllResults()">️ Delete All Results</button></div>
                     </div>
                 </div>
             </div>
@@ -691,7 +691,7 @@
         </div>
 
         <div class="fs-actions">
-            <h4>👇 Tap to mark this answer:</h4>
+            <h4> Tap to mark this answer:</h4>
             <div class="fs-action-btns">
                 <button class="fs-action-btn correct-btn" onclick="markCompAnswer('correct')">✅ CORRECT</button>
                 <button class="fs-action-btn wrong-btn" onclick="markCompAnswer('wrong')">❌ WRONG</button>
@@ -701,17 +701,18 @@
     </div>
 </div>
 
-<!-- Add Student Modal -->
-<div class="modal-overlay" id="addStudentModal">
+<!-- Add/Edit Student Modal -->
+<div class="modal-overlay" id="studentModal">
     <div class="modal">
-        <div class="modal-header"><h3>➕ Add New Student</h3><button class="modal-close" onclick="closeModal('addStudentModal')">✕</button></div>
+        <div class="modal-header"><h3 id="modalTitle">➕ Add New Student</h3><button class="modal-close" onclick="closeModal('studentModal')">✕</button></div>
         <div class="modal-body">
-            <div class="form-group"><label>Student Name *</label><input type="text" class="form-control" id="newStudentName" placeholder="Full name"></div>
-            <div class="form-group"><label>Class / Grade *</label><input type="text" class="form-control" id="newStudentClass" placeholder="e.g., Grade 1A"></div>
-            <div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="newStudentId" placeholder="ID number"></div>
-            <div class="form-group"><label>Assign to Group *</label><select class="form-control" id="newStudentGroup"><option value="1">Group 1 - Letter & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past to Present</option></select></div>
+            <input type="hidden" id="editStudentId" value="">
+            <div class="form-group"><label>Student Name *</label><input type="text" class="form-control" id="studentName" placeholder="Full name"></div>
+            <div class="form-group"><label>Class / Grade *</label><input type="text" class="form-control" id="studentClass" placeholder="e.g., Grade 1A"></div>
+            <div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="studentIdNum" placeholder="ID number"></div>
+            <div class="form-group"><label>Assign to Group *</label><select class="form-control" id="studentGroup"><option value="1">Group 1 - Letter & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past to Present</option></select></div>
         </div>
-        <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('addStudentModal')">Cancel</button><button class="btn btn-primary" onclick="saveStudent()">💾 Save Student</button></div>
+        <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('studentModal')">Cancel</button><button class="btn btn-primary" onclick="saveStudent()">💾 Save Student</button></div>
     </div>
 </div>
 
@@ -819,8 +820,74 @@ const QUESTION_POOLS = {
     ]
 };
 
+// Pre-populated students from document
+const INITIAL_STUDENTS = [
+    // Group 1
+    { id: 1, name: "Niha", class: "", idNum: "", group: 1 },
+    { id: 2, name: "Adam Nafaah", class: "6B", idNum: "", group: 1 },
+    { id: 3, name: "Naheek", class: "", idNum: "", group: 1 },
+    { id: 4, name: "Raahin", class: "", idNum: "", group: 1 },
+    { id: 5, name: "Aika", class: "", idNum: "", group: 1 },
+    { id: 6, name: "Shiura", class: "", idNum: "", group: 1 },
+    { id: 7, name: "Azin", class: "", idNum: "", group: 1 },
+    { id: 8, name: "Aain", class: "", idNum: "", group: 1 },
+    { id: 9, name: "Azoof", class: "", idNum: "", group: 1 },
+    { id: 10, name: "Alaau", class: "", idNum: "", group: 1 },
+    { id: 11, name: "Sunooh", class: "", idNum: "", group: 1 },
+    { id: 12, name: "Shadaf", class: "", idNum: "", group: 1 },
+    { id: 13, name: "Nooh", class: "", idNum: "", group: 1 },
+    { id: 14, name: "Jool", class: "", idNum: "", group: 1 },
+    { id: 15, name: "Ishfaan", class: "", idNum: "", group: 1 },
+    { id: 16, name: "Zukaan", class: "", idNum: "", group: 1 },
+    { id: 17, name: "Mauil", class: "", idNum: "", group: 1 },
+    { id: 18, name: "Ma'aan", class: "", idNum: "", group: 1 },
+    { id: 19, name: "Ayyoob", class: "", idNum: "", group: 1 },
+    { id: 20, name: "Aarish", class: "", idNum: "", group: 1 },
+    { id: 21, name: "Shabeen", class: "", idNum: "", group: 1 },
+    { id: 22, name: "Naavith", class: "", idNum: "", group: 1 },
+    { id: 23, name: "Yalvy", class: "", idNum: "", group: 1 },
+    { id: 24, name: "Ausaf", class: "", idNum: "", group: 1 },
+    { id: 25, name: "Siraau", class: "", idNum: "", group: 1 },
+    { id: 26, name: "Yana", class: "", idNum: "", group: 1 },
+    { id: 27, name: "Baasil", class: "", idNum: "", group: 1 },
+    { id: 28, name: "Ali Ahmed", class: "LKG", idNum: "", group: 1 },
+    
+    // Group 2
+    { id: 29, name: "Reez", class: "", idNum: "", group: 2 },
+    { id: 30, name: "Yumaan", class: "", idNum: "", group: 2 },
+    { id: 31, name: "Raamin", class: "", idNum: "", group: 2 },
+    { id: 32, name: "Yooaan", class: "", idNum: "", group: 2 },
+    { id: 33, name: "Nafaah", class: "3C", idNum: "", group: 2 },
+    { id: 34, name: "Ma'aal", class: "", idNum: "", group: 2 },
+    { id: 35, name: "Mufthee", class: "", idNum: "", group: 2 },
+    { id: 36, name: "Adhiyaan", class: "", idNum: "", group: 2 },
+    { id: 37, name: "Zalaan", class: "", idNum: "", group: 2 },
+    { id: 38, name: "Iyaadh", class: "", idNum: "", group: 2 },
+    { id: 39, name: "Yana", class: "", idNum: "", group: 2 },
+    { id: 40, name: "Neeshaan", class: "", idNum: "", group: 2 },
+    
+    // Group 3
+    { id: 41, name: "Rayn", class: "", idNum: "", group: 3 },
+    { id: 42, name: "Alyas", class: "", idNum: "", group: 3 },
+    { id: 43, name: "Jailaan", class: "", idNum: "", group: 3 },
+    { id: 44, name: "Arushal", class: "", idNum: "", group: 3 },
+    { id: 45, name: "Shiraa", class: "", idNum: "", group: 3 },
+    { id: 46, name: "Naash", class: "", idNum: "", group: 3 },
+    { id: 47, name: "Shaarif", class: "", idNum: "", group: 3 },
+    { id: 48, name: "Aflaak", class: "", idNum: "", group: 3 },
+    { id: 49, name: "Shanoon", class: "", idNum: "", group: 3 },
+    { id: 50, name: "Zaan", class: "", idNum: "", group: 3 },
+    { id: 51, name: "Saleef", class: "", idNum: "", group: 3 },
+    { id: 52, name: "Alyaan", class: "", idNum: "", group: 3 },
+    { id: 53, name: "Aluk", class: "", idNum: "", group: 3 }
+];
+
 let questionPools = JSON.parse(localStorage.getItem('fm_pools') || 'null') || QUESTION_POOLS;
-let students = JSON.parse(localStorage.getItem('fm_students') || '[]');
+let students = JSON.parse(localStorage.getItem('fm_students') || 'null');
+if (!students || students.length === 0) {
+    students = INITIAL_STUDENTS;
+    saveStudents();
+}
 let results = JSON.parse(localStorage.getItem('fm_results') || '[]');
 let activeComp = null;
 let compTimer = null;
@@ -839,7 +906,7 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const titles = { dashboard: '📊 Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: '🏆 Competition', results: ' Results', leaderboard: '🥇 Leaderboard', settings: '⚙️ Settings' };
+    const titles = { dashboard: ' Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: '🏆 Competition', results: '📋 Results', leaderboard: ' Leaderboard', settings: '⚙️ Settings' };
     document.getElementById('pageTitle').textContent = titles[pageId] || '';
     refreshAll();
     closeSidebar();
@@ -868,16 +935,16 @@ function renderDashboard() {
         gridHTML += `
             <div class="group-card" onclick="showPage('groups')">
                 <div class="group-color-bar"></div>
-                <div class="group-icon">${['🔤','📖','💬','🔄'][i-1]}</div>
+                <div class="group-icon">${['🔤','','💬','🔄'][i-1]}</div>
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
                     <span>📅 ${g.date}</span>
                     <span>🕐 ${g.time}</span>
-                    <span>⏱ ${g.totalTime/60} min</span>
+                    <span> ${g.totalTime/60} min</span>
                     <span>📝 ${g.totalQuestions} items</span>
                 </div>
-                <div class="student-count">👥 ${count} students | ✅ ${compCount} completed</div>
+                <div class="student-count"> ${count} students | ✅ ${compCount} completed</div>
                 <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button>
             </div>
         `;
@@ -908,7 +975,7 @@ function renderGroups() {
         gridHTML += `
             <div class="group-card" onclick="showGroupRules(${i})">
                 <div class="group-color-bar"></div>
-                <div class="group-icon">${['🔤','📖','💬','🔄'][i-1]}</div>
+                <div class="group-icon">${['🔤','','💬','🔄'][i-1]}</div>
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
@@ -958,30 +1025,60 @@ function renderStudents() {
         const scoreText = result ? `${result.score}/${result.total}` : '-';
         const pct = result ? Math.round((result.score/result.total)*100) : 0;
         const scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[s.group].color};font-weight:700;">${GROUPS[s.group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${s.id})">🏆</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${s.id})">️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.id})">🗑️</button></div></td></tr>`;
+        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[s.group].color};font-weight:700;">${GROUPS[s.group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${s.id})"></button><button class="btn btn-sm btn-warning" onclick="editStudent(${s.id})">✏️</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${s.id})">👁️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.id})">🗑️</button></div></td></tr>`;
     }).join('');
 }
 
 function openAddStudentModal() {
-    document.getElementById('newStudentName').value = '';
-    document.getElementById('newStudentClass').value = '';
-    document.getElementById('newStudentId').value = '';
-    document.getElementById('addStudentModal').classList.add('active');
+    document.getElementById('modalTitle').textContent = ' Add New Student';
+    document.getElementById('editStudentId').value = '';
+    document.getElementById('studentName').value = '';
+    document.getElementById('studentClass').value = '';
+    document.getElementById('studentIdNum').value = '';
+    document.getElementById('studentGroup').value = '1';
+    document.getElementById('studentModal').classList.add('active');
+}
+
+function editStudent(id) {
+    const student = students.find(s => s.id === id);
+    if (!student) return;
+    
+    document.getElementById('modalTitle').textContent = '✏️ Edit Student';
+    document.getElementById('editStudentId').value = student.id;
+    document.getElementById('studentName').value = student.name;
+    document.getElementById('studentClass').value = student.class;
+    document.getElementById('studentIdNum').value = student.idNum || '';
+    document.getElementById('studentGroup').value = student.group;
+    document.getElementById('studentModal').classList.add('active');
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
 function saveStudent() {
-    const name = document.getElementById('newStudentName').value.trim();
-    const cls = document.getElementById('newStudentClass').value.trim();
-    const id = document.getElementById('newStudentId').value.trim();
-    const group = document.getElementById('newStudentGroup').value;
+    const id = document.getElementById('editStudentId').value;
+    const name = document.getElementById('studentName').value.trim();
+    const cls = document.getElementById('studentClass').value.trim();
+    const idNum = document.getElementById('studentIdNum').value.trim();
+    const group = parseInt(document.getElementById('studentGroup').value);
+    
     if (!name || !cls) { showToast('Please fill in name and class', 'error'); return; }
-    const student = { id: Date.now(), name, class: cls, idNum: id, group: parseInt(group), createdAt: new Date().toISOString() };
-    students.push(student);
+    
+    if (id) {
+        // Edit existing student
+        const index = students.findIndex(s => s.id == id);
+        if (index !== -1) {
+            students[index] = { ...students[index], name, class: cls, idNum, group };
+            showToast('✅ Student updated successfully', 'success');
+        }
+    } else {
+        // Add new student
+        const student = { id: Date.now(), name, class: cls, idNum, group, createdAt: new Date().toISOString() };
+        students.push(student);
+        showToast(`✅ ${name} added to ${GROUPS[group].name}`, 'success');
+    }
+    
     saveStudents();
-    closeModal('addStudentModal');
-    showToast(`✅ ${name} added to ${GROUPS[group].name}`, 'success');
+    closeModal('studentModal');
     refreshAll();
 }
 
@@ -1194,7 +1291,7 @@ function renderResults() {
     tbody.innerHTML = filtered.map((r, i) => {
         const pct = Math.round((r.score / r.total) * 100);
         const scoreClass = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
-        return `<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.studentClass}</td><td><span style="color:${GROUPS[r.group].color};font-weight:700;">${GROUPS[r.group].name}</span></td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td><td>${new Date(r.date).toLocaleString()}</td><td><button class="btn btn-sm btn-primary" onclick='showResultDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>👁️ View</button><button class="btn btn-sm btn-danger" onclick="deleteResult(${r.id})">🗑️</button></td></tr>`;
+        return `<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.studentClass}</td><td><span style="color:${GROUPS[r.group].color};font-weight:700;">${GROUPS[r.group].name}</span></td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td><td>${new Date(r.date).toLocaleString()}</td><td><button class="btn btn-sm btn-primary" onclick='showResultDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>️ View</button><button class="btn btn-sm btn-danger" onclick="deleteResult(${r.id})">🗑️</button></td></tr>`;
     }).join('');
 }
 
@@ -1296,7 +1393,7 @@ function renderLeaderboard() {
         podium.innerHTML = `
             <div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">${sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total} (${Math.round(sorted[1].score/sorted[1].total*100)}%)</div></div>
             <div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">${sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total} (${Math.round(sorted[0].score/sorted[0].total*100)}%)</div></div>
-            <div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">${sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
         `;
     } else { podium.innerHTML = ''; }
 
