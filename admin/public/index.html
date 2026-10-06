@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gems Fluent Minds Competition Portal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fredoka+One&display=swap');
@@ -234,7 +234,7 @@
         .modal-body { padding: 25px; }
         .modal-footer { padding: 15px 25px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
-        /* ===== FULLSCREEN COMPETITION ===== */
+        /* ===== FULLSCREEN COMPETITION - MOBILE OPTIMIZED ===== */
         .fullscreen-comp {
             display: none;
             position: fixed;
@@ -249,68 +249,80 @@
         .fullscreen-comp.active { display: flex; flex-direction: column; }
 
         .fs-topbar {
-            background: rgba(255,255,255,0.95);
-            padding: 15px 30px;
+            background: rgba(255,255,255,0.98);
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .fs-info { display: flex; align-items: center; gap: 20px; }
-        .fs-info h2 { font-size: 1.3em; font-weight: 700; color: var(--text); }
-        .fs-info p { font-size: 0.9em; color: var(--text-light); }
+        .fs-info { flex: 1; min-width: 150px; }
+        .fs-info h2 { font-size: 1em; font-weight: 700; color: var(--text); line-height: 1.2; }
+        .fs-info p { font-size: 0.8em; color: var(--text-light); }
 
-        .fs-stats { display: flex; gap: 20px; }
+        .fs-stats { display: flex; gap: 10px; }
 
-        .fs-stat-box { text-align: center; padding: 12px 25px; border-radius: 15px; min-width: 130px; }
-        .fs-stat-box.timer-box { background: #fef3c7; border: 3px solid #f59e0b; }
-        .fs-stat-box.score-box { background: #d1fae5; border: 3px solid #10b981; }
+        .fs-stat-box { text-align: center; padding: 8px 12px; border-radius: 12px; min-width: 80px; }
+        .fs-stat-box.timer-box { background: #fef3c7; border: 2px solid #f59e0b; }
+        .fs-stat-box.score-box { background: #d1fae5; border: 2px solid #10b981; }
 
-        .fs-stat-box .fs-label { font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); }
-        .fs-stat-box .fs-value { font-family: 'Fredoka One', cursive; font-size: 2.5em; line-height: 1.2; }
+        .fs-stat-box .fs-label { font-size: 0.65em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); }
+        .fs-stat-box .fs-value { font-family: 'Fredoka One', cursive; font-size: 1.5em; line-height: 1.2; }
         .fs-stat-box.timer-box .fs-value { color: #92400e; }
         .fs-stat-box.score-box .fs-value { color: #065f46; }
         .fs-stat-box.timer-box .fs-value.warning { color: var(--danger); animation: pulse 1s infinite; }
 
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        .fs-progress { background: rgba(255,255,255,0.95); padding: 12px 30px; display: flex; align-items: center; gap: 15px; }
-        .fs-progress-bar { flex: 1; height: 14px; background: var(--bg); border-radius: 10px; overflow: hidden; }
+        .fs-progress { background: rgba(255,255,255,0.98); padding: 8px 15px; display: flex; align-items: center; gap: 10px; }
+        .fs-progress-bar { flex: 1; height: 10px; background: var(--bg); border-radius: 10px; overflow: hidden; }
         .fs-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; transition: width 0.4s ease; }
-        .fs-progress-text { font-weight: 700; font-size: 1em; color: var(--text); min-width: 150px; }
+        .fs-progress-text { font-weight: 700; font-size: 0.85em; color: var(--text); min-width: 100px; text-align: right; }
 
-        .fs-main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; position: relative; }
+        .fs-main { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px;
+            overflow-y: auto;
+            position: relative;
+        }
 
         .fs-question-card {
             background: white;
-            border-radius: 30px;
-            padding: 60px 40px;
+            border-radius: 25px;
+            padding: 40px 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             text-align: center;
-            width: 95%;
-            max-width: 1100px;
-            min-height: 350px;
+            width: 100%;
+            max-width: 600px;
+            min-height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            margin-bottom: 15px;
         }
 
         .fs-q-number {
             position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 1.2em;
+            top: 15px;
+            left: 15px;
+            font-size: 0.9em;
             font-weight: 700;
             color: var(--text-light);
             background: var(--bg);
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 15px;
         }
 
-        /* Dynamic font sizes */
+        /* Dynamic font sizes - MOBILE FIRST */
         .fs-q-word {
             font-family: 'Fredoka One', cursive;
             color: var(--text);
@@ -318,25 +330,25 @@
             line-height: 1.2;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             width: 100%;
-            padding: 0 20px;
+            padding: 0 10px;
         }
 
-        .fs-q-word.size-letter { font-size: 10em; }
-        .fs-q-word.size-word { font-size: 7em; }
-        .fs-q-word.size-sentence { font-size: 4em; }
+        .fs-q-word.size-letter { font-size: 6em; }
+        .fs-q-word.size-word { font-size: 4em; }
+        .fs-q-word.size-sentence { font-size: 2em; }
 
         .fs-exit-btn {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 10px;
+            right: 10px;
             background: rgba(255,255,255,0.9);
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5em;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2em;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             transition: all 0.2s;
             z-index: 10;
         }
@@ -344,33 +356,34 @@
         .fs-exit-btn:hover { background: var(--danger); color: white; transform: rotate(90deg); }
 
         .fs-actions {
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.98);
             border-radius: 20px;
-            padding: 25px;
-            margin-top: 20px;
+            padding: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 95%;
-            max-width: 1100px;
+            width: 100%;
+            max-width: 600px;
         }
 
-        .fs-actions h4 { text-align: center; margin-bottom: 20px; font-size: 1.2em; color: var(--text); }
+        .fs-actions h4 { text-align: center; margin-bottom: 12px; font-size: 1em; color: var(--text); }
 
-        .fs-action-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .fs-action-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
         .fs-action-btn {
-            padding: 20px 40px;
-            border: 4px solid transparent;
-            border-radius: 20px;
+            padding: 14px 20px;
+            border: 3px solid transparent;
+            border-radius: 15px;
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
-            font-size: 1.3em;
+            font-size: 1em;
             cursor: pointer;
             transition: all 0.2s;
-            min-width: 200px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            flex: 1;
+            min-width: 100px;
+            max-width: 180px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        .fs-action-btn:hover { transform: scale(1.08); box-shadow: 0 8px 25px rgba(0,0,0,0.25); }
+        .fs-action-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
         .fs-action-btn:active { transform: scale(0.98); }
         .fs-action-btn.correct-btn { background: #10b981; border-color: #059669; color: white; }
         .fs-action-btn.wrong-btn { background: #ef4444; border-color: #dc2626; color: white; }
@@ -431,35 +444,76 @@
 
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5em; cursor: pointer; }
 
-        /* RESPONSIVE */
+        /* ===== MOBILE RESPONSIVE - COMPLETE FIX ===== */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
             .main-content { margin-left: 0; }
             .mobile-menu-btn { display: block; }
             .content-area { padding: 15px; }
-            .fs-q-word.size-letter { font-size: 7em; }
-            .fs-q-word.size-word { font-size: 5em; }
-            .fs-q-word.size-sentence { font-size: 2.5em; }
-            .fs-action-btn { min-width: 150px; padding: 15px 30px; font-size: 1.1em; }
-            .fs-stats { flex-direction: column; gap: 10px; }
+            
+            /* Competition mobile fixes */
+            .fs-topbar { padding: 10px; }
+            .fs-info h2 { font-size: 0.9em; }
+            .fs-info p { font-size: 0.75em; }
+            .fs-stat-box { padding: 6px 10px; min-width: 70px; }
+            .fs-stat-box .fs-value { font-size: 1.3em; }
+            .fs-stat-box .fs-label { font-size: 0.6em; }
+            
+            .fs-question-card { padding: 30px 15px; min-height: 180px; }
+            .fs-q-word.size-letter { font-size: 5em; }
+            .fs-q-word.size-word { font-size: 3.5em; }
+            .fs-q-word.size-sentence { font-size: 1.6em; }
+            
+            .fs-action-btn { padding: 12px 15px; font-size: 0.9em; min-width: 90px; }
+            .fs-actions { padding: 12px; }
         }
 
         @media (max-width: 480px) {
-            .fs-q-word.size-letter { font-size: 5em; }
-            .fs-q-word.size-word { font-size: 3.5em; }
-            .fs-q-word.size-sentence { font-size: 1.8em; }
-            .fs-question-card { padding: 30px 20px; min-height: 250px; }
-            .fs-action-btn { min-width: 120px; padding: 14px 20px; font-size: 1em; }
+            /* Small phones */
+            .fs-topbar { flex-direction: column; align-items: stretch; gap: 8px; }
+            .fs-info { text-align: center; }
+            .fs-stats { justify-content: center; }
+            
+            .fs-question-card { padding: 25px 12px; min-height: 160px; border-radius: 20px; }
+            .fs-q-word.size-letter { font-size: 4em; }
+            .fs-q-word.size-word { font-size: 2.8em; }
+            .fs-q-word.size-sentence { font-size: 1.3em; }
+            
+            .fs-action-btns { gap: 8px; }
+            .fs-action-btn { padding: 10px 12px; font-size: 0.85em; min-width: 80px; }
+            
+            .fs-q-number { top: 10px; left: 10px; font-size: 0.8em; padding: 5px 10px; }
+            .fs-exit-btn { top: 8px; right: 8px; width: 30px; height: 30px; font-size: 1em; }
+        }
+
+        @media (max-width: 360px) {
+            /* Very small phones */
+            .fs-q-word.size-letter { font-size: 3.5em; }
+            .fs-q-word.size-word { font-size: 2.3em; }
+            .fs-q-word.size-sentence { font-size: 1.1em; }
+            
+            .fs-action-btn { padding: 8px 10px; font-size: 0.8em; min-width: 70px; }
+            .fs-actions h4 { font-size: 0.9em; }
+        }
+
+        @media (max-height: 600px) and (orientation: portrait) {
+            /* Short phones */
+            .fs-question-card { min-height: 140px; padding: 20px 15px; }
+            .fs-q-word.size-letter { font-size: 4em; }
+            .fs-q-word.size-word { font-size: 2.8em; }
+            .fs-q-word.size-sentence { font-size: 1.3em; }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
-            .fs-question-card { min-height: 200px; padding: 30px; }
-            .fs-q-word.size-letter { font-size: 5em; }
-            .fs-q-word.size-word { font-size: 3.5em; }
-            .fs-q-word.size-sentence { font-size: 1.8em; }
-            .fs-actions { padding: 15px; margin-top: 10px; }
-            .fs-action-btn { padding: 12px 24px; font-size: 1em; min-width: 130px; }
+            /* Landscape phones */
+            .fs-main { padding: 10px; }
+            .fs-question-card { min-height: 120px; padding: 15px; margin-bottom: 10px; }
+            .fs-q-word.size-letter { font-size: 3.5em; }
+            .fs-q-word.size-word { font-size: 2.5em; }
+            .fs-q-word.size-sentence { font-size: 1.2em; }
+            .fs-actions { padding: 10px; }
+            .fs-action-btn { padding: 8px 12px; font-size: 0.85em; }
         }
 
         @media print {
@@ -508,10 +562,10 @@
             <!-- DASHBOARD -->
             <div class="page active" id="page-dashboard">
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+                    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
                     <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
+                    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+                    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
                 </div>
                 <div class="groups-grid" id="dashGroupsGrid"></div>
                 <div class="card">
@@ -561,7 +615,7 @@
             <!-- RESULTS -->
             <div class="page" id="page-results">
                 <div class="card">
-                    <div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()">📥 Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
+                    <div class="card-header"><h3> All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()">📥 Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
                     <div class="card-body">
                         <div class="filter-bar">
                             <select id="resultFilterGroup" onchange="renderResults()"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
@@ -580,7 +634,7 @@
                     <div class="card-body">
                         <div class="leaderboard-podium" id="leaderboardPodium"></div>
                         <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon"></div><h4>No results yet</h4></div>
+                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
                     </div>
                 </div>
             </div>
@@ -601,7 +655,7 @@
                         <button class="btn btn-primary" onclick="addQuestionToPool()">+ Add Question</button>
                         <hr style="margin:30px 0;border:none;border-top:1px solid var(--border);">
                         <h4 style="margin-bottom:15px;">⚠️ Danger Zone</h4>
-                        <div class="btn-group"><button class="btn btn-warning" onclick="resetAllData()"> Reset All Data</button><button class="btn btn-danger" onclick="clearAllResults()">🗑️ Delete All Results</button></div>
+                        <div class="btn-group"><button class="btn btn-warning" onclick="resetAllData()">🔄 Reset All Data</button><button class="btn btn-danger" onclick="clearAllResults()">🗑️ Delete All Results</button></div>
                     </div>
                 </div>
             </div>
@@ -616,11 +670,12 @@
 
     <div class="fs-topbar">
         <div class="fs-info">
-            <div><h2 id="fsCompTitle">Group 1 - Letter & Sounds</h2><p id="fsCompStudent">Student Name</p></div>
+            <h2 id="fsCompTitle">Group 1 - Letter & Sounds</h2>
+            <p id="fsCompStudent">Student Name</p>
         </div>
         <div class="fs-stats">
-            <div class="fs-stat-box timer-box"><div class="fs-label">⏱ Time Left</div><div class="fs-value" id="fsTimer">2:00</div></div>
-            <div class="fs-stat-box score-box"><div class="fs-label">✅ Score</div><div class="fs-value" id="fsScore">0</div></div>
+            <div class="fs-stat-box timer-box"><div class="fs-label">⏱ TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
+            <div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
         </div>
     </div>
 
@@ -631,8 +686,8 @@
 
     <div class="fs-main">
         <div class="fs-question-card" id="fsQuestionCard">
-            <div class="fs-q-number" id="fsQNumber">Q1</div>
-            <div class="fs-q-word" id="fsQWord">A</div>
+            <div class="fs-q-number" id="fsQNumber">Q1/10</div>
+            <div class="fs-q-word" id="fsQWord">P p</div>
         </div>
 
         <div class="fs-actions">
@@ -663,7 +718,7 @@
 <!-- Result Detail Modal -->
 <div class="modal-overlay" id="resultDetailModal">
     <div class="modal" style="max-width:650px;">
-        <div class="modal-header"><h3> Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')">✕</button></div>
+        <div class="modal-header"><h3>📋 Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')">✕</button></div>
         <div class="modal-body" id="resultDetailContent"></div>
     </div>
 </div>
@@ -784,7 +839,7 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const titles = { dashboard: '📊 Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: ' Competition', results: '📋 Results', leaderboard: '🥇 Leaderboard', settings: '️ Settings' };
+    const titles = { dashboard: '📊 Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: '🏆 Competition', results: ' Results', leaderboard: '🥇 Leaderboard', settings: '⚙️ Settings' };
     document.getElementById('pageTitle').textContent = titles[pageId] || '';
     refreshAll();
     closeSidebar();
@@ -813,14 +868,14 @@ function renderDashboard() {
         gridHTML += `
             <div class="group-card" onclick="showPage('groups')">
                 <div class="group-color-bar"></div>
-                <div class="group-icon">${['🔤','📖','💬',''][i-1]}</div>
+                <div class="group-icon">${['🔤','📖','💬','🔄'][i-1]}</div>
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
-                    <span> ${g.date}</span>
+                    <span>📅 ${g.date}</span>
                     <span>🕐 ${g.time}</span>
                     <span>⏱ ${g.totalTime/60} min</span>
-                    <span> ${g.totalQuestions} items</span>
+                    <span>📝 ${g.totalQuestions} items</span>
                 </div>
                 <div class="student-count">👥 ${count} students | ✅ ${compCount} completed</div>
                 <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button>
@@ -858,9 +913,9 @@ function renderGroups() {
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
                     <span>📅 ${g.date}</span><span>🕐 ${g.time}</span><span>📍 ${g.location}</span>
-                    <span>⏱ ${g.totalTime/60} min</span><span>📝 ${g.totalQuestions} items</span>
+                    <span>⏱ ${g.totalTime/60} min</span><span> ${g.totalQuestions} items</span>
                 </div>
-                <div class="student-count"> ${count} students assigned</div>
+                <div class="student-count">👥 ${count} students assigned</div>
                 <div class="btn-group">
                     <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button>
                     <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showGroupRules(${i})">📋 Rules</button>
@@ -903,7 +958,7 @@ function renderStudents() {
         const scoreText = result ? `${result.score}/${result.total}` : '-';
         const pct = result ? Math.round((result.score/result.total)*100) : 0;
         const scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[s.group].color};font-weight:700;">${GROUPS[s.group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${s.id})">🏆</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${s.id})">👁️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.id})">🗑️</button></div></td></tr>`;
+        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[s.group].color};font-weight:700;">${GROUPS[s.group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Completed' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${s.id})">🏆</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${s.id})">️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.id})">🗑️</button></div></td></tr>`;
     }).join('');
 }
 
@@ -978,7 +1033,6 @@ function launchCompetition() {
     const group = GROUPS[groupNum];
     const pool = questionPools[groupNum];
 
-    // Randomize questions - each student gets different random questions
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, group.totalQuestions);
 
@@ -1013,7 +1067,7 @@ function loadCompQuestion() {
     const total = activeComp.questions.length;
     const idx = activeComp.currentIndex;
 
-    document.getElementById('fsQNumber').textContent = `Q${idx + 1} / ${total}`;
+    document.getElementById('fsQNumber').textContent = `Q${idx + 1}/${total}`;
 
     const wordEl = document.getElementById('fsQWord');
     wordEl.textContent = q.display;
@@ -1036,7 +1090,6 @@ function markCompAnswer(status) {
         correctAnswer: activeComp.questions[idx].answer
     };
 
-    // EXACT SCORING: 1 mark per correct answer, no extra marks
     if (status === 'correct') {
         activeComp.score++;
         document.getElementById('fsScore').textContent = activeComp.score;
@@ -1249,7 +1302,7 @@ function renderLeaderboard() {
 
     tbody.innerHTML = sorted.map((r, i) => {
         const pct = Math.round((r.score/r.total)*100);
-        const medal = i === 0 ? '' : (i === 1 ? '' : (i === 2 ? '' : `#${i+1}`));
+        const medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `#${i+1}`));
         return `<tr><td style="font-size:1.3em;">${medal}</td><td><strong>${r.studentName}</strong><br><small style="color:var(--text-light);">${r.studentClass}</small></td><td><span style="color:${GROUPS[r.group].color};font-weight:700;">${GROUPS[r.group].name}</span></td><td class="score-cell score-high">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td></tr>`;
     }).join('');
 }
@@ -1259,7 +1312,7 @@ function loadSettingsQuestions() {
     const group = parseInt(document.getElementById('settingsGroupSelect').value);
     const pool = questionPools[group];
     const container = document.getElementById('settingsQuestionsList');
-    container.innerHTML = `<h4 style="margin-bottom:10px;">Current Pool (${pool.length} questions)</h4><div style="max-height:250px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:10px;">${pool.map((q, i) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;"><span><strong>${i+1}.</strong> ${q.display} <small style="color:var(--text-light);">→ ${q.answer}</small></span><button class="btn btn-sm btn-danger" onclick="removeQuestion(${group}, ${i})"></button></div>`).join('')}</div>`;
+    container.innerHTML = `<h4 style="margin-bottom:10px;">Current Pool (${pool.length} questions)</h4><div style="max-height:250px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:10px;">${pool.map((q, i) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;"><span><strong>${i+1}.</strong> ${q.display} <small style="color:var(--text-light);">→ ${q.answer}</small></span><button class="btn btn-sm btn-danger" onclick="removeQuestion(${group}, ${i})">✕</button></div>`).join('')}</div>`;
 }
 
 function addQuestionToPool() {
