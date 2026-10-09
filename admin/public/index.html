@@ -214,10 +214,6 @@ table tr:hover td{background:#f0fdfa}
 .db-status .status-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
 .db-status .status-dot.offline{background:var(--danger);animation:none}
 
-.setup-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:16px;padding:20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;animation:slideUp 0.5s ease}
-.setup-banner h3{color:#92400e;font-size:1.1em;margin-bottom:5px}
-.setup-banner p{color:#78350f;font-size:0.9em}
-
 @media(max-width:768px){
 .sidebar{transform:translateX(-100%);width:240px}
 .sidebar.open{transform:translateX(0)}
@@ -295,8 +291,8 @@ table tr:hover td{background:#f0fdfa}
 <div class="nav-item" data-page="compete" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
 <div class="nav-item" data-page="results" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
 <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
-<div class="nav-section-title">⚙️ System</div>
-<div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon"></span> Settings</div>
+<div class="nav-section-title">️ System</div>
+<div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
 </nav>
 </aside>
 
@@ -311,19 +307,9 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="content-area">
 
-<div id="setupBanner" style="display:none">
-<div class="setup-banner">
-<div>
-<h3>️ Database is Empty!</h3>
-<p>Click the button below to add all 53 students to your database (one-time setup).</p>
-</div>
-<button class="btn btn-primary btn-lg" id="setupStudentsBtn">🚀 Setup Initial Students</button>
-</div>
-</div>
-
 <div class="page active" id="page-dashboard">
 <div class="stats-grid">
-<div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+<div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
 <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
 <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
 <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
@@ -352,14 +338,14 @@ table tr:hover td{background:#f0fdfa}
 <input type="text" id="searchStudent" placeholder="🔍 Search student...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
-<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
+<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">👨‍</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
 </div>
 </div>
 </div>
 
 <div class="page" id="page-compete">
 <div class="card">
-<div class="card-header"><h3>🎯 Start Competition</h3></div>
+<div class="card-header"><h3> Start Competition</h3></div>
 <div class="card-body">
 <div class="form-row">
 <div class="form-group"><label>Select Group</label><select class="form-control" id="compGroupSelect"><option value="">-- Choose Group --</option><option value="1">Group 1 - Letters & Sounds (10 letters, 2 min)</option><option value="2">Group 2 - CVC & Sight Words (10 words, 2 min)</option><option value="3">Group 3 - Short Sentences (8 sentences, 3 min)</option><option value="4">Group 4 - Past Tense (10 words, 1 min)</option></select></div>
@@ -372,14 +358,14 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-results">
 <div class="card">
-<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">️ Clear All</button></div></div>
+<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">🗑️ Clear All</button></div></div>
 <div class="card-body">
 <div class="filter-bar">
 <select id="resultFilterGroup"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
 <input type="text" id="resultSearch" placeholder="🔍 Search...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
-<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
+<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
@@ -390,32 +376,24 @@ table tr:hover td{background:#f0fdfa}
 <div class="card-body">
 <div class="leaderboard-podium" id="leaderboardPodium"></div>
 <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
+<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
 
 <div class="page" id="page-settings">
 <div class="card">
-<div class="card-header"><h3> Settings</h3></div>
+<div class="card-header"><h3>⚙️ Settings</h3></div>
 <div class="card-body">
-<h4 style="margin-bottom:12px">📝 Database Management</h4>
-<p style="color:var(--text-light);margin-bottom:16px">Manage your cloud database. <strong>Deleted students stay deleted!</strong></p>
+<h4 style="margin-bottom:12px">🗄️ Database Management</h4>
+<p style="color:var(--text-light);margin-bottom:16px">All data is live from Supabase. Deleted students stay deleted!</p>
 <div class="btn-group" style="margin-bottom:20px">
-<button class="btn btn-primary" id="setupStudentsBtn2">🚀 Add All 53 Students (One-Time)</button>
-<button class="btn btn-warning" id="resetDataBtn">🔄 Reset All Data</button>
-<button class="btn btn-danger" id="clearAllBtn">🗑️ Delete All Results</button>
+<button class="btn btn-danger" id="clearAllStudentsBtn">🗑️ Delete ALL Students</button>
+<button class="btn btn-warning" id="clearAllResultsBtn2">🗑️ Delete ALL Results</button>
 </div>
 <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
-<h4 style="margin-bottom:12px"> Question Pool Management</h4>
-<p style="color:var(--text-light);margin-bottom:16px">Each student receives <strong>randomized questions</strong> from the pool below.</p>
-<div class="form-group"><label>Select Group to Edit Questions</label><select class="form-control" id="settingsGroupSelect"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
-<div id="settingsQuestionsList" style="margin-bottom:16px"></div>
-<div class="form-row">
-<div class="form-group"><label>Question / Word / Sentence</label><input type="text" class="form-control" id="newQuestionText" placeholder="e.g., cat"></div>
-<div class="form-group"><label>Answer (for reference)</label><input type="text" class="form-control" id="newQuestionAnswer" placeholder="e.g., cat"></div>
-</div>
-<button class="btn btn-primary" id="addQuestionBtn">➕ Add Question</button>
+<h4 style="margin-bottom:12px">📝 Question Pool</h4>
+<p style="color:var(--text-light);margin-bottom:16px">Questions are built-in and randomized for each student.</p>
 </div>
 </div>
 </div>
@@ -432,7 +410,7 @@ table tr:hover td{background:#f0fdfa}
 <p id="fsCompStudent">Student Name</p>
 </div>
 <div class="fs-stats">
-<div class="fs-stat-box timer-box"><div class="fs-label"> TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
+<div class="fs-stat-box timer-box"><div class="fs-label">⏱ TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
 <div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
 </div>
 </div>
@@ -463,7 +441,6 @@ table tr:hover td{background:#f0fdfa}
 <input type="hidden" id="editStudentId" value="">
 <div class="form-group"><label>Student Name *</label><input type="text" class="form-control" id="studentName" placeholder="Full name"></div>
 <div class="form-group"><label>Class / Grade *</label><input type="text" class="form-control" id="studentClass" placeholder="e.g., Grade 1A"></div>
-<div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="studentIdNum" placeholder="ID number"></div>
 <div class="form-group"><label>Assign to Group *</label><select class="form-control" id="studentGroup"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
 </div>
 <div class="modal-footer"><button class="btn btn-secondary" id="cancelStudentBtn" type="button">Cancel</button><button class="btn btn-primary" id="saveStudentBtn" type="button">💾 Save Student</button></div>
@@ -491,6 +468,7 @@ table tr:hover td{background:#f0fdfa}
 
 const SUPABASE_URL = 'https://fvnivnyhkjrumuzmwozb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2bml2bnloa2pydW11em13b3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1NTEwNzIsImV4cCI6MjEwNzEyNzA3Mn0.QuF4ToayigdM4PmZvsmNKheQd3r_o5VP_e34cin3UYQ';
+
 let supabase = null;
 let isCloud = false;
 
@@ -505,19 +483,17 @@ try {
         } else {
             console.warn("⚠️ Supabase connection failed:", error.message);
             updateDbStatus(false);
-            loadFromLocal();
-            refreshAll();
+            showToast('❌ Database connection failed: ' + error.message, 'error');
         }
-    }).catch(() => {
+    }).catch((err) => {
+        console.error("Supabase connection error:", err);
         updateDbStatus(false);
-        loadFromLocal();
-        refreshAll();
+        showToast('❌ Cannot connect to database', 'error');
     });
 } catch (e) {
     console.error("Supabase init error:", e);
     updateDbStatus(false);
-    loadFromLocal();
-    refreshAll();
+    showToast('❌ Database initialization failed', 'error');
 }
 
 function updateDbStatus(connected) {
@@ -528,7 +504,7 @@ function updateDbStatus(connected) {
         text.textContent = '🟢 Live Data Connected';
     } else {
         dot.classList.add('offline');
-        text.textContent = ' Local Mode Only';
+        text.textContent = '🔴 Database Offline';
     }
 }
 
@@ -625,116 +601,8 @@ const QUESTION_POOLS = {
 
 let students = [];
 let results = [];
-let questionPools = {};
 let activeComp = null;
 let compTimer = null;
-let nextStudentId = 100;
-
-const INITIAL_STUDENTS = [
-  {name:"Niha",cls:"",group:1},{name:"Adam Nafaah",cls:"6B",group:1},{name:"Naheek",cls:"",group:1},
-  {name:"Raahin",cls:"",group:1},{name:"Aika",cls:"",group:1},{name:"Shiura",cls:"",group:1},
-  {name:"Azin",cls:"",group:1},{name:"Aain",cls:"",group:1},{name:"Azoof",cls:"",group:1},
-  {name:"Alaau",cls:"",group:1},{name:"Sunooh",cls:"",group:1},{name:"Shadaf",cls:"",group:1},
-  {name:"Nooh",cls:"",group:1},{name:"Jool",cls:"",group:1},{name:"Ishfaan",cls:"",group:1},
-  {name:"Zukaan",cls:"",group:1},{name:"Mauil",cls:"",group:1},{name:"Ma'aan",cls:"",group:1},
-  {name:"Ayyoob",cls:"",group:1},{name:"Aarish",cls:"",group:1},
-  {name:"Shabeen",cls:"",group:2},{name:"Naavith",cls:"",group:2},{name:"Yalvy",cls:"",group:2},
-  {name:"Ausaf",cls:"",group:2},{name:"Siraau",cls:"",group:2},{name:"Yana",cls:"",group:2},
-  {name:"Baasil",cls:"",group:2},{name:"Ali Ahmed",cls:"LKG",group:2},
-  {name:"Reez",cls:"",group:3},{name:"Yumaan",cls:"",group:3},{name:"Raamin",cls:"",group:3},
-  {name:"Yooaan",cls:"",group:3},{name:"Nafaah",cls:"3C",group:3},{name:"Ma'aal",cls:"",group:3},
-  {name:"Mufthee",cls:"",group:3},{name:"Adhiyaan",cls:"",group:3},{name:"Zalaan",cls:"",group:3},
-  {name:"Iyaadh",cls:"",group:3},{name:"Yana",cls:"",group:3},{name:"Neeshaan",cls:"",group:3},
-  {name:"Rayn",cls:"",group:4},{name:"Alyas",cls:"",group:4},{name:"Jailaan",cls:"",group:4},
-  {name:"Arushal",cls:"",group:4},{name:"Shiraa",cls:"",group:4},{name:"Naash",cls:"",group:4},
-  {name:"Shaarif",cls:"",group:4},{name:"Aflaak",cls:"",group:4},{name:"Shanoon",cls:"",group:4},
-  {name:"Zaan",cls:"",group:4},{name:"Saleef",cls:"",group:4},{name:"Alyaan",cls:"",group:4},
-  {name:"Aluk",cls:"",group:4}
-];
-
-function saveStudents(){try{localStorage.setItem('fm_students',JSON.stringify(students))}catch(e){}}
-function saveResults(){try{localStorage.setItem('fm_results',JSON.stringify(results))}catch(e){}}
-
-async function loadData(){
-  if (isCloud && supabase) {
-    try {
-      const { data: sData, error: sErr } = await supabase.from('students').select('*').order('id');
-      if (!sErr && sData) {
-        students = sData.map(s => ({id: s.id, name: s.name, cls: s.class || '', idNum: s.id_num || '', group: s.group_num}));
-      } else {
-        students = [];
-      }
-      
-      const { data: rData, error: rErr } = await supabase.from('results').select('*').order('date', {ascending: false});
-      results = (!rErr && rData) ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class || '', group: r.group_num, score: r.score, total: r.total, answers: r.answers || [], date: r.date, duration: r.duration})) : [];
-
-      questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-    } catch (e) {
-      console.error("Cloud load failed, falling back to local", e);
-      loadFromLocal();
-    }
-  } else {
-    loadFromLocal();
-  }
-  
-  nextStudentId = 100;
-  students.forEach(st => { if(st.id >= nextStudentId) nextStudentId = st.id + 1; });
-  
-  // Show setup banner if no students
-  if (students.length === 0 && isCloud) {
-    document.getElementById('setupBanner').style.display = 'block';
-  } else {
-    document.getElementById('setupBanner').style.display = 'none';
-  }
-  
-  refreshAll();
-}
-
-function loadFromLocal(){
-  try {
-    var s = localStorage.getItem('fm_students');
-    if(s){ students = JSON.parse(s); }
-    else { students = []; }
-    var r = localStorage.getItem('fm_results');
-    results = r ? JSON.parse(r) : [];
-    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-  } catch(e) {
-    students = [];
-    results = [];
-    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-  }
-}
-
-async function setupInitialStudents(){
-  if(!confirm('This will add all 53 students to your database. Continue?')) return;
-  
-  showToast('⏳ Adding 53 students...', 'info');
-  
-  if (isCloud && supabase) {
-    try {
-      const studentsToInsert = INITIAL_STUDENTS.map(s => ({
-        name: s.name,
-        class: s.cls,
-        id_num: '',
-        group_num: s.group
-      }));
-      
-      const { error } = await supabase.from('students').insert(studentsToInsert);
-      if (error) throw error;
-      
-      showToast('✅ All 53 students added to cloud!', 'success');
-      await loadData();
-    } catch(e) {
-      console.error("Setup failed:", e);
-      showToast('❌ Failed to add students: ' + e.message, 'error');
-    }
-  } else {
-    students = INITIAL_STUDENTS.map((s, i) => ({id: i+1, name: s.name, cls: s.cls, idNum: '', group: s.group}));
-    saveStudents();
-    showToast('✅ All 53 students added locally!', 'success');
-    refreshAll();
-  }
-}
 
 function $(id){ return document.getElementById(id); }
 
@@ -748,6 +616,30 @@ function showToast(msg, type){
   setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 3000);
 }
 
+async function loadData(){
+  if (!isCloud || !supabase) {
+    showToast('❌ Database not connected', 'error');
+    return;
+  }
+  
+  try {
+    // Load students from Supabase
+    const { data: sData, error: sErr } = await supabase.from('students').select('*').order('id');
+    if (sErr) throw sErr;
+    students = sData ? sData.map(s => ({id: s.id, name: s.name, cls: s.class || '', group: s.group_num})) : [];
+    
+    // Load results from Supabase
+    const { data: rData, error: rErr } = await supabase.from('results').select('*').order('date', {ascending: false});
+    if (rErr) throw rErr;
+    results = rData ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class || '', group: r.group_num, score: r.score, total: r.total, answers: r.answers || [], date: r.date, duration: r.duration})) : [];
+    
+    refreshAll();
+  } catch (e) {
+    console.error("Load error:", e);
+    showToast('❌ Failed to load data: ' + e.message, 'error');
+  }
+}
+
 function showPage(pageId){
   var pages = document.querySelectorAll('.page');
   for(var i=0; i<pages.length; i++) pages[i].classList.remove('active');
@@ -759,7 +651,7 @@ function showPage(pageId){
   var activeNav = document.querySelector('.nav-item[data-page="'+pageId+'"]');
   if(activeNav) activeNav.classList.add('active');
   
-  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍🎓 Students',compete:' Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:' Settings'};
+  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍🎓 Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:'⚙️ Settings'};
   $('pageTitle').textContent = titles[pageId] || '';
   
   refreshAll();
@@ -796,7 +688,7 @@ function renderDashboard(){
     for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
     var compCount = 0;
     for(var j=0; j<results.length; j++){ if(results[j].group === i) compCount++; }
-    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span> '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
+    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span> '+g.date+'</span><span>🕐 '+g.time+'</span><span> '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
   }
   $('dashGroupsGrid').innerHTML = gridHTML;
 
@@ -868,7 +760,7 @@ function renderStudents(){
     var scoreText = result ? result.score+'/'+result.total : '-';
     var pct = result ? Math.round((result.score/result.total)*100) : 0;
     var scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong></td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
   }
   tbody.innerHTML = html;
 }
@@ -878,7 +770,6 @@ function openAddStudentModal(){
   $('editStudentId').value = '';
   $('studentName').value = '';
   $('studentClass').value = '';
-  $('studentIdNum').value = '';
   $('studentGroup').value = '1';
   $('studentModal').classList.add('active');
 }
@@ -891,7 +782,6 @@ function editStudent(id){
   $('editStudentId').value = student.id;
   $('studentName').value = student.name;
   $('studentClass').value = student.cls;
-  $('studentIdNum').value = student.idNum || '';
   $('studentGroup').value = student.group;
   $('studentModal').classList.add('active');
 }
@@ -902,64 +792,49 @@ async function saveStudent(){
   var id = $('editStudentId').value;
   var name = $('studentName').value.trim();
   var cls = $('studentClass').value.trim();
-  var idNum = $('studentIdNum').value.trim();
   var group = parseInt($('studentGroup').value);
   if(!name || !cls){ showToast('Please fill in name and class', 'error'); return; }
   
   if (isCloud && supabase) {
     try {
       if(id) {
-        await supabase.from('students').update({name: name, class: cls, id_num: idNum, group_num: group}).eq('id', parseInt(id));
+        const { error } = await supabase.from('students').update({name: name, class: cls, group_num: group}).eq('id', parseInt(id));
+        if (error) throw error;
+        showToast('✅ Student updated in Cloud', 'success');
       } else {
-        await supabase.from('students').insert([{name: name, class: cls, id_num: idNum, group_num: group}]);
+        const { error } = await supabase.from('students').insert([{name: name, class: cls, group_num: group}]);
+        if (error) throw error;
+        showToast('✅ Student added to Cloud', 'success');
       }
-      showToast('✅ Saved to Cloud', 'success');
       await loadData();
     } catch(e) {
-      console.error("Cloud save failed", e);
-      saveStudentLocal(id, name, cls, idNum, group);
+      console.error("Save error:", e);
+      showToast('❌ Failed to save: ' + e.message, 'error');
     }
   } else {
-    saveStudentLocal(id, name, cls, idNum, group);
+    showToast('❌ Database not connected', 'error');
   }
   closeModal('studentModal');
-  refreshAll();
-}
-
-function saveStudentLocal(id, name, cls, idNum, group){
-  if(id){
-    var idx = -1;
-    for(var i=0; i<students.length; i++){ if(students[i].id == id){ idx=i; break; } }
-    if(idx !== -1){ students[idx].name = name; students[idx].cls = cls; students[idx].idNum = idNum; students[idx].group = group; showToast('✅ Student updated', 'success'); }
-  } else {
-    students.push({id: nextStudentId++, name: name, cls: cls, idNum: idNum, group: group});
-    showToast('✅ '+name+' added', 'success');
-  }
-  saveStudents();
 }
 
 async function deleteStudent(id){
-  if(!confirm('Delete this student?')) return;
+  if(!confirm('Delete this student from the database?')) return;
   if (isCloud && supabase) {
     try {
-      await supabase.from('students').delete().eq('id', id);
+      // Delete results first
       await supabase.from('results').delete().eq('student_id', id);
+      // Then delete student
+      const { error } = await supabase.from('students').delete().eq('id', id);
+      if (error) throw error;
       showToast('✅ Student deleted from Cloud', 'success');
       await loadData();
     } catch(e) {
-      console.error("Cloud delete failed", e);
-      students = students.filter(function(s){ return s.id !== id; });
-      results = results.filter(function(r){ return r.studentId !== id; });
-      saveStudents(); saveResults();
-      showToast('Deleted locally (cloud failed)', 'error');
+      console.error("Delete error:", e);
+      showToast('❌ Failed to delete: ' + e.message, 'error');
     }
   } else {
-    students = students.filter(function(s){ return s.id !== id; });
-    results = results.filter(function(r){ return r.studentId !== id; });
-    saveStudents(); saveResults();
-    showToast('Student deleted', 'success');
+    showToast('❌ Database not connected', 'error');
   }
-  refreshAll();
 }
 
 function updateCompStudents(){
@@ -1003,7 +878,7 @@ function launchCompetition(){
   for(var i=0; i<students.length; i++){ if(students[i].id === studentId){ student = students[i]; break; } }
   if(!student){ showToast('Student not found', 'error'); return; }
   var group = GROUPS[groupNum];
-  var pool = questionPools[groupNum] || QUESTION_POOLS[groupNum];
+  var pool = QUESTION_POOLS[groupNum];
   if(!pool || pool.length === 0){ showToast('No questions available', 'error'); return; }
   
   var shuffled = pool.slice().sort(function(){ return Math.random()-0.5; });
@@ -1103,7 +978,6 @@ async function finishCompetition(){
   if(!activeComp) return;
   
   var resultData = {
-    id: Date.now(),
     studentId: activeComp.studentId,
     studentName: activeComp.studentName,
     studentClass: activeComp.studentClass,
@@ -1117,7 +991,7 @@ async function finishCompetition(){
   
   if (isCloud && supabase) {
     try {
-      await supabase.from('results').insert([{
+      const { error } = await supabase.from('results').insert([{
         student_id: resultData.studentId,
         student_name: resultData.studentName,
         student_class: resultData.studentClass,
@@ -1127,17 +1001,15 @@ async function finishCompetition(){
         answers: resultData.answers,
         duration: resultData.duration
       }]);
+      if (error) throw error;
       showToast('🏆 Result saved to Cloud!', 'success');
       await loadData();
     } catch(e) {
-      console.error("Cloud save failed", e);
-      results.push(resultData);
-      saveResults();
-      showToast('Result saved locally', 'info');
+      console.error("Save result error:", e);
+      showToast('❌ Failed to save result: ' + e.message, 'error');
     }
   } else {
-    results.push(resultData);
-    saveResults();
+    showToast('❌ Database not connected', 'error');
   }
   
   try { if(document.exitFullscreen){ document.exitFullscreen().catch(function(){}); } } catch(e){}
@@ -1196,11 +1068,11 @@ function showResultDetail(result){
   else if(pct >= 50) message = '👍 Good job! Keep practicing!';
   else message = '💪 Keep trying! Practice makes perfect!';
   
-  var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px">📝 Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
+  var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px"> Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
   for(var i=0; i<result.answers.length; i++){
     var a = result.answers[i];
     var cls = a.status === 'correct' ? 'bi-correct' : (a.status === 'wrong' ? 'bi-wrong' : 'bi-skipped');
-    var statusText = a.status === 'correct' ? '✅ Correct (+1)' : (a.status === 'wrong' ? '❌ Wrong (0)' : '️ Skipped (0)');
+    var statusText = a.status === 'correct' ? '✅ Correct (+1)' : (a.status === 'wrong' ? '❌ Wrong (0)' : '⏭️ Skipped (0)');
     html += '<li class="breakdown-item '+cls+'"><span>Q'+(i+1)+': <strong>'+a.question+'</strong></span><span class="bi-status">'+statusText+'</span></li>';
   }
   var d = new Date(result.date).toLocaleString();
@@ -1219,43 +1091,58 @@ function viewStudentResult(studentId){
 }
 
 async function deleteResult(id){
-  if(!confirm('Delete this result?')) return;
+  if(!confirm('Delete this result from the database?')) return;
   if (isCloud && supabase) {
     try {
-      await supabase.from('results').delete().eq('id', id);
+      const { error } = await supabase.from('results').delete().eq('id', id);
+      if (error) throw error;
       showToast('✅ Result deleted from Cloud', 'success');
       await loadData();
     } catch(e) {
-      results = results.filter(function(r){ return r.id !== id; });
-      saveResults();
-      showToast('Deleted locally', 'error');
+      console.error("Delete result error:", e);
+      showToast('❌ Failed to delete: ' + e.message, 'error');
     }
   } else {
-    results = results.filter(function(r){ return r.id !== id; });
-    saveResults();
-    showToast('Result deleted', 'success');
+    showToast('❌ Database not connected', 'error');
   }
-  refreshAll();
 }
 
 async function clearAllResults(){
-  if(!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
+  if(!confirm('⚠️ Delete ALL results from the database? This cannot be undone!')) return;
   if (isCloud && supabase) {
     try {
-      await supabase.from('results').delete().neq('id', 0);
+      const { error } = await supabase.from('results').delete().neq('id', 0);
+      if (error) throw error;
       showToast('✅ All results cleared from Cloud', 'success');
       await loadData();
     } catch(e) {
-      results = [];
-      saveResults();
-      showToast('Cleared locally', 'error');
+      console.error("Clear results error:", e);
+      showToast('❌ Failed to clear: ' + e.message, 'error');
     }
   } else {
-    results = [];
-    saveResults();
-    showToast('All results cleared', 'success');
+    showToast('❌ Database not connected', 'error');
   }
-  refreshAll();
+}
+
+async function clearAllStudents(){
+  if(!confirm('⚠️ Delete ALL students from the database? This cannot be undone!')) return;
+  if(!confirm('Are you absolutely sure? All students will be permanently deleted!')) return;
+  if (isCloud && supabase) {
+    try {
+      // Delete all results first
+      await supabase.from('results').delete().neq('id', 0);
+      // Then delete all students
+      const { error } = await supabase.from('students').delete().neq('id', 0);
+      if (error) throw error;
+      showToast('✅ All students deleted from Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      console.error("Clear students error:", e);
+      showToast('❌ Failed to clear: ' + e.message, 'error');
+    }
+  } else {
+    showToast('❌ Database not connected', 'error');
+  }
 }
 
 function exportResults(){
@@ -1274,7 +1161,7 @@ function exportResults(){
   a.download = 'fluent_minds_results_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();
   URL.revokeObjectURL(url);
-  showToast('📥 Results exported!', 'success');
+  showToast(' Results exported!', 'success');
 }
 
 function renderLeaderboard(){
@@ -1297,7 +1184,7 @@ function renderLeaderboard(){
   empty.style.display = 'none';
   
   if(sorted.length >= 3){
-    podium.innerHTML = '<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
+    podium.innerHTML = '<div class="podium-item"><div class="podium-rank"></div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
   } else { podium.innerHTML = ''; }
   
   var html = '';
@@ -1308,79 +1195,6 @@ function renderLeaderboard(){
     html += '<tr><td style="font-size:1.3em">'+medal+'</td><td><strong>'+r.studentName+'</strong><br><small style="color:var(--text-light)">'+r.studentClass+'</small></td><td><span style="color:'+GROUPS[r.group].color+';font-weight:700">'+GROUPS[r.group].name+'</span></td><td class="score-cell score-high">'+r.score+'/'+r.total+'</td><td><strong>'+pct+'%</strong></td></tr>';
   }
   tbody.innerHTML = html;
-}
-
-function loadSettingsQuestions(){
-  var group = parseInt($('settingsGroupSelect').value);
-  var pool = questionPools[group] || QUESTION_POOLS[group];
-  var container = $('settingsQuestionsList');
-  var html = '<h4 style="margin-bottom:8px">Current Pool ('+pool.length+' questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px">';
-  for(var i=0; i<pool.length; i++){
-    var q = pool[i];
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px"><span style="font-size:0.88em"><strong>'+(i+1)+'.</strong> '+q.display+' <small style="color:var(--text-light)">→ '+q.answer+'</small></span><button class="btn btn-sm btn-danger" onclick="window.removeQuestion('+group+','+i+')">✕</button></div>';
-  }
-  html += '</div>';
-  container.innerHTML = html;
-}
-
-function addQuestionToPool(){
-  var group = parseInt($('settingsGroupSelect').value);
-  var text = $('newQuestionText').value.trim();
-  var answer = $('newQuestionAnswer').value.trim() || text;
-  if(!text){ showToast('Please enter a question', 'error'); return; }
-  var type = group === 3 ? 'sentence' : (group === 1 ? 'letter' : 'word');
-  
-  if (isCloud && supabase) {
-    supabase.from('question_pools').insert([{group_num: group, display: text, answer: answer, type: type}]).then(function(res){
-      if(!res.error) {
-        showToast('✅ Question added to Cloud', 'success');
-        loadData().then(function(){ loadSettingsQuestions(); });
-      } else {
-        saveQuestionLocal(group, text, answer, type);
-      }
-    });
-  } else {
-    saveQuestionLocal(group, text, answer, type);
-  }
-  $('newQuestionText').value = '';
-  $('newQuestionAnswer').value = '';
-}
-
-function saveQuestionLocal(group, text, answer, type){
-  if(!questionPools[group]) questionPools[group] = [];
-  questionPools[group].push({display: text, answer: answer, type: type});
-  showToast('✅ Question added locally', 'success');
-  loadSettingsQuestions();
-}
-
-function removeQuestion(group, index){
-  var pool = questionPools[group] || QUESTION_POOLS[group];
-  if(pool.length <= GROUPS[group].totalQuestions){ showToast('Cannot remove - minimum '+GROUPS[group].totalQuestions+' questions required', 'error'); return; }
-  pool.splice(index, 1);
-  showToast('Question removed', 'success');
-  loadSettingsQuestions();
-}
-
-async function resetAllData(){
-  if(!confirm('⚠️ This will delete ALL students and results. Continue?')) return;
-  if(!confirm('Are you absolutely sure?')) return;
-  
-  if (isCloud && supabase) {
-    try {
-      await supabase.from('results').delete().neq('id', 0);
-      await supabase.from('students').delete().neq('id', 0);
-      showToast('✅ All data reset in Cloud', 'success');
-      await loadData();
-    } catch(e) {
-      showToast('Failed to reset cloud data', 'error');
-    }
-  } else {
-    students = [];
-    results = [];
-    saveStudents(); saveResults();
-    showToast('All data reset', 'success');
-  }
-  refreshAll();
 }
 
 function launchConfetti(){
@@ -1407,7 +1221,6 @@ function refreshAll(){
   renderStudents();
   renderResults();
   renderLeaderboard();
-  loadSettingsQuestions();
   updateBadges();
 }
 
@@ -1429,12 +1242,9 @@ window.showResultDetailById = showResultDetailById;
 window.viewStudentResult = viewStudentResult;
 window.deleteResult = deleteResult;
 window.clearAllResults = clearAllResults;
+window.clearAllStudents = clearAllStudents;
 window.exportResults = exportResults;
-window.addQuestionToPool = addQuestionToPool;
-window.removeQuestion = removeQuestion;
-window.resetAllData = resetAllData;
 window.toggleSidebar = toggleSidebar;
-window.setupInitialStudents = setupInitialStudents;
 
 document.addEventListener('DOMContentLoaded', function(){
   $('currentDate').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
@@ -1452,18 +1262,14 @@ document.addEventListener('DOMContentLoaded', function(){
   $('fsExitBtn').addEventListener('click', quitCompetition);
   $('exportBtn').addEventListener('click', exportResults);
   $('clearResultsBtn').addEventListener('click', clearAllResults);
-  $('addQuestionBtn').addEventListener('click', addQuestionToPool);
-  $('resetDataBtn').addEventListener('click', resetAllData);
-  $('clearAllBtn').addEventListener('click', clearAllResults);
-  $('setupStudentsBtn').addEventListener('click', setupInitialStudents);
-  $('setupStudentsBtn2').addEventListener('click', setupInitialStudents);
+  $('clearAllStudentsBtn').addEventListener('click', clearAllStudents);
+  $('clearAllResultsBtn2').addEventListener('click', clearAllResults);
   $('compGroupSelect').addEventListener('change', updateCompStudents);
   $('filterGroup').addEventListener('change', renderStudents);
   $('searchStudent').addEventListener('input', renderStudents);
   $('resultFilterGroup').addEventListener('change', renderResults);
   $('resultSearch').addEventListener('input', renderResults);
   $('leaderboardGroup').addEventListener('change', renderLeaderboard);
-  $('settingsGroupSelect').addEventListener('change', loadSettingsQuestions);
 
   document.querySelectorAll('.modal-overlay').forEach(function(overlay){
     overlay.addEventListener('click', function(e){
