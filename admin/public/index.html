@@ -1,1299 +1,952 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<title>Gems Fluent Minds Competition Portal 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--primary:#0d9488;--primary-dark:#0f766e;--primary-light:#5eead4;--secondary:#e11d48;--accent:#6366f1;--accent2:#f59e0b;--success:#16a34a;--danger:#dc2626;--warning:#f59e0b;--bg:#f0fdfa;--card:#fff;--text:#0f172a;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 8px rgba(0,0,0,0.08);--shadow-lg:0 8px 20px rgba(0,0,0,0.12)}
-html{scroll-behavior:smooth}
-body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.app-layout{display:flex;min-height:100vh;width:100%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Gems Fluent Minds Competition Portal 2026</title>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fredoka+One&display=swap');
 
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideLeft{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-@keyframes confetti-fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-@keyframes slideInToast{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes scaleIn{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-.sidebar{width:260px;background:linear-gradient(180deg,#134e4a 0%,#0f3d3a 100%);color:#fff;position:fixed;height:100vh;overflow-y:auto;overflow-x:hidden;z-index:100;transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);box-shadow:4px 0 20px rgba(0,0,0,0.2)}
-.sidebar-header{padding:22px 18px;text-align:center;background:linear-gradient(135deg,rgba(13,148,136,0.3),rgba(99,102,241,0.2));border-bottom:1px solid rgba(255,255,255,0.1)}
-.sidebar-header .logo-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:1.8em;margin-bottom:10px;box-shadow:0 6px 18px rgba(13,148,136,0.4);animation:float 3s ease-in-out infinite}
-.sidebar-header h2{font-family:'Fredoka One',cursive;font-size:1.1em;background:linear-gradient(90deg,#5eead4,#a5b4fc,#fda4af);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradientShift 3s ease infinite}
-.sidebar-header p{font-size:0.72em;color:rgba(255,255,255,0.6);margin-top:4px}
-.sidebar-nav{padding:12px 0}
-.nav-section-title{padding:10px 18px 5px;font-size:0.68em;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.4);font-weight:700}
-.nav-item{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;transition:all 0.25s;border-left:3px solid transparent;font-size:0.88em;font-weight:500;user-select:none}
-.nav-item:hover{background:rgba(13,148,136,0.2);border-left-color:var(--primary-light)}
-.nav-item.active{background:linear-gradient(90deg,rgba(13,148,136,0.35),transparent);border-left-color:var(--primary-light);color:var(--primary-light)}
-.nav-item .icon{font-size:1.2em;width:26px;text-align:center}
-.nav-item .badge{margin-left:auto;background:linear-gradient(135deg,var(--secondary),#f43f5e);color:#fff;padding:2px 8px;border-radius:10px;font-size:0.72em;font-weight:700;animation:pulse 2s infinite}
+        :root {
+            --primary: #0d9488; --primary-dark: #0f766e; --primary-light: #5eead4;
+            --secondary: #e11d48; --accent: #6366f1; --accent2: #f59e0b;
+            --success: #16a34a; --danger: #dc2626; --warning: #f59e0b;
+            --bg: #f0fdfa; --text: #0f172a; --text-light: #64748b; --border: #e2e8f0;
+            --shadow: 0 2px 4px rgba(0,0,0,0.08); --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+        }
 
-.main-content{margin-left:260px;flex:1;min-height:100vh;width:calc(100% - 260px)}
-.topbar{background:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);position:sticky;top:0;z-index:50;animation:slideDown 0.4s ease;flex-wrap:wrap;gap:8px}
-.topbar h1{font-size:1.2em;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
-.content-area{padding:20px;max-width:100%}
-.page{display:none;width:100%}
-.page.active{display:block;animation:fadeIn 0.35s ease}
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.stat-card{background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all 0.3s;animation:slideUp 0.5s ease backwards}
-.stat-card:nth-child(1){animation-delay:0.05s}
-.stat-card:nth-child(2){animation-delay:0.1s}
-.stat-card:nth-child(3){animation-delay:0.15s}
-.stat-card:nth-child(4){animation-delay:0.2s}
-.stat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
-.stat-card:nth-child(1)::before{background:linear-gradient(90deg,#0d9488,#14b8a6)}
-.stat-card:nth-child(2)::before{background:linear-gradient(90deg,#16a34a,#22c55e)}
-.stat-card:nth-child(3)::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.stat-card:nth-child(4)::before{background:linear-gradient(90deg,#e11d48,#f43f5e)}
-.stat-card .stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5em;margin-bottom:10px;transition:transform 0.3s}
-.stat-card:hover .stat-icon{transform:scale(1.1)}
-.stat-card:nth-child(1) .stat-icon{background:linear-gradient(135deg,#ccfbf1,#99f6e4)}
-.stat-card:nth-child(2) .stat-icon{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
-.stat-card:nth-child(3) .stat-icon{background:linear-gradient(135deg,#fef3c7,#fde68a)}
-.stat-card:nth-child(4) .stat-icon{background:linear-gradient(135deg,#ffe4e6,#fecdd3)}
-.stat-card .stat-value{font-size:1.8em;font-weight:900;line-height:1;color:var(--text)}
-.stat-card .stat-label{font-size:0.8em;color:var(--text-light);margin-top:6px;font-weight:600}
+        .app-layout { display: flex; min-height: 100vh; width: 100%; }
 
-.card{background:#fff;border-radius:16px;box-shadow:var(--shadow);margin-bottom:20px;overflow:hidden;animation:slideUp 0.5s ease backwards;animation-delay:0.25s}
-.card-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.card-header h3{font-size:1.05em;font-weight:800}
-.card-body{padding:18px}
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes confetti-fall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes slideInToast { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-.groups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:20px}
-.group-card{background:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all 0.3s;cursor:pointer;animation:slideUp 0.5s ease backwards}
-.group-card:nth-child(1){animation-delay:0.05s}
-.group-card:nth-child(2){animation-delay:0.1s}
-.group-card:nth-child(3){animation-delay:0.15s}
-.group-card:nth-child(4){animation-delay:0.2s}
-.group-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-.group-card .group-color-bar{position:absolute;top:0;left:0;right:0;height:5px}
-.group-card:nth-child(1) .group-color-bar{background:linear-gradient(90deg,#0d9488,#14b8a6,#5eead4)}
-.group-card:nth-child(2) .group-color-bar{background:linear-gradient(90deg,#e11d48,#f43f5e,#fda4af)}
-.group-card:nth-child(3) .group-color-bar{background:linear-gradient(90deg,#6366f1,#818cf8,#a5b4fc)}
-.group-card:nth-child(4) .group-color-bar{background:linear-gradient(90deg,#f59e0b,#fbbf24,#fcd34d)}
-.group-card .group-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6em;margin-bottom:12px;transition:transform 0.3s}
-.group-card:hover .group-icon{transform:scale(1.1)}
-.group-card:nth-child(1) .group-icon{background:linear-gradient(135deg,#ccfbf1,#99f6e4)}
-.group-card:nth-child(2) .group-icon{background:linear-gradient(135deg,#ffe4e6,#fecdd3)}
-.group-card:nth-child(3) .group-icon{background:linear-gradient(135deg,#e0e7ff,#c7d2fe)}
-.group-card:nth-child(4) .group-icon{background:linear-gradient(135deg,#fef3c7,#fde68a)}
-.group-card h3{font-size:1.1em;font-weight:800;margin-bottom:4px}
-.group-card .topic{color:var(--text-light);font-size:0.85em;margin-bottom:12px;font-weight:500}
-.group-card .meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.group-card .meta span{background:#f1f5f9;padding:4px 10px;border-radius:6px;font-size:0.72em;font-weight:600;color:var(--text-light)}
-.group-card .student-count{font-size:0.85em;color:var(--primary);font-weight:700;margin-bottom:12px}
+        /* SIDEBAR */
+        .sidebar { width: 260px; background: linear-gradient(180deg, #134e4a 0%, #0f3d3a 100%); color: white; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; transition: transform 0.3s; box-shadow: 4px 0 20px rgba(0,0,0,0.2); }
+        .sidebar-header { padding: 22px 18px; text-align: center; background: rgba(13,148,136,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header .logo-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.8em; margin-bottom: 10px; animation: float 3s ease-in-out infinite; }
+        .sidebar-header h2 { font-family: 'Fredoka One', cursive; font-size: 1.1em; color: var(--primary-light); }
+        .sidebar-header p { font-size: 0.72em; color: rgba(255,255,255,0.6); margin-top: 4px; }
+        .sidebar-nav { padding: 12px 0; }
+        .nav-section-title { padding: 10px 18px 5px; font-size: 0.68em; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); font-weight: 700; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 18px; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; font-size: 0.9em; font-weight: 500; }
+        .nav-item:hover { background: rgba(13,148,136,0.2); border-left-color: var(--primary-light); }
+        .nav-item.active { background: linear-gradient(90deg, rgba(13,148,136,0.35), transparent); border-left-color: var(--primary-light); color: var(--primary-light); }
+        .nav-item .icon { font-size: 1.2em; width: 26px; text-align: center; }
+        .nav-item .badge { margin-left: auto; background: var(--secondary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.72em; font-weight: 700; }
 
-.btn{padding:9px 18px;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85em;cursor:pointer;transition:all 0.25s;display:inline-flex;align-items:center;gap:5px;user-select:none}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.12)}
-.btn:active{transform:translateY(0)}
-.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff}
-.btn-secondary{background:linear-gradient(135deg,#f1f5f9,#e2e8f0);color:var(--text)}
-.btn-success{background:linear-gradient(135deg,var(--success),#15803d);color:#fff}
-.btn-danger{background:linear-gradient(135deg,var(--danger),#b91c1c);color:#fff}
-.btn-warning{background:linear-gradient(135deg,var(--warning),#d97706);color:#fff}
-.btn-sm{padding:6px 12px;font-size:0.78em;border-radius:8px}
-.btn-lg{padding:14px 28px;font-size:1em}
-.btn-group{display:flex;gap:6px;flex-wrap:wrap}
+        /* MAIN */
+        .main-content { margin-left: 260px; flex: 1; min-height: 100vh; width: calc(100% - 260px); }
+        .topbar { background: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: 8px; }
+        .topbar h1 { font-size: 1.2em; font-weight: 800; color: var(--primary); white-space: nowrap; }
+        .content-area { padding: 20px; max-width: 100%; }
+        .page { display: none; width: 100%; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
 
-.table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;min-width:600px}
-table th{background:#f8fafc;padding:12px;text-align:left;font-size:0.75em;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);border-bottom:2px solid var(--border);white-space:nowrap}
-table td{padding:12px;border-bottom:1px solid var(--border);font-size:0.88em}
-table tr:hover td{background:#f0fdfa}
+        /* STATS & CARDS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: white; border-radius: 16px; padding: 16px; box-shadow: var(--shadow); position: relative; overflow: hidden; animation: slideUp 0.5s ease backwards; }
+        .stat-card:nth-child(1) { animation-delay: 0.05s; } .stat-card:nth-child(2) { animation-delay: 0.1s; }
+        .stat-card:nth-child(3) { animation-delay: 0.15s; } .stat-card:nth-child(4) { animation-delay: 0.2s; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+        .stat-card:nth-child(1)::before { background: var(--primary); } .stat-card:nth-child(2)::before { background: var(--success); }
+        .stat-card:nth-child(3)::before { background: var(--warning); } .stat-card:nth-child(4)::before { background: var(--secondary); }
+        .stat-card .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5em; margin-bottom: 10px; }
+        .stat-card:nth-child(1) .stat-icon { background: #ccfbf1; } .stat-card:nth-child(2) .stat-icon { background: #dcfce7; }
+        .stat-card:nth-child(3) .stat-icon { background: #fef3c7; } .stat-card:nth-child(4) .stat-icon { background: #ffe4e6; }
+        .stat-card .stat-value { font-size: 1.8em; font-weight: 900; line-height: 1; }
+        .stat-card .stat-label { font-size: 0.8em; color: var(--text-light); margin-top: 6px; font-weight: 600; }
 
-.status-badge{padding:4px 12px;border-radius:20px;font-size:0.75em;font-weight:700;display:inline-block;white-space:nowrap}
-.status-completed{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#166534}
-.status-pending{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e}
+        .card { background: white; border-radius: 16px; box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; animation: slideUp 0.5s ease backwards; animation-delay: 0.25s; }
+        .card-header { padding: 16px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .card-header h3 { font-size: 1.05em; font-weight: 800; }
+        .card-body { padding: 18px; }
 
-.score-cell{font-weight:800;font-size:1.1em}
-.score-high{color:var(--success)}
-.score-mid{color:var(--warning)}
-.score-low{color:var(--danger)}
+        .groups-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .group-card { background: white; border-radius: 16px; padding: 20px; box-shadow: var(--shadow); position: relative; overflow: hidden; transition: all 0.3s; cursor: pointer; animation: slideUp 0.5s ease backwards; }
+        .group-card:nth-child(1) { animation-delay: 0.05s; } .group-card:nth-child(2) { animation-delay: 0.1s; }
+        .group-card:nth-child(3) { animation-delay: 0.15s; } .group-card:nth-child(4) { animation-delay: 0.2s; }
+        .group-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        .group-card .group-color-bar { position: absolute; top: 0; left: 0; right: 0; height: 5px; }
+        .group-card:nth-child(1) .group-color-bar { background: var(--primary); } .group-card:nth-child(2) .group-color-bar { background: var(--secondary); }
+        .group-card:nth-child(3) .group-color-bar { background: var(--accent); } .group-card:nth-child(4) .group-color-bar { background: var(--warning); }
+        .group-card .group-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6em; margin-bottom: 12px; }
+        .group-card:nth-child(1) .group-icon { background: #ccfbf1; } .group-card:nth-child(2) .group-icon { background: #ffe4e6; }
+        .group-card:nth-child(3) .group-icon { background: #e0e7ff; } .group-card:nth-child(4) .group-icon { background: #fef3c7; }
+        .group-card h3 { font-size: 1.1em; font-weight: 800; margin-bottom: 4px; }
+        .group-card .topic { color: var(--text-light); font-size: 0.85em; margin-bottom: 12px; font-weight: 500; }
+        .group-card .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .group-card .meta span { background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 0.72em; font-weight: 600; color: var(--text-light); }
+        .group-card .student-count { font-size: 0.85em; color: var(--primary); font-weight: 700; margin-bottom: 12px; }
 
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-weight:700;font-size:0.85em;margin-bottom:5px}
-.form-control{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.9em;outline:none;transition:all 0.25s}
-.form-control:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,0.15)}
-.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+        /* BUTTONS & TABLES */
+        .btn { padding: 9px 18px; border: none; border-radius: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.85em; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .btn-primary { background: var(--primary); color: white; } .btn-secondary { background: #f1f5f9; color: var(--text); }
+        .btn-danger { background: var(--danger); color: white; } .btn-warning { background: var(--warning); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 0.78em; border-radius: 8px; } .btn-lg { padding: 14px 28px; font-size: 1em; }
+        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
 
-.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:1000;justify-content:center;align-items:center;padding:15px}
-.modal-overlay.active{display:flex;animation:fadeIn 0.25s ease}
-.modal{background:#fff;border-radius:20px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,0.3);animation:scaleIn 0.25s ease}
-.modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#f0fdfa,#ccfbf1)}
-.modal-header h3{font-size:1.15em;font-weight:800}
-.modal-close{width:34px;height:34px;border:none;background:#fff;border-radius:50%;font-size:1.2em;cursor:pointer;transition:all 0.25s;box-shadow:var(--shadow)}
-.modal-close:hover{background:var(--danger);color:#fff;transform:rotate(90deg)}
-.modal-body{padding:20px}
-.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        table th { background: #f8fafc; padding: 12px; text-align: left; font-size: 0.75em; font-weight: 800; text-transform: uppercase; color: var(--text-light); border-bottom: 2px solid var(--border); white-space: nowrap; }
+        table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.88em; }
+        table tr:hover td { background: #f0fdfa; }
 
-.fullscreen-comp{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(135deg,#0d9488 0%,#0f766e 50%,#6366f1 100%);background-size:400% 400%;animation:gradientShift 15s ease infinite;z-index:5000;overflow:hidden}
-.fullscreen-comp.active{display:flex;flex-direction:column}
-.fs-topbar{background:rgba(255,255,255,0.98);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,0.15);flex-wrap:wrap;gap:8px;animation:slideDown 0.4s ease}
-.fs-info{flex:1;min-width:140px}
-.fs-info h2{font-size:0.95em;font-weight:800;color:var(--text);line-height:1.2}
-.fs-info p{font-size:0.78em;color:var(--text-light);font-weight:500}
-.fs-stats{display:flex;gap:8px}
-.fs-stat-box{text-align:center;padding:8px 12px;border-radius:12px;min-width:75px;box-shadow:0 3px 8px rgba(0,0,0,0.1)}
-.fs-stat-box.timer-box{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b}
-.fs-stat-box.score-box{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:2px solid #16a34a}
-.fs-stat-box .fs-label{font-size:0.6em;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light)}
-.fs-stat-box .fs-value{font-family:'Fredoka One',cursive;font-size:1.4em;line-height:1.2}
-.fs-stat-box.timer-box .fs-value{color:#92400e}
-.fs-stat-box.score-box .fs-value{color:#166534}
-.fs-stat-box.timer-box .fs-value.warning{color:var(--danger);animation:pulse 1s infinite}
-.fs-progress{background:rgba(255,255,255,0.98);padding:8px 14px;display:flex;align-items:center;gap:10px;animation:slideDown 0.5s ease}
-.fs-progress-bar{flex:1;height:10px;background:#e2e8f0;border-radius:10px;overflow:hidden}
-.fs-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;transition:width 0.4s ease}
-.fs-progress-text{font-weight:800;font-size:0.82em;color:var(--text);min-width:100px;text-align:right}
-.fs-main{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:12px;overflow-y:auto;position:relative}
-.fs-question-card{background:#fff;border-radius:32px;padding:50px 30px;box-shadow:0 30px 80px rgba(0,0,0,0.4);text-align:center;width:95%;max-width:900px;min-height:55vh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;margin-bottom:16px;animation:scaleIn 0.4s ease}
-.fs-q-number{position:absolute;top:20px;left:20px;font-size:1.1em;font-weight:800;color:var(--primary);background:linear-gradient(135deg,#ccfbf1,#99f6e4);padding:8px 16px;border-radius:20px}
-.fs-q-word{font-family:'Fredoka One',cursive;color:var(--text);word-break:break-word;line-height:1.1;width:100%;padding:0 20px}
-.fs-q-word.size-letter{font-size:12em}
-.fs-q-word.size-word{font-size:8em}
-.fs-q-word.size-sentence{font-size:3.5em}
-.fs-exit-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.95);border:none;border-radius:50%;width:40px;height:40px;font-size:1.3em;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,0.2);transition:all 0.25s;z-index:10}
-.fs-exit-btn:hover{background:var(--danger);color:#fff;transform:rotate(90deg)}
-.fs-actions{background:rgba(255,255,255,0.98);border-radius:22px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,0.25);width:95%;max-width:900px;animation:slideUp 0.4s ease}
-.fs-actions h4{text-align:center;margin-bottom:12px;font-size:1.05em;color:var(--text);font-weight:800}
-.fs-action-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.fs-action-btn{padding:18px 24px;border:3px solid transparent;border-radius:16px;font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1em;cursor:pointer;transition:all 0.25s;flex:1;min-width:120px;max-width:220px;box-shadow:0 6px 15px rgba(0,0,0,0.2);user-select:none}
-.fs-action-btn:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.3)}
-.fs-action-btn:active{transform:scale(0.95)}
-.fs-action-btn.correct-btn{background:linear-gradient(135deg,#16a34a,#15803d);border-color:#166534;color:#fff}
-.fs-action-btn.wrong-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);border-color:#991b1b;color:#fff}
-.fs-action-btn.skip-btn{background:linear-gradient(135deg,#f59e0b,#d97706);border-color:#b45309;color:#fff}
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75em; font-weight: 700; display: inline-block; white-space: nowrap; }
+        .status-completed { background: #dcfce7; color: #166534; } .status-pending { background: #fef3c7; color: #92400e; }
+        .score-cell { font-weight: 800; font-size: 1.1em; } .score-high { color: var(--success); } .score-mid { color: var(--warning); } .score-low { color: var(--danger); }
 
-.result-hero{background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:20px;padding:30px 20px;text-align:center;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;animation:scaleIn 0.4s ease}
-.result-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:250px;height:250px;background:rgba(255,255,255,0.1);border-radius:50%}
-.result-hero .rh-score{font-family:'Fredoka One',cursive;font-size:4em;line-height:1;margin:12px 0;animation:bounce 0.8s ease}
-.result-hero .rh-name{font-size:1.2em;font-weight:700;opacity:0.95}
-.result-hero .rh-group{font-size:0.9em;opacity:0.85;margin-top:4px}
-.result-hero .rh-message{font-size:1.05em;font-weight:700;margin-top:10px}
+        .form-group { margin-bottom: 14px; } .form-group label { display: block; font-weight: 700; font-size: 0.85em; margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.9em; outline: none; transition: all 0.2s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
 
-.breakdown-list{list-style:none}
-.breakdown-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:10px;margin-bottom:6px;font-weight:600;font-size:0.9em;animation:slideLeft 0.3s ease backwards}
-.breakdown-item.bi-correct{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
-.breakdown-item.bi-wrong{background:linear-gradient(135deg,#fee2e2,#fecaca)}
-.breakdown-item.bi-skipped{background:linear-gradient(135deg,#fef3c7,#fde68a)}
-.breakdown-item .bi-status{font-size:0.82em;font-weight:800}
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+        .modal { background: white; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.3); animation: scaleIn 0.2s ease; }
+        .modal-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f0fdfa; }
+        .modal-header h3 { font-size: 1.15em; font-weight: 800; }
+        .modal-close { width: 34px; height: 34px; border: none; background: white; border-radius: 50%; font-size: 1.2em; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); }
+        .modal-close:hover { background: var(--danger); color: white; transform: rotate(90deg); }
+        .modal-body { padding: 20px; } .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 
-.leaderboard-podium{display:flex;justify-content:center;align-items:flex-end;gap:12px;margin-bottom:20px;padding:15px;flex-wrap:wrap}
-.podium-item{text-align:center;padding:15px 12px;border-radius:14px 14px 0 0;min-width:100px;transition:transform 0.3s}
-.podium-item:hover{transform:translateY(-4px)}
-.podium-item:nth-child(1){background:linear-gradient(180deg,#fbbf24,#f59e0b);height:150px;order:2}
-.podium-item:nth-child(2){background:linear-gradient(180deg,#d1d5db,#9ca3af);height:120px;order:1}
-.podium-item:nth-child(3){background:linear-gradient(180deg,#fdba74,#f97316);height:95px;order:3}
-.podium-item .podium-rank{font-family:'Fredoka One',cursive;font-size:1.8em;color:#fff}
-.podium-item .podium-name{font-size:0.82em;font-weight:700;color:#fff;margin-top:4px}
-.podium-item .podium-score{font-size:0.75em;color:rgba(255,255,255,0.95);font-weight:600}
+        /* FULLSCREEN COMPETITION */
+        .fullscreen-comp { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #6366f1 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; z-index: 5000; overflow: hidden; flex-direction: column; }
+        .fullscreen-comp.active { display: flex; }
+        .fs-topbar { background: rgba(255,255,255,0.98); padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 8px; animation: slideDown 0.4s ease; }
+        .fs-info { flex: 1; min-width: 140px; } .fs-info h2 { font-size: 0.95em; font-weight: 800; color: var(--text); line-height: 1.2; } .fs-info p { font-size: 0.78em; color: var(--text-light); font-weight: 500; }
+        .fs-stats { display: flex; gap: 8px; }
+        .fs-stat-box { text-align: center; padding: 8px 12px; border-radius: 12px; min-width: 75px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+        .fs-stat-box.timer-box { background: #fef3c7; border: 2px solid var(--warning); } .fs-stat-box.score-box { background: #dcfce7; border: 2px solid var(--success); }
+        .fs-stat-box .fs-label { font-size: 0.6em; font-weight: 800; text-transform: uppercase; color: var(--text-light); }
+        .fs-stat-box .fs-value { font-family: 'Fredoka One', cursive; font-size: 1.4em; line-height: 1.2; }
+        .fs-stat-box.timer-box .fs-value { color: #92400e; } .fs-stat-box.score-box .fs-value { color: #166534; }
+        .fs-stat-box.timer-box .fs-value.warning { color: var(--danger); animation: pulse 1s infinite; }
+        .fs-progress { background: rgba(255,255,255,0.98); padding: 8px 14px; display: flex; align-items: center; gap: 10px; animation: slideDown 0.5s ease; }
+        .fs-progress-bar { flex: 1; height: 10px; background: #e2e8f0; border-radius: 10px; overflow: hidden; }
+        .fs-progress-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.4s ease; }
+        .fs-progress-text { font-weight: 800; font-size: 0.82em; color: var(--text); min-width: 100px; text-align: right; }
+        .fs-main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 12px; overflow-y: auto; position: relative; }
+        .fs-question-card { background: white; border-radius: 32px; padding: 50px 30px; box-shadow: 0 30px 80px rgba(0,0,0,0.4); text-align: center; width: 95%; max-width: 900px; min-height: 55vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; animation: scaleIn 0.4s ease; }
+        .fs-q-number { position: absolute; top: 20px; left: 20px; font-size: 1.1em; font-weight: 800; color: var(--primary); background: #ccfbf1; padding: 8px 16px; border-radius: 20px; }
+        .fs-q-word { font-family: 'Fredoka One', cursive; color: var(--text); word-break: break-word; line-height: 1.1; width: 100%; padding: 0 20px; }
+        .fs-q-word.size-letter { font-size: 12em; } .fs-q-word.size-word { font-size: 8em; } .fs-q-word.size-sentence { font-size: 3.5em; }
+        .fs-exit-btn { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95); border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.3em; cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.2); transition: all 0.2s; z-index: 10; }
+        .fs-exit-btn:hover { background: var(--danger); color: white; transform: rotate(90deg); }
+        .fs-actions { background: rgba(255,255,255,0.98); border-radius: 22px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); width: 95%; max-width: 900px; animation: slideUp 0.4s ease; }
+        .fs-actions h4 { text-align: center; margin-bottom: 12px; font-size: 1.05em; color: var(--text); font-weight: 800; }
+        .fs-action-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .fs-action-btn { padding: 18px 24px; border: 3px solid transparent; border-radius: 16px; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.1em; cursor: pointer; transition: all 0.2s; flex: 1; min-width: 120px; max-width: 220px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        .fs-action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .fs-action-btn:active { transform: scale(0.95); }
+        .fs-action-btn.correct-btn { background: var(--success); border-color: #166534; color: white; }
+        .fs-action-btn.wrong-btn { background: var(--danger); border-color: #991b1b; color: white; }
+        .fs-action-btn.skip-btn { background: var(--warning); border-color: #b45309; color: white; }
 
-.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;align-items:center}
-.filter-bar select,.filter-bar input{padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.88em;outline:none;transition:all 0.25s;flex:1;min-width:120px}
-.filter-bar select:focus,.filter-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(13,148,136,0.15)}
+        /* MISC */
+        .result-hero { background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 20px; padding: 30px 20px; text-align: center; color: white; margin-bottom: 20px; position: relative; overflow: hidden; animation: scaleIn 0.4s ease; }
+        .result-hero .rh-score { font-family: 'Fredoka One', cursive; font-size: 4em; line-height: 1; margin: 12px 0; }
+        .result-hero .rh-name { font-size: 1.2em; font-weight: 700; opacity: 0.95; }
+        .result-hero .rh-message { font-size: 1.05em; font-weight: 700; margin-top: 10px; }
+        .breakdown-list { list-style: none; }
+        .breakdown-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; font-weight: 600; font-size: 0.9em; }
+        .breakdown-item.bi-correct { background: #dcfce7; } .breakdown-item.bi-wrong { background: #fee2e2; } .breakdown-item.bi-skipped { background: #fef3c7; }
+        .leaderboard-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin-bottom: 20px; padding: 15px; flex-wrap: wrap; }
+        .podium-item { text-align: center; padding: 15px 12px; border-radius: 14px 14px 0 0; min-width: 100px; }
+        .podium-item:nth-child(1) { background: #fbbf24; height: 150px; order: 2; } .podium-item:nth-child(2) { background: #9ca3af; height: 120px; order: 1; } .podium-item:nth-child(3) { background: #f97316; height: 95px; order: 3; }
+        .podium-item .podium-rank { font-family: 'Fredoka One', cursive; font-size: 1.8em; color: white; }
+        .podium-item .podium-name { font-size: 0.82em; font-weight: 700; color: white; margin-top: 4px; }
+        .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; align-items: center; }
+        .filter-bar select, .filter-bar input { padding: 8px 12px; border: 2px solid var(--border); border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.88em; outline: none; flex: 1; min-width: 120px; }
+        .empty-state { text-align: center; padding: 40px 15px; color: var(--text-light); } .empty-state .empty-icon { font-size: 3.5em; margin-bottom: 12px; opacity: 0.5; }
+        .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6000; }
+        .confetti-piece { position: absolute; top: -10px; animation: confetti-fall 3s ease-in forwards; }
+        .toast-container { position: fixed; top: 15px; right: 15px; z-index: 7000; max-width: calc(100% - 30px); }
+        .toast { background: white; border-radius: 12px; padding: 12px 16px; box-shadow: var(--shadow-lg); margin-bottom: 8px; font-weight: 700; font-size: 0.88em; animation: slideInToast 0.3s ease; border-left: 4px solid var(--primary); }
+        .toast.success { border-left-color: var(--success); } .toast.error { border-left-color: var(--danger); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; }
+        .db-status { position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px 16px; border-radius: 12px; box-shadow: var(--shadow-lg); font-size: 0.85em; font-weight: 600; z-index: 100; display: flex; align-items: center; gap: 8px; }
+        .db-status .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); }
+        .db-status .status-dot.offline { background: var(--danger); }
 
-.empty-state{text-align:center;padding:40px 15px;color:var(--text-light)}
-.empty-state .empty-icon{font-size:3.5em;margin-bottom:12px;opacity:0.5}
-.empty-state h4{font-size:1.1em;margin-bottom:6px;color:var(--text)}
-
-.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:6000}
-.confetti-piece{position:absolute;top:-10px;animation:confetti-fall 3s ease-in forwards}
-
-.toast-container{position:fixed;top:15px;right:15px;z-index:7000;max-width:calc(100% - 30px)}
-.toast{background:#fff;border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);margin-bottom:8px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:0.88em;animation:slideInToast 0.35s ease;border-left:4px solid var(--primary)}
-.toast.success{border-left-color:var(--success)}
-.toast.error{border-left-color:var(--danger)}
-
-.mobile-menu-btn{display:none;background:none;border:none;font-size:1.5em;cursor:pointer;padding:5px}
-
-@media(max-width:768px){
-.sidebar{transform:translateX(-100%);width:240px}
-.sidebar.open{transform:translateX(0)}
-.main-content{margin-left:0;width:100%}
-.mobile-menu-btn{display:block}
-.content-area{padding:12px}
-.stats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-.stat-card{padding:12px}
-.stat-card .stat-icon{width:38px;height:38px;font-size:1.3em}
-.stat-card .stat-value{font-size:1.5em}
-.stat-card .stat-label{font-size:0.75em}
-.groups-grid{grid-template-columns:1fr;gap:10px}
-.group-card{padding:16px}
-.fs-topbar{padding:8px 10px}
-.fs-info h2{font-size:0.88em}
-.fs-info p{font-size:0.72em}
-.fs-stat-box{padding:6px 10px;min-width:68px}
-.fs-stat-box .fs-value{font-size:1.3em}
-.fs-question-card{padding:40px 20px;min-height:50vh;border-radius:24px}
-.fs-q-word.size-letter{font-size:8em}
-.fs-q-word.size-word{font-size:5em}
-.fs-q-word.size-sentence{font-size:2.2em}
-.fs-action-btn{padding:14px 16px;font-size:1em;min-width:100px}
-.fs-actions{padding:14px}
-.topbar h1{font-size:1em}
-}
-@media(max-width:480px){
-.stats-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-.stat-card{padding:10px}
-.stat-card .stat-value{font-size:1.3em}
-.fs-topbar{flex-direction:column;align-items:stretch;gap:6px}
-.fs-info{text-align:center}
-.fs-stats{justify-content:center}
-.fs-question-card{padding:35px 15px;min-height:45vh;border-radius:20px}
-.fs-q-word.size-letter{font-size:6em}
-.fs-q-word.size-word{font-size:4em}
-.fs-q-word.size-sentence{font-size:1.8em}
-.fs-action-btns{gap:8px}
-.fs-action-btn{padding:12px 12px;font-size:0.9em;min-width:90px}
-.fs-q-number{top:12px;left:12px;font-size:0.9em;padding:6px 12px}
-.fs-exit-btn{top:10px;right:10px;width:34px;height:34px;font-size:1.1em}
-.card-header{padding:12px 14px}
-.card-body{padding:14px}
-.modal{border-radius:16px}
-.modal-header{padding:14px 16px}
-.modal-body{padding:16px}
-}
-@media(max-width:360px){
-.fs-q-word.size-letter{font-size:5em}
-.fs-q-word.size-word{font-size:3.2em}
-.fs-q-word.size-sentence{font-size:1.5em}
-.fs-action-btn{padding:10px 10px;font-size:0.85em;min-width:80px}
-.fs-actions h4{font-size:0.9em}
-.stat-card .stat-value{font-size:1.2em}
-.stat-card .stat-label{font-size:0.7em}
-}
-@media(max-height:600px) and (orientation:portrait){
-.fs-question-card{min-height:40vh;padding:30px 15px}
-.fs-q-word.size-letter{font-size:6em}
-.fs-q-word.size-word{font-size:4em}
-.fs-q-word.size-sentence{font-size:1.8em}
-}
-@media(max-height:500px) and (orientation:landscape){
-.fs-main{padding:8px}
-.fs-question-card{min-height:35vh;padding:25px 15px;margin-bottom:8px}
-.fs-q-word.size-letter{font-size:5em}
-.fs-q-word.size-word{font-size:3.5em}
-.fs-q-word.size-sentence{font-size:1.5em}
-.fs-actions{padding:10px}
-.fs-action-btn{padding:10px 12px;font-size:0.88em}
-}
-@media print{
-.sidebar,.topbar,.btn,.modal-overlay,.fullscreen-comp{display:none!important}
-.main-content{margin-left:0;width:100%}
-.content-area{padding:0}
-}
-</style>
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); width: 240px; } .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; } .mobile-menu-btn { display: block; } .content-area { padding: 12px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .stat-card { padding: 12px; }
+            .stat-card .stat-icon { width: 38px; height: 38px; font-size: 1.3em; } .stat-card .stat-value { font-size: 1.5em; }
+            .groups-grid { grid-template-columns: 1fr; gap: 10px; } .group-card { padding: 16px; }
+            .fs-topbar { padding: 8px 10px; } .fs-info h2 { font-size: 0.88em; }
+            .fs-stat-box { padding: 6px 10px; min-width: 68px; } .fs-stat-box .fs-value { font-size: 1.3em; }
+            .fs-question-card { padding: 40px 20px; min-height: 50vh; border-radius: 24px; }
+            .fs-q-word.size-letter { font-size: 8em; } .fs-q-word.size-word { font-size: 5em; } .fs-q-word.size-sentence { font-size: 2.2em; }
+            .fs-action-btn { padding: 14px 16px; font-size: 1em; min-width: 100px; } .fs-actions { padding: 14px; }
+            .topbar h1 { font-size: 1em; } .db-status { bottom: 10px; right: 10px; font-size: 0.75em; padding: 8px 12px; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } .stat-card { padding: 10px; } .stat-card .stat-value { font-size: 1.3em; }
+            .fs-topbar { flex-direction: column; align-items: stretch; gap: 6px; } .fs-info { text-align: center; } .fs-stats { justify-content: center; }
+            .fs-question-card { padding: 35px 15px; min-height: 45vh; border-radius: 20px; }
+            .fs-q-word.size-letter { font-size: 6em; } .fs-q-word.size-word { font-size: 4em; } .fs-q-word.size-sentence { font-size: 1.8em; }
+            .fs-action-btns { gap: 8px; } .fs-action-btn { padding: 12px 12px; font-size: 0.9em; min-width: 90px; }
+            .fs-q-number { top: 12px; left: 12px; font-size: 0.9em; padding: 6px 12px; } .fs-exit-btn { top: 10px; right: 10px; width: 34px; height: 34px; font-size: 1.1em; }
+            .card-header { padding: 12px 14px; } .card-body { padding: 14px; } .modal { border-radius: 16px; }
+        }
+        @media (max-width: 360px) {
+            .fs-q-word.size-letter { font-size: 5em; } .fs-q-word.size-word { font-size: 3.2em; } .fs-q-word.size-sentence { font-size: 1.5em; }
+            .fs-action-btn { padding: 10px 10px; font-size: 0.85em; min-width: 80px; } .fs-actions h4 { font-size: 0.9em; }
+            .stat-card .stat-value { font-size: 1.2em; } .stat-card .stat-label { font-size: 0.7em; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="app-layout">
-<aside class="sidebar" id="sidebar">
-<div class="sidebar-header">
-<div class="logo-icon">🎓</div>
-<h2>Gems Fluent Minds</h2>
-<p>✨ Competition Portal 2026 ✨</p>
-</div>
-<nav class="sidebar-nav">
-<div class="nav-section-title">📌 Main Menu</div>
-<div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
-<div class="nav-item" data-page="groups" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
-<div class="nav-item" data-page="students" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
-<div class="nav-section-title">🏆 Competition</div>
-<div class="nav-item" data-page="compete" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
-<div class="nav-item" data-page="results" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
-<div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
-<div class="nav-section-title">⚙️ System</div>
-<div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
-</nav>
-</aside>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">🎓</div>
+            <h2>Gems Fluent Minds</h2>
+            <p>✨ Competition Portal 2026 ✨</p>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Main Menu</div>
+            <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon"></span> Dashboard</div>
+            <div class="nav-item" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
+            <div class="nav-item" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
+            <div class="nav-section-title">🏆 Competition</div>
+            <div class="nav-item" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
+            <div class="nav-item" onclick="showPage('results')"><span class="icon"></span> Results</div>
+            <div class="nav-item" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
+            <div class="nav-section-title">⚙️ System</div>
+            <div class="nav-item" onclick="showPage('settings')"><span class="icon"></span> Settings</div>
+        </nav>
+    </aside>
 
-<main class="main-content">
-<div class="topbar">
-<div style="display:flex;align-items:center;gap:12px">
-<button class="mobile-menu-btn" id="menuBtn" type="button"></button>
-<h1 id="pageTitle"> Dashboard</h1>
-</div>
-<div style="font-size:0.82em;color:var(--text-light);font-weight:600" id="currentDate"></div>
-</div>
+    <main class="main-content">
+        <div class="topbar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+                <h1 id="pageTitle">📊 Dashboard</h1>
+            </div>
+            <div style="font-size:0.82em;color:var(--text-light);font-weight:600;" id="currentDate"></div>
+        </div>
 
-<div class="content-area">
+        <div class="content-area">
+            <div class="page active" id="page-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+                    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
+                    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+                    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
+                </div>
+                <div class="groups-grid" id="dashGroupsGrid"></div>
+                <div class="card">
+                    <div class="card-header"><h3>Recent Results</h3><button class="btn btn-sm btn-primary" onclick="showPage('results')">View All →</button></div>
+                    <div class="card-body">
+                        <div class="table-wrapper"><table><thead><tr><th>Student</th><th>Group</th><th>Score</th><th>Date</th><th>Status</th></tr></thead><tbody id="recentResultsBody"></tbody></table></div>
+                        <div class="empty-state" id="dashEmptyState" style="display:none;"><div class="empty-icon">📭</div><h4>No results yet</h4><p>Start a competition to see results here</p></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="page active" id="page-dashboard">
-<div class="stats-grid">
-<div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
-<div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-<div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
-<div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
-</div>
-<div class="groups-grid" id="dashGroupsGrid"></div>
-<div class="card">
-<div class="card-header"><h3>📈 Recent Results</h3><button class="btn btn-sm btn-primary" onclick="showPage('results')">View All →</button></div>
-<div class="card-body">
-<div class="table-wrapper"><table><thead><tr><th>Student</th><th>Group</th><th>Score</th><th>Date</th><th>Status</th></tr></thead><tbody id="recentResultsBody"></tbody></table></div>
-<div class="empty-state" id="dashEmptyState" style="display:none"><div class="empty-icon">📭</div><h4>No results yet</h4><p>Start a competition to see results here</p></div>
-</div>
-</div>
-</div>
+            <div class="page" id="page-groups">
+                <div class="groups-grid" id="groupsPageGrid"></div>
+                <div class="card"><div class="card-header"><h3> Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light);">Click on a group card above to view its rules.</p></div></div>
+            </div>
 
-<div class="page" id="page-groups">
-<div class="groups-grid" id="groupsPageGrid"></div>
-<div class="card"><div class="card-header"><h3> Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light)">Click on a group card above to view its rules.</p></div></div>
-</div>
+            <div class="page" id="page-students">
+                <div class="card">
+                    <div class="card-header"><h3>👨‍🎓 Student Management</h3><button class="btn btn-primary" onclick="openAddStudentModal()"> Add Student</button></div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <select id="filterGroup" onchange="renderStudents()"><option value="all">All Groups</option><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select>
+                            <input type="text" id="searchStudent" placeholder=" Search student..." oninput="renderStudents()">
+                        </div>
+                        <div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
+                        <div class="empty-state" id="studentsEmpty" style="display:none;"><div class="empty-icon">👨‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="page" id="page-students">
-<div class="card">
-<div class="card-header"><h3>‍🎓 Student Management</h3><button class="btn btn-primary" id="addStudentBtn">➕ Add Student</button></div>
-<div class="card-body">
-<div class="filter-bar">
-<select id="filterGroup"><option value="all">All Groups</option><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select>
-<input type="text" id="searchStudent" placeholder="🔍 Search student...">
-</div>
-<div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
-<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
-</div>
-</div>
-</div>
+            <div class="page" id="page-compete">
+                <div class="card">
+                    <div class="card-header"><h3>🎯 Start Competition</h3></div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group"><label>Select Group</label><select class="form-control" id="compGroupSelect" onchange="updateCompStudents()"><option value="">-- Choose Group --</option><option value="1">Group 1 - Letters & Sounds (10 letters, 2 min)</option><option value="2">Group 2 - CVC & Sight Words (10 words, 2 min)</option><option value="3">Group 3 - Short Sentences (8 sentences, 3 min)</option><option value="4">Group 4 - Past Tense (10 words, 1 min)</option></select></div>
+                            <div class="form-group"><label>Select Student</label><select class="form-control" id="compStudentSelect"><option value="">-- Choose Student --</option></select></div>
+                        </div>
+                        <div style="text-align:center;margin-top:12px;"><button class="btn btn-primary btn-lg" onclick="launchCompetition()"> Launch Competition</button></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="page" id="page-compete">
-<div class="card">
-<div class="card-header"><h3>🎯 Start Competition</h3></div>
-<div class="card-body">
-<div class="form-row">
-<div class="form-group"><label>Select Group</label><select class="form-control" id="compGroupSelect"><option value="">-- Choose Group --</option><option value="1">Group 1 - Letters & Sounds (10 letters, 2 min)</option><option value="2">Group 2 - CVC & Sight Words (10 words, 2 min)</option><option value="3">Group 3 - Short Sentences (8 sentences, 3 min)</option><option value="4">Group 4 - Past Tense (10 words, 1 min)</option></select></div>
-<div class="form-group"><label>Select Student</label><select class="form-control" id="compStudentSelect"><option value="">-- Choose Student --</option></select></div>
-</div>
-<div style="text-align:center;margin-top:12px"><button class="btn btn-primary btn-lg" id="launchBtn">🚀 Launch Competition</button></div>
-</div>
-</div>
-</div>
+            <div class="page" id="page-results">
+                <div class="card">
+                    <div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()">📥 Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <select id="resultFilterGroup" onchange="renderResults()"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
+                            <input type="text" id="resultSearch" placeholder=" Search..." oninput="renderResults()">
+                        </div>
+                        <div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
+                        <div class="empty-state" id="resultsEmpty" style="display:none;"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="page" id="page-results">
-<div class="card">
-<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">️ Clear All</button></div></div>
-<div class="card-body">
-<div class="filter-bar">
-<select id="resultFilterGroup"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
-<input type="text" id="resultSearch" placeholder="🔍 Search...">
-</div>
-<div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
-<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
-</div>
-</div>
-</div>
+            <div class="page" id="page-leaderboard">
+                <div class="card">
+                    <div class="card-header"><h3>🥇 Leaderboard</h3><select id="leaderboardGroup" onchange="renderLeaderboard()" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600;"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
+                    <div class="card-body">
+                        <div class="leaderboard-podium" id="leaderboardPodium"></div>
+                        <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
+                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="page" id="page-leaderboard">
-<div class="card">
-<div class="card-header"><h3>🥇 Leaderboard</h3><select id="leaderboardGroup" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
-<div class="card-body">
-<div class="leaderboard-podium" id="leaderboardPodium"></div>
-<div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
-</div>
-</div>
-</div>
-
-<div class="page" id="page-settings">
-<div class="card">
-<div class="card-header"><h3>🔧 Settings</h3></div>
-<div class="card-body">
-<h4 style="margin-bottom:12px">📝 Question Pool Management</h4>
-<p style="color:var(--text-light);margin-bottom:16px">Each student receives <strong>randomized questions</strong> from the pool below.</p>
-<div class="form-group"><label>Select Group to Edit Questions</label><select class="form-control" id="settingsGroupSelect"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
-<div id="settingsQuestionsList" style="margin-bottom:16px"></div>
-<div class="form-row">
-<div class="form-group"><label>Question / Word / Sentence</label><input type="text" class="form-control" id="newQuestionText" placeholder="e.g., cat"></div>
-<div class="form-group"><label>Answer (for reference)</label><input type="text" class="form-control" id="newQuestionAnswer" placeholder="e.g., cat"></div>
-</div>
-<button class="btn btn-primary" id="addQuestionBtn">➕ Add Question</button>
-<hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
-<h4 style="margin-bottom:12px">️ Danger Zone</h4>
-<div class="btn-group"><button class="btn btn-warning" id="resetDataBtn">🔄 Reset All Data</button><button class="btn btn-danger" id="clearAllBtn">🗑️ Delete All Results</button></div>
-</div>
-</div>
-</div>
-
-</div>
-</main>
+            <div class="page" id="page-settings">
+                <div class="card">
+                    <div class="card-header"><h3>🔧 Settings</h3></div>
+                    <div class="card-body">
+                        <h4 style="margin-bottom:12px;">📝 Question Pool Management</h4>
+                        <p style="color:var(--text-light);margin-bottom:16px;">Each student receives <strong>randomized questions</strong> from the pool below.</p>
+                        <div class="form-group"><label>Select Group to Edit Questions</label><select class="form-control" id="settingsGroupSelect" onchange="loadSettingsQuestions()"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
+                        <div id="settingsQuestionsList" style="margin-bottom:16px;"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Question / Word / Sentence</label><input type="text" class="form-control" id="newQuestionText" placeholder="e.g., cat"></div>
+                            <div class="form-group"><label>Answer (for reference)</label><input type="text" class="form-control" id="newQuestionAnswer" placeholder="e.g., cat"></div>
+                        </div>
+                        <button class="btn btn-primary" onclick="addQuestionToPool()">➕ Add Question</button>
+                        <hr style="margin:24px 0;border:none;border-top:1px solid var(--border);">
+                        <h4 style="margin-bottom:12px;">⚠️ Danger Zone</h4>
+                        <div class="btn-group">
+                            <button class="btn btn-warning" onclick="forceLocalMode()">🔒 Force Local Mode</button>
+                            <button class="btn btn-danger" onclick="resetAllData()">🔄 Reset All Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
 
 <div class="fullscreen-comp" id="fullscreenComp">
-<button class="fs-exit-btn" id="fsExitBtn" type="button" title="Exit">✕</button>
-<div class="fs-topbar">
-<div class="fs-info">
-<h2 id="fsCompTitle">Group 1 - Letters & Sounds</h2>
-<p id="fsCompStudent">Student Name</p>
-</div>
-<div class="fs-stats">
-<div class="fs-stat-box timer-box"><div class="fs-label"> TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
-<div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
-</div>
-</div>
-<div class="fs-progress">
-<div class="fs-progress-bar"><div class="fs-progress-fill" id="fsProgress" style="width:0%"></div></div>
-<div class="fs-progress-text" id="fsProgressText">Question 1 of 10</div>
-</div>
-<div class="fs-main">
-<div class="fs-question-card" id="fsQuestionCard">
-<div class="fs-q-number" id="fsQNumber">Q1/10</div>
-<div class="fs-q-word" id="fsQWord">W w</div>
-</div>
-<div class="fs-actions">
-<h4> Tap to mark this answer:</h4>
-<div class="fs-action-btns">
-<button class="fs-action-btn correct-btn" id="btnCorrect" type="button">✅ CORRECT</button>
-<button class="fs-action-btn wrong-btn" id="btnWrong" type="button">❌ WRONG</button>
-<button class="fs-action-btn skip-btn" id="btnSkip" type="button">⏭️ SKIP</button>
-</div>
-</div>
-</div>
+    <button class="fs-exit-btn" onclick="quitCompetition()" title="Exit">✕</button>
+    <div class="fs-topbar">
+        <div class="fs-info"><h2 id="fsCompTitle">Group 1 - Letters & Sounds</h2><p id="fsCompStudent">Student Name</p></div>
+        <div class="fs-stats">
+            <div class="fs-stat-box timer-box"><div class="fs-label">⏱ TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
+            <div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
+        </div>
+    </div>
+    <div class="fs-progress">
+        <div class="fs-progress-bar"><div class="fs-progress-fill" id="fsProgress" style="width:0%"></div></div>
+        <div class="fs-progress-text" id="fsProgressText">Question 1 of 10</div>
+    </div>
+    <div class="fs-main">
+        <div class="fs-question-card" id="fsQuestionCard">
+            <div class="fs-q-number" id="fsQNumber">Q1/10</div>
+            <div class="fs-q-word" id="fsQWord">W w</div>
+        </div>
+        <div class="fs-actions">
+            <h4>👇 Tap to mark this answer:</h4>
+            <div class="fs-action-btns">
+                <button class="fs-action-btn correct-btn" onclick="markCompAnswer('correct')">✅ CORRECT</button>
+                <button class="fs-action-btn wrong-btn" onclick="markCompAnswer('wrong')">❌ WRONG</button>
+                <button class="fs-action-btn skip-btn" onclick="markCompAnswer('skipped')">⏭️ SKIP</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="studentModal">
-<div class="modal">
-<div class="modal-header"><h3 id="modalTitle">➕ Add New Student</h3><button class="modal-close" id="closeStudentModal" type="button">✕</button></div>
-<div class="modal-body">
-<input type="hidden" id="editStudentId" value="">
-<div class="form-group"><label>Student Name *</label><input type="text" class="form-control" id="studentName" placeholder="Full name"></div>
-<div class="form-group"><label>Class / Grade *</label><input type="text" class="form-control" id="studentClass" placeholder="e.g., Grade 1A"></div>
-<div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="studentIdNum" placeholder="ID number"></div>
-<div class="form-group"><label>Assign to Group *</label><select class="form-control" id="studentGroup"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
-</div>
-<div class="modal-footer"><button class="btn btn-secondary" id="cancelStudentBtn" type="button">Cancel</button><button class="btn btn-primary" id="saveStudentBtn" type="button">💾 Save Student</button></div>
-</div>
+    <div class="modal">
+        <div class="modal-header"><h3 id="modalTitle">➕ Add New Student</h3><button class="modal-close" onclick="closeModal('studentModal')">✕</button></div>
+        <div class="modal-body">
+            <input type="hidden" id="editStudentId" value="">
+            <div class="form-group"><label>Student Name *</label><input type="text" class="form-control" id="studentName" placeholder="Full name"></div>
+            <div class="form-group"><label>Class / Grade *</label><input type="text" class="form-control" id="studentClass" placeholder="e.g., Grade 1A"></div>
+            <div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="studentIdNum" placeholder="ID number"></div>
+            <div class="form-group"><label>Assign to Group *</label><select class="form-control" id="studentGroup"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('studentModal')">Cancel</button><button class="btn btn-primary" onclick="saveStudent()">💾 Save Student</button></div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="resultDetailModal">
-<div class="modal" style="max-width:600px">
-<div class="modal-header"><h3>📋 Result Details</h3><button class="modal-close" id="closeResultModal" type="button">✕</button></div>
-<div class="modal-body" id="resultDetailContent"></div>
-</div>
+    <div class="modal" style="max-width:600px;">
+        <div class="modal-header"><h3>📋 Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')">✕</button></div>
+        <div class="modal-body" id="resultDetailContent"></div>
+    </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
 <div class="confetti-container" id="confettiContainer"></div>
 
+<div class="db-status" id="dbStatus">
+    <div class="status-dot" id="dbStatusDot"></div>
+    <span id="dbStatusText">Initializing...</span>
+</div>
+
 <script>
-(function(){
-'use strict';
+// ===== SAFE SUPABASE INITIALIZATION =====
+const SUPABASE_URL = 'https://fvnivnyhkjrumuzmwozb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_5QiL_M5ji1N_w2nbSP9Xgg_hpx_Ufn2';
 
-var GROUPS = {
-  1: { name: "Group 1", topic: "Letters & Sounds", date: "6th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#0d9488", rules: ["Each student will get 10 letters. They have to tell within 2 minutes.","Students must orally tell the name of the letters and sounds of each letter shown on the TV screen. They may skip a letter if they do not know the letter name or sound.",'Say "Next" or "Skip" if you want to skip the letter.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
-  2: { name: "Group 2", topic: "CVC and Sight Words", date: "6th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#e11d48", rules: ["Each student will get 10 words. They have to say the words within 2 minutes.","Students must orally say the words shown on the TV screen. They may skip a word if they do not know.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
-  3: { name: "Group 3", topic: "Short Sentences", date: "7th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 180, totalQuestions: 8, color: "#6366f1", rules: ["Each student will get 8 sentences. They have to say the sentences within 3 minutes.","Students must orally say the sentences shown on the TV screen. They may skip a sentence if they don't know.",'Say "Next" or "Skip" if you want to skip the sentence.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
-  4: { name: "Group 4", topic: "Past to Present Tense", date: "7th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 60, totalQuestions: 10, color: "#f59e0b", rules: ["Each student will get 1 minute.","Each student will get 10 words.","Students must orally say the past tense of each word shown on the TV screen. They may skip a word if they do not know the answer.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]}
+let supabase = null;
+let useSupabase = false;
+
+function updateDbStatus(connected) {
+    const dot = document.getElementById('dbStatusDot');
+    const text = document.getElementById('dbStatusText');
+    if (connected) { dot.classList.remove('offline'); text.textContent = '☁️ Cloud Connected'; } 
+    else { dot.classList.add('offline'); text.textContent = '💻 Local Mode (Safe)'; }
+}
+
+try {
+    if (window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        useSupabase = true;
+        updateDbStatus(true);
+    } else {
+        updateDbStatus(false);
+    }
+} catch (e) {
+    console.warn('Supabase init failed, using local mode:', e);
+    useSupabase = false;
+    updateDbStatus(false);
+}
+
+const GROUPS = {
+    1: { name: "Group 1", topic: "Letters & Sounds", date: "6th Oct 2026", time: "13:30", location: "Hall", totalTime: 120, totalQuestions: 10, color: "#0d9488", rules: ["Each student gets 10 letters. Tell within 2 minutes.","Orally tell the name and sounds of each letter.","Say 'Next' or 'Skip' to skip a letter.","Top 5 highest marks go to finals.","1st, 2nd, 3rd chosen from top 5."] },
+    2: { name: "Group 2", topic: "CVC and Sight Words", date: "6th Oct 2026", time: "13:00", location: "Hall", totalTime: 120, totalQuestions: 10, color: "#e11d48", rules: ["Each student gets 10 words. Say within 2 minutes.","Orally say the words shown on screen.","Say 'Next' or 'Skip' to skip.","Top 5 highest marks go to finals.","1st, 2nd, 3rd chosen from top 5."] },
+    3: { name: "Group 3", topic: "Short Sentences", date: "7th Oct 2026", time: "13:00", location: "Hall", totalTime: 180, totalQuestions: 8, color: "#6366f1", rules: ["Each student gets 8 sentences. Say within 3 minutes.","Orally say the sentences shown on screen.","Say 'Next' or 'Skip' to skip.","Top 5 highest marks go to finals.","1st, 2nd, 3rd chosen from top 5."] },
+    4: { name: "Group 4", topic: "Past to Present Tense", date: "7th Oct 2026", time: "13:30", location: "Hall", totalTime: 60, totalQuestions: 10, color: "#f59e0b", rules: ["Each student gets 1 minute.","Each student gets 10 words.","Orally say the past tense of each word.","Say 'Next' or 'Skip' to skip.","Top 5 highest marks go to finals.","1st, 2nd, 3rd chosen from top 5."] }
 };
 
-var QUESTION_POOLS = {
-  1: [
-    {display:"A a",answer:"A",type:"letter"},{display:"B b",answer:"B",type:"letter"},{display:"C c",answer:"C",type:"letter"},
-    {display:"D d",answer:"D",type:"letter"},{display:"E e",answer:"E",type:"letter"},{display:"F f",answer:"F",type:"letter"},
-    {display:"G g",answer:"G",type:"letter"},{display:"H h",answer:"H",type:"letter"},{display:"I i",answer:"I",type:"letter"},
-    {display:"J j",answer:"J",type:"letter"},{display:"K k",answer:"K",type:"letter"},{display:"L l",answer:"L",type:"letter"},
-    {display:"M m",answer:"M",type:"letter"},{display:"N n",answer:"N",type:"letter"},{display:"O o",answer:"O",type:"letter"},
-    {display:"P p",answer:"P",type:"letter"},{display:"Q q",answer:"Q",type:"letter"},{display:"R r",answer:"R",type:"letter"},
-    {display:"S s",answer:"S",type:"letter"},{display:"T t",answer:"T",type:"letter"},{display:"U u",answer:"U",type:"letter"},
-    {display:"V v",answer:"V",type:"letter"},{display:"W w",answer:"W",type:"letter"},{display:"X x",answer:"X",type:"letter"},
-    {display:"Y y",answer:"Y",type:"letter"},{display:"Z z",answer:"Z",type:"letter"}
-  ],
-  2: [
-    {display:"cat",answer:"cat",type:"word"},{display:"zag",answer:"zag",type:"word"},{display:"ham",answer:"ham",type:"word"},
-    {display:"sap",answer:"sap",type:"word"},{display:"wax",answer:"wax",type:"word"},{display:"mad",answer:"mad",type:"word"},
-    {display:"dad",answer:"dad",type:"word"},{display:"yam",answer:"yam",type:"word"},{display:"had",answer:"had",type:"word"},
-    {display:"has",answer:"has",type:"word"},{display:"vet",answer:"vet",type:"word"},{display:"leg",answer:"leg",type:"word"},
-    {display:"jet",answer:"jet",type:"word"},{display:"pet",answer:"pet",type:"word"},{display:"ten",answer:"ten",type:"word"},
-    {display:"red",answer:"red",type:"word"},{display:"web",answer:"web",type:"word"},{display:"met",answer:"met",type:"word"},
-    {display:"fit",answer:"fit",type:"word"},{display:"zip",answer:"zip",type:"word"},{display:"lid",answer:"lid",type:"word"},
-    {display:"him",answer:"him",type:"word"},{display:"bin",answer:"bin",type:"word"},{display:"kit",answer:"kit",type:"word"},
-    {display:"win",answer:"win",type:"word"},{display:"rid",answer:"rid",type:"word"},{display:"got",answer:"got",type:"word"},
-    {display:"job",answer:"job",type:"word"},{display:"fox",answer:"fox",type:"word"},{display:"not",answer:"not",type:"word"},
-    {display:"pot",answer:"pot",type:"word"},{display:"sob",answer:"sob",type:"word"},{display:"cog",answer:"cog",type:"word"},
-    {display:"pop",answer:"pop",type:"word"},{display:"hum",answer:"hum",type:"word"},{display:"tub",answer:"tub",type:"word"},
-    {display:"jug",answer:"jug",type:"word"},{display:"cup",answer:"cup",type:"word"},{display:"run",answer:"run",type:"word"},
-    {display:"mug",answer:"mug",type:"word"},{display:"pup",answer:"pup",type:"word"},
-    {display:"a",answer:"a",type:"word"},{display:"an",answer:"an",type:"word"},{display:"and",answer:"and",type:"word"},
-    {display:"are",answer:"are",type:"word"},{display:"to",answer:"to",type:"word"},{display:"my",answer:"my",type:"word"},
-    {display:"on",answer:"on",type:"word"},{display:"is",answer:"is",type:"word"}
-  ],
-  3: [
-    {display:"The cat has a hot pan.",answer:"The cat has a hot pan.",type:"sentence"},
-    {display:"The kid has a big bag.",answer:"The kid has a big bag.",type:"sentence"},
-    {display:"Dan has a net.",answer:"Dan has a net.",type:"sentence"},
-    {display:"The kid likes to pet a cat.",answer:"The kid likes to pet a cat.",type:"sentence"},
-    {display:"Pin is in the tin.",answer:"Pin is in the tin.",type:"sentence"},
-    {display:"The fox is in the box.",answer:"The fox is in the box.",type:"sentence"},
-    {display:"The man can hop on the rug.",answer:"The man can hop on the rug.",type:"sentence"},
-    {display:"The cat bit a big tag.",answer:"The cat bit a big tag.",type:"sentence"},
-    {display:"The dog can dig in the sand.",answer:"The dog can dig in the sand.",type:"sentence"},
-    {display:"The kid has a pet pig.",answer:"The kid has a pet pig.",type:"sentence"},
-    {display:"Ted has a red cap.",answer:"Ted has a red cap.",type:"sentence"},
-    {display:"Ben met his pet hen.",answer:"Ben met his pet hen.",type:"sentence"},
-    {display:"The man can fix the red van.",answer:"The man can fix the red van.",type:"sentence"},
-    {display:"The lid is on the bin.",answer:"The lid is on the bin.",type:"sentence"},
-    {display:"The cat ran to the log.",answer:"The cat ran to the log.",type:"sentence"},
-    {display:"Sam is my cat.",answer:"Sam is my cat.",type:"sentence"},
-    {display:"The cat sat on a mat.",answer:"The cat sat on a mat.",type:"sentence"},
-    {display:"Tom had a nap.",answer:"Tom had a nap.",type:"sentence"},
-    {display:"A man has a map.",answer:"A man has a map.",type:"sentence"},
-    {display:"The hen has a big red hat.",answer:"The hen has a big red hat.",type:"sentence"},
-    {display:"The cat is on the bed.",answer:"The cat is on the bed.",type:"sentence"},
-    {display:"The pigs are in the pan.",answer:"The pigs are in the pan.",type:"sentence"},
-    {display:"The dog can sit on the rug.",answer:"The dog can sit on the rug.",type:"sentence"},
-    {display:"The man is at the bus.",answer:"The man is at the bus.",type:"sentence"},
-    {display:"The dog has a big bed.",answer:"The dog has a big bed.",type:"sentence"},
-    {display:"The hen sat in the sun.",answer:"The hen sat in the sun.",type:"sentence"},
-    {display:"The dog can hop and run.",answer:"The dog can hop and run.",type:"sentence"},
-    {display:"She eats an egg.",answer:"She eats an egg.",type:"sentence"},
-    {display:"The big pig ran in the mud.",answer:"The big pig ran in the mud.",type:"sentence"},
-    {display:"The hen sat on a log.",answer:"The hen sat on a log.",type:"sentence"}
-  ],
-  4: [
-    {display:"walk",answer:"walked",type:"word"},{display:"talk",answer:"talked",type:"word"},{display:"wash",answer:"washed",type:"word"},
-    {display:"play",answer:"played",type:"word"},{display:"burn",answer:"burned",type:"word"},{display:"watch",answer:"watched",type:"word"},
-    {display:"jump",answer:"jumped",type:"word"},{display:"clean",answer:"cleaned",type:"word"},{display:"look",answer:"looked",type:"word"},
-    {display:"wish",answer:"wished",type:"word"},{display:"cook",answer:"cooked",type:"word"},{display:"open",answer:"opened",type:"word"},
-    {display:"ride",answer:"rode",type:"word"},{display:"read",answer:"read",type:"word"},{display:"run",answer:"ran",type:"word"},
-    {display:"cut",answer:"cut",type:"word"},{display:"come",answer:"came",type:"word"},{display:"catch",answer:"caught",type:"word"},
-    {display:"do",answer:"did",type:"word"},{display:"buy",answer:"bought",type:"word"},{display:"fly",answer:"flew",type:"word"},
-    {display:"take",answer:"took",type:"word"},{display:"speak",answer:"spoke",type:"word"},{display:"drink",answer:"drank",type:"word"},
-    {display:"get",answer:"got",type:"word"},{display:"sleep",answer:"slept",type:"word"},{display:"put",answer:"put",type:"word"},
-    {display:"tell",answer:"told",type:"word"},{display:"go",answer:"went",type:"word"},{display:"accept",answer:"accepted",type:"word"},
-    {display:"correct",answer:"corrected",type:"word"},{display:"dance",answer:"danced",type:"word"},{display:"cry",answer:"cried",type:"word"},
-    {display:"answer",answer:"answered",type:"word"},{display:"rain",answer:"rained",type:"word"},{display:"pack",answer:"packed",type:"word"},
-    {display:"finish",answer:"finished",type:"word"},{display:"listen",answer:"listened",type:"word"},{display:"enjoy",answer:"enjoyed",type:"word"},
-    {display:"work",answer:"worked",type:"word"},{display:"call",answer:"called",type:"word"},{display:"break",answer:"broke",type:"word"},
-    {display:"rid",answer:"rid",type:"word"},{display:"grow",answer:"grew",type:"word"},{display:"have",answer:"had",type:"word"},
-    {display:"use",answer:"used",type:"word"},{display:"find",answer:"found",type:"word"},{display:"eat",answer:"ate",type:"word"},
-    {display:"fall",answer:"fell",type:"word"}
-  ]
+const QUESTION_POOLS = {
+    1: [{display:"A a",answer:"A",type:"letter"},{display:"B b",answer:"B",type:"letter"},{display:"C c",answer:"C",type:"letter"},{display:"D d",answer:"D",type:"letter"},{display:"E e",answer:"E",type:"letter"},{display:"F f",answer:"F",type:"letter"},{display:"G g",answer:"G",type:"letter"},{display:"H h",answer:"H",type:"letter"},{display:"I i",answer:"I",type:"letter"},{display:"J j",answer:"J",type:"letter"},{display:"K k",answer:"K",type:"letter"},{display:"L l",answer:"L",type:"letter"},{display:"M m",answer:"M",type:"letter"},{display:"N n",answer:"N",type:"letter"},{display:"O o",answer:"O",type:"letter"},{display:"P p",answer:"P",type:"letter"},{display:"Q q",answer:"Q",type:"letter"},{display:"R r",answer:"R",type:"letter"},{display:"S s",answer:"S",type:"letter"},{display:"T t",answer:"T",type:"letter"},{display:"U u",answer:"U",type:"letter"},{display:"V v",answer:"V",type:"letter"},{display:"W w",answer:"W",type:"letter"},{display:"X x",answer:"X",type:"letter"},{display:"Y y",answer:"Y",type:"letter"},{display:"Z z",answer:"Z",type:"letter"}],
+    2: [{display:"cat",answer:"cat",type:"word"},{display:"zag",answer:"zag",type:"word"},{display:"ham",answer:"ham",type:"word"},{display:"sap",answer:"sap",type:"word"},{display:"wax",answer:"wax",type:"word"},{display:"mad",answer:"mad",type:"word"},{display:"dad",answer:"dad",type:"word"},{display:"yam",answer:"yam",type:"word"},{display:"had",answer:"had",type:"word"},{display:"has",answer:"has",type:"word"},{display:"vet",answer:"vet",type:"word"},{display:"leg",answer:"leg",type:"word"},{display:"jet",answer:"jet",type:"word"},{display:"pet",answer:"pet",type:"word"},{display:"ten",answer:"ten",type:"word"},{display:"red",answer:"red",type:"word"},{display:"web",answer:"web",type:"word"},{display:"met",answer:"met",type:"word"},{display:"fit",answer:"fit",type:"word"},{display:"zip",answer:"zip",type:"word"},{display:"lid",answer:"lid",type:"word"},{display:"him",answer:"him",type:"word"},{display:"bin",answer:"bin",type:"word"},{display:"kit",answer:"kit",type:"word"},{display:"win",answer:"win",type:"word"},{display:"rid",answer:"rid",type:"word"},{display:"got",answer:"got",type:"word"},{display:"job",answer:"job",type:"word"},{display:"fox",answer:"fox",type:"word"},{display:"not",answer:"not",type:"word"},{display:"pot",answer:"pot",type:"word"},{display:"sob",answer:"sob",type:"word"},{display:"cog",answer:"cog",type:"word"},{display:"pop",answer:"pop",type:"word"},{display:"hum",answer:"hum",type:"word"},{display:"tub",answer:"tub",type:"word"},{display:"jug",answer:"jug",type:"word"},{display:"cup",answer:"cup",type:"word"},{display:"run",answer:"run",type:"word"},{display:"mug",answer:"mug",type:"word"},{display:"pup",answer:"pup",type:"word"},{display:"a",answer:"a",type:"word"},{display:"an",answer:"an",type:"word"},{display:"and",answer:"and",type:"word"},{display:"are",answer:"are",type:"word"},{display:"to",answer:"to",type:"word"},{display:"my",answer:"my",type:"word"},{display:"on",answer:"on",type:"word"},{display:"is",answer:"is",type:"word"}],
+    3: [{display:"The cat has a hot pan.",answer:"The cat has a hot pan.",type:"sentence"},{display:"The kid has a big bag.",answer:"The kid has a big bag.",type:"sentence"},{display:"Dan has a net.",answer:"Dan has a net.",type:"sentence"},{display:"The kid likes to pet a cat.",answer:"The kid likes to pet a cat.",type:"sentence"},{display:"Pin is in the tin.",answer:"Pin is in the tin.",type:"sentence"},{display:"The fox is in the box.",answer:"The fox is in the box.",type:"sentence"},{display:"The man can hop on the rug.",answer:"The man can hop on the rug.",type:"sentence"},{display:"The cat bit a big tag.",answer:"The cat bit a big tag.",type:"sentence"},{display:"The dog can dig in the sand.",answer:"The dog can dig in the sand.",type:"sentence"},{display:"The kid has a pet pig.",answer:"The kid has a pet pig.",type:"sentence"},{display:"Ted has a red cap.",answer:"Ted has a red cap.",type:"sentence"},{display:"Ben met his pet hen.",answer:"Ben met his pet hen.",type:"sentence"},{display:"The man can fix the red van.",answer:"The man can fix the red van.",type:"sentence"},{display:"The lid is on the bin.",answer:"The lid is on the bin.",type:"sentence"},{display:"The cat ran to the log.",answer:"The cat ran to the log.",type:"sentence"},{display:"Sam is my cat.",answer:"Sam is my cat.",type:"sentence"},{display:"The cat sat on a mat.",answer:"The cat sat on a mat.",type:"sentence"},{display:"Tom had a nap.",answer:"Tom had a nap.",type:"sentence"},{display:"A man has a map.",answer:"A man has a map.",type:"sentence"},{display:"The hen has a big red hat.",answer:"The hen has a big red hat.",type:"sentence"},{display:"The cat is on the bed.",answer:"The cat is on the bed.",type:"sentence"},{display:"The pigs are in the pan.",answer:"The pigs are in the pan.",type:"sentence"},{display:"The dog can sit on the rug.",answer:"The dog can sit on the rug.",type:"sentence"},{display:"The man is at the bus.",answer:"The man is at the bus.",type:"sentence"},{display:"The dog has a big bed.",answer:"The dog has a big bed.",type:"sentence"},{display:"The hen sat in the sun.",answer:"The hen sat in the sun.",type:"sentence"},{display:"The dog can hop and run.",answer:"The dog can hop and run.",type:"sentence"},{display:"She eats an egg.",answer:"She eats an egg.",type:"sentence"},{display:"The big pig ran in the mud.",answer:"The big pig ran in the mud.",type:"sentence"},{display:"The hen sat on a log.",answer:"The hen sat on a log.",type:"sentence"}],
+    4: [{display:"walk",answer:"walked",type:"word"},{display:"talk",answer:"talked",type:"word"},{display:"wash",answer:"washed",type:"word"},{display:"play",answer:"played",type:"word"},{display:"burn",answer:"burned",type:"word"},{display:"watch",answer:"watched",type:"word"},{display:"jump",answer:"jumped",type:"word"},{display:"clean",answer:"cleaned",type:"word"},{display:"look",answer:"looked",type:"word"},{display:"wish",answer:"wished",type:"word"},{display:"cook",answer:"cooked",type:"word"},{display:"open",answer:"opened",type:"word"},{display:"ride",answer:"rode",type:"word"},{display:"read",answer:"read",type:"word"},{display:"run",answer:"ran",type:"word"},{display:"cut",answer:"cut",type:"word"},{display:"come",answer:"came",type:"word"},{display:"catch",answer:"caught",type:"word"},{display:"do",answer:"did",type:"word"},{display:"buy",answer:"bought",type:"word"},{display:"fly",answer:"flew",type:"word"},{display:"take",answer:"took",type:"word"},{display:"speak",answer:"spoke",type:"word"},{display:"drink",answer:"drank",type:"word"},{display:"get",answer:"got",type:"word"},{display:"sleep",answer:"slept",type:"word"},{display:"put",answer:"put",type:"word"},{display:"tell",answer:"told",type:"word"},{display:"go",answer:"went",type:"word"},{display:"accept",answer:"accepted",type:"word"},{display:"correct",answer:"corrected",type:"word"},{display:"dance",answer:"danced",type:"word"},{display:"cry",answer:"cried",type:"word"},{display:"answer",answer:"answered",type:"word"},{display:"rain",answer:"rained",type:"word"},{display:"pack",answer:"packed",type:"word"},{display:"finish",answer:"finished",type:"word"},{display:"listen",answer:"listened",type:"word"},{display:"enjoy",answer:"enjoyed",type:"word"},{display:"work",answer:"worked",type:"word"},{display:"call",answer:"called",type:"word"},{display:"break",answer:"broke",type:"word"},{display:"rid",answer:"rid",type:"word"},{display:"grow",answer:"grew",type:"word"},{display:"have",answer:"had",type:"word"},{display:"use",answer:"used",type:"word"},{display:"find",answer:"found",type:"word"},{display:"eat",answer:"ate",type:"word"},{display:"fall",answer:"fell",type:"word"}]
 };
 
-var INITIAL_STUDENTS = [
-  {id:1,name:"Niha",cls:"",idNum:"",group:1},
-  {id:2,name:"Adam Nafaah",cls:"6B",idNum:"",group:1},
-  {id:3,name:"Naheek",cls:"",idNum:"",group:1},
-  {id:4,name:"Raahin",cls:"",idNum:"",group:1},
-  {id:5,name:"Aika",cls:"",idNum:"",group:1},
-  {id:6,name:"Shiura",cls:"",idNum:"",group:1},
-  {id:7,name:"Azin",cls:"",idNum:"",group:1},
-  {id:8,name:"Aain",cls:"",idNum:"",group:1},
-  {id:9,name:"Azoof",cls:"",idNum:"",group:1},
-  {id:10,name:"Alaau",cls:"",idNum:"",group:1},
-  {id:11,name:"Sunooh",cls:"",idNum:"",group:1},
-  {id:12,name:"Shadaf",cls:"",idNum:"",group:1},
-  {id:13,name:"Nooh",cls:"",idNum:"",group:1},
-  {id:14,name:"Jool",cls:"",idNum:"",group:1},
-  {id:15,name:"Ishfaan",cls:"",idNum:"",group:1},
-  {id:16,name:"Zukaan",cls:"",idNum:"",group:1},
-  {id:17,name:"Mauil",cls:"",idNum:"",group:1},
-  {id:18,name:"Ma'aan",cls:"",idNum:"",group:1},
-  {id:19,name:"Ayyoob",cls:"",idNum:"",group:1},
-  {id:20,name:"Aarish",cls:"",idNum:"",group:1},
-  {id:21,name:"Shabeen",cls:"",idNum:"",group:2},
-  {id:22,name:"Naavith",cls:"",idNum:"",group:2},
-  {id:23,name:"Yalvy",cls:"",idNum:"",group:2},
-  {id:24,name:"Ausaf",cls:"",idNum:"",group:2},
-  {id:25,name:"Siraau",cls:"",idNum:"",group:2},
-  {id:26,name:"Yana",cls:"",idNum:"",group:2},
-  {id:27,name:"Baasil",cls:"",idNum:"",group:2},
-  {id:28,name:"Ali Ahmed",cls:"LKG",idNum:"",group:2},
-  {id:29,name:"Reez",cls:"",idNum:"",group:3},
-  {id:30,name:"Yumaan",cls:"",idNum:"",group:3},
-  {id:31,name:"Raamin",cls:"",idNum:"",group:3},
-  {id:32,name:"Yooaan",cls:"",idNum:"",group:3},
-  {id:33,name:"Nafaah",cls:"3C",idNum:"",group:3},
-  {id:34,name:"Ma'aal",cls:"",idNum:"",group:3},
-  {id:35,name:"Mufthee",cls:"",idNum:"",group:3},
-  {id:36,name:"Adhiyaan",cls:"",idNum:"",group:3},
-  {id:37,name:"Zalaan",cls:"",idNum:"",group:3},
-  {id:38,name:"Iyaadh",cls:"",idNum:"",group:3},
-  {id:39,name:"Yana",cls:"",idNum:"",group:3},
-  {id:40,name:"Neeshaan",cls:"",idNum:"",group:3},
-  {id:41,name:"Rayn",cls:"",idNum:"",group:4},
-  {id:42,name:"Alyas",cls:"",idNum:"",group:4},
-  {id:43,name:"Jailaan",cls:"",idNum:"",group:4},
-  {id:44,name:"Arushal",cls:"",idNum:"",group:4},
-  {id:45,name:"Shiraa",cls:"",idNum:"",group:4},
-  {id:46,name:"Naash",cls:"",idNum:"",group:4},
-  {id:47,name:"Shaarif",cls:"",idNum:"",group:4},
-  {id:48,name:"Aflaak",cls:"",idNum:"",group:4},
-  {id:49,name:"Shanoon",cls:"",idNum:"",group:4},
-  {id:50,name:"Zaan",cls:"",idNum:"",group:4},
-  {id:51,name:"Saleef",cls:"",idNum:"",group:4},
-  {id:52,name:"Alyaan",cls:"",idNum:"",group:4},
-  {id:53,name:"Aluk",cls:"",idNum:"",group:4}
+let students = [];
+let results = [];
+let questionPools = {};
+let activeComp = null;
+let compTimer = null;
+
+const INITIAL_STUDENTS = [
+    {id:1,name:"Niha",class:"",idNum:"",group:1},{id:2,name:"Adam Nafaah",class:"6B",idNum:"",group:1},{id:3,name:"Naheek",class:"",idNum:"",group:1},{id:4,name:"Raahin",class:"",idNum:"",group:1},{id:5,name:"Aika",class:"",idNum:"",group:1},{id:6,name:"Shiura",class:"",idNum:"",group:1},{id:7,name:"Azin",class:"",idNum:"",group:1},{id:8,name:"Aain",class:"",idNum:"",group:1},{id:9,name:"Azoof",class:"",idNum:"",group:1},{id:10,name:"Alaau",class:"",idNum:"",group:1},{id:11,name:"Sunooh",class:"",idNum:"",group:1},{id:12,name:"Shadaf",class:"",idNum:"",group:1},{id:13,name:"Nooh",class:"",idNum:"",group:1},{id:14,name:"Jool",class:"",idNum:"",group:1},{id:15,name:"Ishfaan",class:"",idNum:"",group:1},{id:16,name:"Zukaan",class:"",idNum:"",group:1},{id:17,name:"Mauil",class:"",idNum:"",group:1},{id:18,name:"Ma'aan",class:"",idNum:"",group:1},{id:19,name:"Ayyoob",class:"",idNum:"",group:1},{id:20,name:"Aarish",class:"",idNum:"",group:1},
+    {id:21,name:"Shabeen",class:"",idNum:"",group:2},{id:22,name:"Naavith",class:"",idNum:"",group:2},{id:23,name:"Yalvy",class:"",idNum:"",group:2},{id:24,name:"Ausaf",class:"",idNum:"",group:2},{id:25,name:"Siraau",class:"",idNum:"",group:2},{id:26,name:"Yana",class:"",idNum:"",group:2},{id:27,name:"Baasil",class:"",idNum:"",group:2},{id:28,name:"Ali Ahmed",class:"LKG",idNum:"",group:2},
+    {id:29,name:"Reez",class:"",idNum:"",group:3},{id:30,name:"Yumaan",class:"",idNum:"",group:3},{id:31,name:"Raamin",class:"",idNum:"",group:3},{id:32,name:"Yooaan",class:"",idNum:"",group:3},{id:33,name:"Nafaah",class:"3C",idNum:"",group:3},{id:34,name:"Ma'aal",class:"",idNum:"",group:3},{id:35,name:"Mufthee",class:"",idNum:"",group:3},{id:36,name:"Adhiyaan",class:"",idNum:"",group:3},{id:37,name:"Zalaan",class:"",idNum:"",group:3},{id:38,name:"Iyaadh",class:"",idNum:"",group:3},{id:39,name:"Yana",class:"",idNum:"",group:3},{id:40,name:"Neeshaan",class:"",idNum:"",group:3},
+    {id:41,name:"Rayn",class:"",idNum:"",group:4},{id:42,name:"Alyas",class:"",idNum:"",group:4},{id:43,name:"Jailaan",class:"",idNum:"",group:4},{id:44,name:"Arushal",class:"",idNum:"",group:4},{id:45,name:"Shiraa",class:"",idNum:"",group:4},{id:46,name:"Naash",class:"",idNum:"",group:4},{id:47,name:"Shaarif",class:"",idNum:"",group:4},{id:48,name:"Aflaak",class:"",idNum:"",group:4},{id:49,name:"Shanoon",class:"",idNum:"",group:4},{id:50,name:"Zaan",class:"",idNum:"",group:4},{id:51,name:"Saleef",class:"",idNum:"",group:4},{id:52,name:"Alyaan",class:"",idNum:"",group:4},{id:53,name:"Aluk",class:"",idNum:"",group:4}
 ];
 
-var students = [];
-var results = [];
-var questionPools = {};
-var activeComp = null;
-var compTimer = null;
-var nextStudentId = 100;
-
-function saveStudents(){try{localStorage.setItem('fm_students',JSON.stringify(students))}catch(e){}}
-function saveResults(){try{localStorage.setItem('fm_results',JSON.stringify(results))}catch(e){}}
-function savePools(){try{localStorage.setItem('fm_pools',JSON.stringify(questionPools))}catch(e){}}
-
-function loadData(){
-  try{
-    var s = localStorage.getItem('fm_students');
-    if(s){students = JSON.parse(s)}
-    else{students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));saveStudents()}
-    var r = localStorage.getItem('fm_results');
-    results = r ? JSON.parse(r) : [];
-    var p = localStorage.getItem('fm_pools');
-    questionPools = p ? JSON.parse(p) : JSON.parse(JSON.stringify(QUESTION_POOLS));
-    nextStudentId = 100;
-    students.forEach(function(st){if(st.id >= nextStudentId) nextStudentId = st.id + 1});
-  }catch(e){
-    students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
-    results = [];
-    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-  }
+// ===== DATA LOADING (SAFE & NON-BLOCKING) =====
+function loadFromLocalStorage() {
+    students = JSON.parse(localStorage.getItem('fm_students') || 'null');
+    if (!students || students.length === 0) { students = INITIAL_STUDENTS; saveStudents(); }
+    results = JSON.parse(localStorage.getItem('fm_results') || '[]');
+    questionPools = JSON.parse(localStorage.getItem('fm_pools') || 'null') || QUESTION_POOLS;
 }
 
-function $(id){return document.getElementById(id)}
+async function loadData() {
+    if (!useSupabase) { loadFromLocalStorage(); refreshAll(); return; }
+    
+    try {
+        // Try Supabase, but with a timeout so it doesn't freeze the page
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-function showToast(msg,type){
-  type = type || 'success';
-  var c = $('toastContainer');
-  var t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.textContent = msg;
-  c.appendChild(t);
-  setTimeout(function(){if(t.parentNode) t.parentNode.removeChild(t)},3000);
-}
-
-function showPage(pageId){
-  var pages = document.querySelectorAll('.page');
-  for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
-  var target = $('page-'+pageId);
-  if(target) target.classList.add('active');
-  var navs = document.querySelectorAll('.nav-item');
-  for(var i=0;i<navs.length;i++) navs[i].classList.remove('active');
-  var activeNav = document.querySelector('.nav-item[data-page="'+pageId+'"]');
-  if(activeNav) activeNav.classList.add('active');
-  var titles = {dashboard:'📊 Dashboard',groups:' Groups',students:'👨‍ Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:'🔧 Settings'};
-  $('pageTitle').textContent = titles[pageId] || '';
-  refreshAll();
-  closeSidebar();
-  window.scrollTo(0,0);
-}
-
-function toggleSidebar(){
-  var sb = $('sidebar');
-  sb.classList.toggle('open');
-}
-function closeSidebar(){
-  $('sidebar').classList.remove('open');
-}
-
-function updateBadges(){
-  $('totalStudentsBadge').textContent = students.length;
-}
-
-function renderDashboard(){
-  var total = students.length;
-  var completedSet = {};
-  for(var i=0;i<results.length;i++){
-    var sid = results[i].studentId;
-    if(!completedSet[sid] || (results[i].score/results[i].total) > (completedSet[sid].score/completedSet[sid].total)){
-      completedSet[sid] = results[i];
+        const { data: studentsData, error: sErr } = await supabase.from('students').select('*').order('id');
+        clearTimeout(timeoutId);
+        
+        if (sErr) throw sErr;
+        if (studentsData && studentsData.length > 0) {
+            students = studentsData;
+            const { data: resultsData, error: rErr } = await supabase.from('results').select('*').order('created_at', { ascending: false });
+            if (!rErr && resultsData) results = resultsData;
+            const { data: poolsData, error: pErr } = await supabase.from('question_pools').select('*').order('group_num, id');
+            if (!pErr && poolsData) {
+                questionPools = { 1: [], 2: [], 3: [], 4: [] };
+                poolsData.forEach(q => { if (questionPools[q.group_num]) questionPools[q.group_num].push({ display: q.display, answer: q.answer, type: q.type }); });
+            }
+            updateDbStatus(true);
+        } else {
+            throw new Error("No data in cloud, tables might be empty");
+        }
+    } catch (error) {
+        console.warn('Cloud load failed, using local data:', error);
+        useSupabase = false; // Disable cloud to prevent further errors
+        updateDbStatus(false);
+        loadFromLocalStorage();
     }
-  }
-  var completedCount = Object.keys(completedSet).length;
-  var pendingCount = total - completedCount;
-  var avgScore = results.length > 0 ? Math.round(results.reduce(function(sum,r){return sum + (r.score/r.total)*100},0)/results.length) : 0;
-  $('statTotalStudents').textContent = total;
-  $('statCompleted').textContent = completedCount;
-  $('statPending').textContent = pendingCount;
-  $('statAvgScore').textContent = avgScore + '%';
-
-  var gridHTML = '';
-  for(var i=1;i<=4;i++){
-    var g = GROUPS[i];
-    var count = 0;
-    for(var j=0;j<students.length;j++){if(students[j].group === i) count++}
-    var compCount = 0;
-    for(var j=0;j<results.length;j++){if(results[j].group === i) compCount++}
-    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count"> '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
-  }
-  $('dashGroupsGrid').innerHTML = gridHTML;
-
-  var recent = results.slice().sort(function(a,b){return new Date(b.date) - new Date(a.date)}).slice(0,5);
-  var tbody = $('recentResultsBody');
-  var emptyState = $('dashEmptyState');
-  if(recent.length === 0){
-    tbody.innerHTML = '';
-    emptyState.style.display = 'block';
-  } else {
-    emptyState.style.display = 'none';
-    var html = '';
-    for(var i=0;i<recent.length;i++){
-      var r = recent[i];
-      var pct = Math.round((r.score/r.total)*100);
-      var sc = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
-      var d = new Date(r.date).toLocaleDateString();
-      html += '<tr><td><strong>'+r.studentName+'</strong></td><td>'+GROUPS[r.group].name+'</td><td class="score-cell '+sc+'">'+r.score+'/'+r.total+'</td><td>'+d+'</td><td><span class="status-badge status-completed">✅ Done</span></td></tr>';
-    }
-    tbody.innerHTML = html;
-  }
+    refreshAll();
 }
 
-function renderGroups(){
-  var html = '';
-  for(var i=1;i<=4;i++){
-    var g = GROUPS[i];
-    var count = 0;
-    for(var j=0;j<students.length;j++){if(students[j].group === i) count++}
-    html += '<div class="group-card" onclick="window.showGroupRules('+i+')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>📍 '+g.location+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span> '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();window.showGroupRules('+i+')">📋 Rules</button></div></div>';
-  }
-  $('groupsPageGrid').innerHTML = html;
-}
-
-function showGroupRules(groupNum){
-  var g = GROUPS[groupNum];
-  var colors = ['#0d9488','#e11d48','#6366f1','#f59e0b'];
-  var html = '<h4 style="margin-bottom:12px;color:'+colors[groupNum-1]+'">'+g.name+' - '+g.topic+'</h4>';
-  for(var i=0;i<g.rules.length;i++){
-    html += '<div style="display:flex;gap:10px;margin-bottom:10px;padding:10px;background:var(--bg);border-radius:8px"><div style="width:28px;height:28px;border-radius:50%;background:'+colors[groupNum-1]+';color:#fff;font-weight:800;font-size:0.82em;line-height:28px;text-align:center;flex-shrink:0">'+(i+1)+'</div><div style="font-size:0.9em;color:var(--text);line-height:1.4">'+g.rules[i]+'</div></div>';
-  }
-  $('groupRulesContent').innerHTML = html;
-}
-
-function renderStudents(){
-  var filterGroup = $('filterGroup').value;
-  var search = $('searchStudent').value.toLowerCase();
-  var filtered = [];
-  for(var i=0;i<students.length;i++){
-    var s = students[i];
-    var matchGroup = filterGroup === 'all' || s.group == filterGroup;
-    var matchSearch = s.name.toLowerCase().indexOf(search) !== -1 || (s.cls||'').toLowerCase().indexOf(search) !== -1;
-    if(matchGroup && matchSearch) filtered.push(s);
-  }
-  var tbody = $('studentsTableBody');
-  var empty = $('studentsEmpty');
-  if(filtered.length === 0){
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-  var html = '';
-  for(var i=0;i<filtered.length;i++){
-    var s = filtered[i];
-    var result = null;
-    for(var j=0;j<results.length;j++){if(results[j].studentId === s.id){result = results[j];break}}
-    var status = result ? 'completed' : 'pending';
-    var scoreText = result ? result.score+'/'+result.total : '-';
-    var pct = result ? Math.round((result.score/result.total)*100) : 0;
-    var scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':' Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">️</button></div></td></tr>';
-  }
-  tbody.innerHTML = html;
-}
-
-function openAddStudentModal(){
-  $('modalTitle').textContent = '➕ Add New Student';
-  $('editStudentId').value = '';
-  $('studentName').value = '';
-  $('studentClass').value = '';
-  $('studentIdNum').value = '';
-  $('studentGroup').value = '1';
-  $('studentModal').classList.add('active');
-}
-
-function editStudent(id){
-  var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === id){student = students[i];break}}
-  if(!student) return;
-  $('modalTitle').textContent = '️ Edit Student';
-  $('editStudentId').value = student.id;
-  $('studentName').value = student.name;
-  $('studentClass').value = student.cls;
-  $('studentIdNum').value = student.idNum || '';
-  $('studentGroup').value = student.group;
-  $('studentModal').classList.add('active');
-}
-
-function closeModal(id){
-  $(id).classList.remove('active');
-}
-
-function saveStudent(){
-  var id = $('editStudentId').value;
-  var name = $('studentName').value.trim();
-  var cls = $('studentClass').value.trim();
-  var idNum = $('studentIdNum').value.trim();
-  var group = parseInt($('studentGroup').value);
-  if(!name || !cls){showToast('Please fill in name and class','error');return}
-  if(id){
-    var idx = -1;
-    for(var i=0;i<students.length;i++){if(students[i].id == id){idx=i;break}}
-    if(idx !== -1){students[idx].name = name;students[idx].cls = cls;students[idx].idNum = idNum;students[idx].group = group;showToast('✅ Student updated','success')}
-  } else {
-    students.push({id:nextStudentId++,name:name,cls:cls,idNum:idNum,group:group});
-    showToast('✅ '+name+' added to '+GROUPS[group].name,'success');
-  }
-  saveStudents();
-  closeModal('studentModal');
-  refreshAll();
-}
-
-function deleteStudent(id){
-  if(!confirm('Delete this student?')) return;
-  students = students.filter(function(s){return s.id !== id});
-  results = results.filter(function(r){return r.studentId !== id});
-  saveStudents();saveResults();
-  showToast('Student deleted','success');
-  refreshAll();
-}
-
-function updateCompStudents(){
-  var group = $('compGroupSelect').value;
-  var select = $('compStudentSelect');
-  select.innerHTML = '<option value="">-- Choose Student --</option>';
-  if(!group) return;
-  var groupStudents = students.filter(function(s){return s.group == group});
-  if(groupStudents.length === 0){
-    select.innerHTML = '<option value="">No students in this group</option>';
-    return;
-  }
-  for(var i=0;i<groupStudents.length;i++){
-    var s = groupStudents[i];
-    var hasResult = results.some(function(r){return r.studentId === s.id});
-    select.innerHTML += '<option value="'+s.id+'">'+s.name+(s.cls?' ('+s.cls+')':'')+(hasResult?' ✅':'')+'</option>';
-  }
-}
-
-function quickStart(groupNum){
-  $('compGroupSelect').value = groupNum;
-  updateCompStudents();
-  showPage('compete');
-}
-
-function quickStartStudent(studentId){
-  var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === studentId){student = students[i];break}}
-  if(!student) return;
-  $('compGroupSelect').value = student.group;
-  updateCompStudents();
-  $('compStudentSelect').value = studentId;
-  showPage('compete');
-}
-
-function launchCompetition(){
-  var groupNum = parseInt($('compGroupSelect').value);
-  var studentId = parseInt($('compStudentSelect').value);
-  if(!groupNum || !studentId){showToast('Please select group and student','error');return}
-  var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === studentId){student = students[i];break}}
-  if(!student){showToast('Student not found','error');return}
-  var group = GROUPS[groupNum];
-  var pool = questionPools[groupNum] || QUESTION_POOLS[groupNum];
-  if(!pool || pool.length === 0){showToast('No questions available','error');return}
-  var shuffled = pool.slice().sort(function(){return Math.random()-0.5});
-  var selected = shuffled.slice(0,group.totalQuestions);
-  activeComp = {
-    studentId:studentId,
-    studentName:student.name,
-    studentClass:student.cls,
-    group:groupNum,
-    questions:selected,
-    currentIndex:0,
-    answers:selected.map(function(){return {status:'pending'}}),
-    score:0,
-    timeLeft:group.totalTime,
-    startTime:new Date().toISOString()
-  };
-  $('fsCompTitle').textContent = group.name+' - '+group.topic;
-  $('fsCompStudent').textContent = ' '+student.name+(student.cls?' | '+student.cls:'');
-  $('fullscreenComp').classList.add('active');
-  loadCompQuestion();
-  startCompTimer();
-  try{
-    if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen().catch(function(){})}
-  }catch(e){}
-}
-
-function loadCompQuestion(){
-  var q = activeComp.questions[activeComp.currentIndex];
-  var total = activeComp.questions.length;
-  var idx = activeComp.currentIndex;
-  $('fsQNumber').textContent = 'Q'+(idx+1)+'/'+total;
-  var wordEl = $('fsQWord');
-  wordEl.textContent = q.display;
-  wordEl.className = 'fs-q-word';
-  if(q.type === 'letter') wordEl.classList.add('size-letter');
-  else if(q.type === 'sentence') wordEl.classList.add('size-sentence');
-  else wordEl.classList.add('size-word');
-  var progress = (idx/total)*100;
-  $('fsProgress').style.width = progress+'%';
-  $('fsProgressText').textContent = 'Question '+(idx+1)+' of '+total;
-  $('fsScore').textContent = activeComp.score;
-}
-
-function markCompAnswer(status){
-  if(!activeComp) return;
-  var idx = activeComp.currentIndex;
-  activeComp.answers[idx] = {status:status,question:activeComp.questions[idx].display,correctAnswer:activeComp.questions[idx].answer};
-  if(status === 'correct'){activeComp.score++;$('fsScore').textContent = activeComp.score}
-  var card = $('fsQuestionCard');
-  var colors = {correct:'#16a34a',wrong:'#dc2626',skipped:'#f59e0b'};
-  card.style.boxShadow = '0 0 0 5px '+colors[status]+', 0 30px 80px rgba(0,0,0,0.4)';
-  setTimeout(function(){card.style.boxShadow = ''},350);
-  setTimeout(function(){
-    if(idx < activeComp.questions.length - 1){activeComp.currentIndex++;loadCompQuestion()}
-    else{finishCompetition()}
-  },280);
-}
-
-function startCompTimer(){
-  updateCompTimerDisplay();
-  compTimer = setInterval(function(){
-    if(!activeComp){clearInterval(compTimer);return}
-    activeComp.timeLeft--;
-    updateCompTimerDisplay();
-    if(activeComp.timeLeft <= 0){clearInterval(compTimer);finishCompetition()}
-  },1000);
-}
-
-function updateCompTimerDisplay(){
-  var m = Math.floor(activeComp.timeLeft/60);
-  var s = activeComp.timeLeft%60;
-  var display = m+':'+(s<10?'0':'')+s;
-  var el = $('fsTimer');
-  el.textContent = display;
-  if(activeComp.timeLeft <= 10) el.classList.add('warning');
-  else el.classList.remove('warning');
-}
-
-function finishCompetition(){
-  if(compTimer){clearInterval(compTimer);compTimer = null}
-  if(!activeComp) return;
-  var resultData = {
-    id:Date.now(),
-    studentId:activeComp.studentId,
-    studentName:activeComp.studentName,
-    studentClass:activeComp.studentClass,
-    group:activeComp.group,
-    score:activeComp.score,
-    total:activeComp.questions.length,
-    answers:activeComp.answers,
-    date:new Date().toISOString(),
-    duration:GROUPS[activeComp.group].totalTime - activeComp.timeLeft
-  };
-  results.push(resultData);
-  saveResults();
-  try{if(document.exitFullscreen){document.exitFullscreen().catch(function(){})}}catch(e){}
-  $('fullscreenComp').classList.remove('active');
-  var savedComp = activeComp;
-  activeComp = null;
-  showToast('🏆 Competition completed!','success');
-  refreshAll();
-  setTimeout(function(){showResultDetail(resultData)},400);
-}
-
-function quitCompetition(){
-  if(!confirm('Quit this competition? Progress will be lost.')) return;
-  if(compTimer){clearInterval(compTimer);compTimer = null}
-  try{if(document.exitFullscreen){document.exitFullscreen().catch(function(){})}}catch(e){}
-  $('fullscreenComp').classList.remove('active');
-  activeComp = null;
-  showToast('Competition quit','error');
-}
-
-function renderResults(){
-  var filterGroup = $('resultFilterGroup').value;
-  var search = $('resultSearch').value.toLowerCase();
-  var filtered = results.filter(function(r){
-    var matchGroup = filterGroup === 'all' || r.group == filterGroup;
-    var matchSearch = r.studentName.toLowerCase().indexOf(search) !== -1;
-    return matchGroup && matchSearch;
-  });
-  filtered.sort(function(a,b){return new Date(b.date) - new Date(a.date)});
-  var tbody = $('resultsTableBody');
-  var empty = $('resultsEmpty');
-  if(filtered.length === 0){tbody.innerHTML = '';empty.style.display = 'block';return}
-  empty.style.display = 'none';
-  var html = '';
-  for(var i=0;i<filtered.length;i++){
-    var r = filtered[i];
-    var pct = Math.round((r.score/r.total)*100);
-    var sc = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
-    var d = new Date(r.date).toLocaleString();
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+r.studentName+'</strong></td><td>'+r.studentClass+'</td><td><span style="color:'+GROUPS[r.group].color+';font-weight:700">'+GROUPS[r.group].name+'</span></td><td class="score-cell '+sc+'">'+r.score+'/'+r.total+'</td><td><strong>'+pct+'%</strong></td><td>'+d+'</td><td><button class="btn btn-sm btn-primary" onclick="window.showResultDetailById('+r.id+')">️ View</button><button class="btn btn-sm btn-danger" onclick="window.deleteResult('+r.id+')">🗑️</button></td></tr>';
-  }
-  tbody.innerHTML = html;
-}
-
-function showResultDetailById(id){
-  var result = null;
-  for(var i=0;i<results.length;i++){if(results[i].id === id){result = results[i];break}}
-  if(result) showResultDetail(result);
-}
-
-function showResultDetail(result){
-  var pct = Math.round((result.score/result.total)*100);
-  var message = '';
-  if(pct >= 80) message = '🌟 Excellent! Outstanding performance!';
-  else if(pct >= 50) message = '👍 Good job! Keep practicing!';
-  else message = '💪 Keep trying! Practice makes perfect!';
-  var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px">📝 Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
-  for(var i=0;i<result.answers.length;i++){
-    var a = result.answers[i];
-    var cls = a.status === 'correct' ? 'bi-correct' : (a.status === 'wrong' ? 'bi-wrong' : 'bi-skipped');
-    var statusText = a.status === 'correct' ? '✅ Correct (+1)' : (a.status === 'wrong' ? '❌ Wrong (0)' : '⏭️ Skipped (0)');
-    html += '<li class="breakdown-item '+cls+'"><span>Q'+(i+1)+': <strong>'+a.question+'</strong></span><span class="bi-status">'+statusText+'</span></li>';
-  }
-  var d = new Date(result.date).toLocaleString();
-  html += '</ul><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:8px;font-size:0.82em;color:var(--text-light)">📅 '+d+' | ⏱ Duration: '+result.duration+'s | Total: '+result.score+'/'+result.total+' marks</div>';
-  $('resultDetailContent').innerHTML = html;
-  $('resultDetailModal').classList.add('active');
-  if(pct >= 80) launchConfetti();
-}
-
-function viewStudentResult(studentId){
-  var result = null;
-  for(var i=0;i<results.length;i++){if(results[i].studentId === studentId){result = results[i];break}}
-  if(result) showResultDetail(result);
-  else showToast('No result found for this student','error');
-}
-
-function deleteResult(id){
-  if(!confirm('Delete this result?')) return;
-  results = results.filter(function(r){return r.id !== id});
-  saveResults();
-  showToast('Result deleted','success');
-  refreshAll();
-}
-
-function clearAllResults(){
-  if(!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
-  results = [];
-  saveResults();
-  showToast('All results cleared','success');
-  refreshAll();
-}
-
-function exportResults(){
-  if(results.length === 0){showToast('No results to export','error');return}
-  var csv = 'Rank,Student Name,Class,Group,Topic,Score,Total,Percentage,Date\n';
-  var sorted = results.slice().sort(function(a,b){return (b.score/b.total)-(a.score/a.total)});
-  for(var i=0;i<sorted.length;i++){
-    var r = sorted[i];
-    var pct = Math.round((r.score/r.total)*100);
-    csv += (i+1)+',"'+r.studentName+'","'+r.studentClass+'","'+GROUPS[r.group].name+'","'+GROUPS[r.group].topic+'",'+r.score+','+r.total+','+pct+'%,"'+new Date(r.date).toLocaleString()+'"\n';
-  }
-  var blob = new Blob([csv],{type:'text/csv'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'fluent_minds_results_'+new Date().toISOString().split('T')[0]+'.csv';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('📥 Results exported!','success');
-}
-
-function renderLeaderboard(){
-  var filterGroup = $('leaderboardGroup').value;
-  var filtered = results.filter(function(r){return filterGroup === 'all' || r.group == filterGroup});
-  var bestPerStudent = {};
-  for(var i=0;i<filtered.length;i++){
-    var r = filtered[i];
-    var key = r.studentId;
-    if(!bestPerStudent[key] || (r.score/r.total) > (bestPerStudent[key].score/bestPerStudent[key].total)){
-      bestPerStudent[key] = r;
-    }
-  }
-  var sorted = Object.values(bestPerStudent).sort(function(a,b){return (b.score/b.total)-(a.score/a.total)});
-  var podium = $('leaderboardPodium');
-  var tbody = $('leaderboardBody');
-  var empty = $('leaderboardEmpty');
-  if(sorted.length === 0){podium.innerHTML = '';tbody.innerHTML = '';empty.style.display = 'block';return}
-  empty.style.display = 'none';
-  if(sorted.length >= 3){
-    podium.innerHTML = '<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
-  } else {podium.innerHTML = ''}
-  var html = '';
-  for(var i=0;i<sorted.length;i++){
-    var r = sorted[i];
-    var pct = Math.round((r.score/r.total)*100);
-    var medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : '#'+(i+1)));
-    html += '<tr><td style="font-size:1.3em">'+medal+'</td><td><strong>'+r.studentName+'</strong><br><small style="color:var(--text-light)">'+r.studentClass+'</small></td><td><span style="color:'+GROUPS[r.group].color+';font-weight:700">'+GROUPS[r.group].name+'</span></td><td class="score-cell score-high">'+r.score+'/'+r.total+'</td><td><strong>'+pct+'%</strong></td></tr>';
-  }
-  tbody.innerHTML = html;
-}
-
-function loadSettingsQuestions(){
-  var group = parseInt($('settingsGroupSelect').value);
-  var pool = questionPools[group] || QUESTION_POOLS[group];
-  var container = $('settingsQuestionsList');
-  var html = '<h4 style="margin-bottom:8px">Current Pool ('+pool.length+' questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px">';
-  for(var i=0;i<pool.length;i++){
-    var q = pool[i];
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px"><span style="font-size:0.88em"><strong>'+(i+1)+'.</strong> '+q.display+' <small style="color:var(--text-light)">→ '+q.answer+'</small></span><button class="btn btn-sm btn-danger" onclick="window.removeQuestion('+group+','+i+')">✕</button></div>';
-  }
-  html += '</div>';
-  container.innerHTML = html;
-}
-
-function addQuestionToPool(){
-  var group = parseInt($('settingsGroupSelect').value);
-  var text = $('newQuestionText').value.trim();
-  var answer = $('newQuestionAnswer').value.trim() || text;
-  if(!text){showToast('Please enter a question','error');return}
-  var type = group === 3 ? 'sentence' : (group === 1 ? 'letter' : 'word');
-  if(!questionPools[group]) questionPools[group] = [];
-  questionPools[group].push({display:text,answer:answer,type:type});
-  savePools();
-  $('newQuestionText').value = '';
-  $('newQuestionAnswer').value = '';
-  showToast('✅ Question added to pool','success');
-  loadSettingsQuestions();
-}
-
-function removeQuestion(group,index){
-  var pool = questionPools[group] || QUESTION_POOLS[group];
-  if(pool.length <= GROUPS[group].totalQuestions){showToast('Cannot remove - minimum '+GROUPS[group].totalQuestions+' questions required','error');return}
-  pool.splice(index,1);
-  savePools();
-  showToast('Question removed','success');
-  loadSettingsQuestions();
-}
-
-function resetAllData(){
-  if(!confirm('⚠️ This will delete ALL students, results, and custom questions. Continue?')) return;
-  if(!confirm('Are you absolutely sure?')) return;
-  students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
-  results = [];
-  questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-  saveStudents();saveResults();savePools();
-  showToast('All data reset','success');
-  refreshAll();
-}
-
-function launchConfetti(){
-  var container = $('confettiContainer');
-  var colors = ['#0d9488','#e11d48','#6366f1','#f59e0b','#16a34a','#ec4899','#fbbf24'];
-  for(var i=0;i<60;i++){
-    var piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    piece.style.left = Math.random()*100+'%';
-    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
-    piece.style.animationDelay = Math.random()*2+'s';
-    piece.style.animationDuration = (2+Math.random()*2)+'s';
-    piece.style.width = (5+Math.random()*8)+'px';
-    piece.style.height = (5+Math.random()*8)+'px';
-    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-    container.appendChild(piece);
-  }
-  setTimeout(function(){container.innerHTML = ''},4000);
-}
-
-function refreshAll(){
-  renderDashboard();
-  renderGroups();
-  renderStudents();
-  renderResults();
-  renderLeaderboard();
-  loadSettingsQuestions();
-  updateBadges();
-}
-
-// Expose functions to window for onclick handlers
-window.showPage = showPage;
-window.quickStart = quickStart;
-window.quickStartStudent = quickStartStudent;
-window.showGroupRules = showGroupRules;
-window.openAddStudentModal = openAddStudentModal;
-window.editStudent = editStudent;
-window.closeModal = closeModal;
-window.saveStudent = saveStudent;
-window.deleteStudent = deleteStudent;
-window.updateCompStudents = updateCompStudents;
-window.launchCompetition = launchCompetition;
-window.markCompAnswer = markCompAnswer;
-window.quitCompetition = quitCompetition;
-window.showResultDetail = showResultDetail;
-window.showResultDetailById = showResultDetailById;
-window.viewStudentResult = viewStudentResult;
-window.deleteResult = deleteResult;
-window.clearAllResults = clearAllResults;
-window.exportResults = exportResults;
-window.addQuestionToPool = addQuestionToPool;
-window.removeQuestion = removeQuestion;
-window.resetAllData = resetAllData;
-window.toggleSidebar = toggleSidebar;
-
-// Initialize on DOM ready
-document.addEventListener('DOMContentLoaded',function(){
-  $('currentDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  loadData();
-  refreshAll();
-
-  // Button event listeners
-  $('menuBtn').addEventListener('click',toggleSidebar);
-  $('addStudentBtn').addEventListener('click',openAddStudentModal);
-  $('closeStudentModal').addEventListener('click',function(){closeModal('studentModal')});
-  $('cancelStudentBtn').addEventListener('click',function(){closeModal('studentModal')});
-  $('saveStudentBtn').addEventListener('click',saveStudent);
-  $('closeResultModal').addEventListener('click',function(){closeModal('resultDetailModal')});
-  $('launchBtn').addEventListener('click',launchCompetition);
-  $('btnCorrect').addEventListener('click',function(){markCompAnswer('correct')});
-  $('btnWrong').addEventListener('click',function(){markCompAnswer('wrong')});
-  $('btnSkip').addEventListener('click',function(){markCompAnswer('skipped')});
-  $('fsExitBtn').addEventListener('click',quitCompetition);
-  $('exportBtn').addEventListener('click',exportResults);
-  $('clearResultsBtn').addEventListener('click',clearAllResults);
-  $('addQuestionBtn').addEventListener('click',addQuestionToPool);
-  $('resetDataBtn').addEventListener('click',resetAllData);
-  $('clearAllBtn').addEventListener('click',clearAllResults);
-  $('compGroupSelect').addEventListener('change',updateCompStudents);
-  $('filterGroup').addEventListener('change',renderStudents);
-  $('searchStudent').addEventListener('input',renderStudents);
-  $('resultFilterGroup').addEventListener('change',renderResults);
-  $('resultSearch').addEventListener('input',renderResults);
-  $('leaderboardGroup').addEventListener('change',renderLeaderboard);
-  $('settingsGroupSelect').addEventListener('change',loadSettingsQuestions);
-
-  // Close modals on overlay click
-  document.querySelectorAll('.modal-overlay').forEach(function(overlay){
-    overlay.addEventListener('click',function(e){
-      if(e.target === this) this.classList.remove('active');
-    });
-  });
-
-  // Close sidebar on outside click (mobile)
-  document.addEventListener('click',function(e){
-    var sidebar = $('sidebar');
-    if(window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target.id !== 'menuBtn'){
-      closeSidebar();
-    }
-  });
-
-  // Keyboard shortcuts during competition
-  document.addEventListener('keydown',function(e){
-    if(!activeComp) return;
-    if(e.key === '1' || e.key === 'c' || e.key === 'C') markCompAnswer('correct');
-    if(e.key === '2' || e.key === 'w' || e.key === 'W') markCompAnswer('wrong');
-    if(e.key === '3' || e.key === 's' || e.key === 'S') markCompAnswer('skipped');
-    if(e.key === 'Escape') quitCompetition();
-  });
+// ===== UI INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    // Load local data immediately so UI works instantly
+    loadFromLocalStorage();
+    refreshAll();
+    // Then try cloud in background
+    loadData();
 });
 
-})();
+function refreshAll() { renderDashboard(); renderGroups(); renderStudents(); renderResults(); renderLeaderboard(); loadSettingsQuestions(); updateBadges(); }
+function updateBadges() { document.getElementById('totalStudentsBadge').textContent = students.length; }
+function saveStudents() { localStorage.setItem('fm_students', JSON.stringify(students)); }
+function saveResults() { localStorage.setItem('fm_results', JSON.stringify(results)); }
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const titles = { dashboard: '📊 Dashboard', groups: '📚 Groups', students: '👨🎓 Students', compete: '🎯 Competition', results: '📋 Results', leaderboard: '🥇 Leaderboard', settings: ' Settings' };
+    document.getElementById('pageTitle').textContent = titles[pageId] || '';
+    refreshAll();
+    closeSidebar();
+    window.scrollTo(0, 0);
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
+
+function renderDashboard() {
+    const total = students.length;
+    const studentsWithResults = new Set(results.map(r => r.student_id || r.studentId)).size;
+    const pendingCount = total - studentsWithResults;
+    const avgScore = results.length > 0 ? Math.round(results.reduce((sum, r) => sum + (r.score / r.total) * 100, 0) / results.length) : 0;
+
+    document.getElementById('statTotalStudents').textContent = total;
+    document.getElementById('statCompleted').textContent = studentsWithResults;
+    document.getElementById('statPending').textContent = pendingCount;
+    document.getElementById('statAvgScore').textContent = avgScore + '%';
+
+    let gridHTML = '';
+    for (let i = 1; i <= 4; i++) {
+        const g = GROUPS[i];
+        const count = students.filter(s => s.group_num === i || s.group === i).length;
+        const compCount = results.filter(r => r.group_num === i || r.group === i).length;
+        gridHTML += `<div class="group-card" onclick="showPage('groups')"><div class="group-color-bar"></div><div class="group-icon">${['🔤','📖','💬','🔄'][i-1]}</div><h3>${g.name}</h3><p class="topic">${g.topic}</p><div class="meta"><span> ${g.date}</span><span> ${g.time}</span><span> ${g.totalTime/60} min</span><span>📝 ${g.totalQuestions} items</span></div><div class="student-count"> ${count} students | ✅ ${compCount} done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button></div>`;
+    }
+    document.getElementById('dashGroupsGrid').innerHTML = gridHTML;
+
+    const recent = [...results].sort((a,b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)).slice(0, 5);
+    const tbody = document.getElementById('recentResultsBody');
+    const emptyState = document.getElementById('dashEmptyState');
+
+    if (recent.length === 0) { tbody.innerHTML = ''; emptyState.style.display = 'block'; }
+    else {
+        emptyState.style.display = 'none';
+        tbody.innerHTML = recent.map(r => {
+            const pct = Math.round((r.score / r.total) * 100);
+            const scoreClass = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
+            return `<tr><td><strong>${r.student_name || r.studentName}</strong></td><td>${GROUPS[r.group_num || r.group].name}</td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td>${new Date(r.created_at || r.date).toLocaleDateString()}</td><td><span class="status-badge status-completed">✅ Done</span></td></tr>`;
+        }).join('');
+    }
+}
+
+function renderGroups() {
+    let gridHTML = '';
+    for (let i = 1; i <= 4; i++) {
+        const g = GROUPS[i];
+        const count = students.filter(s => s.group_num === i || s.group === i).length;
+        gridHTML += `<div class="group-card" onclick="showGroupRules(${i})"><div class="group-color-bar"></div><div class="group-icon">${['🔤','📖','','🔄'][i-1]}</div><h3>${g.name}</h3><p class="topic">${g.topic}</p><div class="meta"><span>📅 ${g.date}</span><span>🕐 ${g.time}</span><span> ${g.location}</span><span> ${g.totalTime/60} min</span><span>📝 ${g.totalQuestions} items</span></div><div class="student-count"> ${count} students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showGroupRules(${i})">📋 Rules</button></div></div>`;
+    }
+    document.getElementById('groupsPageGrid').innerHTML = gridHTML;
+}
+
+function showGroupRules(groupNum) {
+    const g = GROUPS[groupNum];
+    const colors = ['#0d9488','#e11d48','#6366f1','#f59e0b'];
+    let html = `<h4 style="margin-bottom:12px;color:${colors[groupNum-1]}">${g.name} - ${g.topic}</h4>`;
+    g.rules.forEach((rule, i) => { html += `<div style="display:flex;gap:10px;margin-bottom:10px;padding:10px;background:var(--bg);border-radius:8px;"><div style="width:28px;height:28px;border-radius:50%;background:${colors[groupNum-1]};color:white;font-weight:800;font-size:0.82em;line-height:28px;text-align:center;flex-shrink:0;">${i+1}</div><div style="font-size:0.9em;color:var(--text);line-height:1.4;">${rule}</div></div>`; });
+    document.getElementById('groupRulesContent').innerHTML = html;
+}
+
+function renderStudents() {
+    const filterGroup = document.getElementById('filterGroup').value;
+    const search = document.getElementById('searchStudent').value.toLowerCase();
+    let filtered = students.filter(s => {
+        const group = s.group_num || s.group;
+        const matchGroup = filterGroup === 'all' || group == filterGroup;
+        const matchSearch = s.name.toLowerCase().includes(search) || (s.class || '').toLowerCase().includes(search);
+        return matchGroup && matchSearch;
+    });
+
+    const tbody = document.getElementById('studentsTableBody');
+    const empty = document.getElementById('studentsEmpty');
+    if (filtered.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+
+    tbody.innerHTML = filtered.map((s, i) => {
+        const studentId = s.id;
+        const result = results.find(r => r.student_id === studentId || r.studentId === studentId);
+        const status = result ? 'completed' : 'pending';
+        const scoreText = result ? `${result.score}/${result.total}` : '-';
+        const pct = result ? Math.round((result.score/result.total)*100) : 0;
+        const scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
+        const group = s.group_num || s.group;
+        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.id_num || s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.id_num || s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Done' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${studentId})">🏆</button><button class="btn btn-sm btn-warning" onclick="editStudent(${studentId})">✏️</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${studentId})">👁️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${studentId})">🗑️</button></div></td></tr>`;
+    }).join('');
+}
+
+function openAddStudentModal() {
+    document.getElementById('modalTitle').textContent = ' Add New Student';
+    document.getElementById('editStudentId').value = '';
+    document.getElementById('studentName').value = '';
+    document.getElementById('studentClass').value = '';
+    document.getElementById('studentIdNum').value = '';
+    document.getElementById('studentGroup').value = '1';
+    document.getElementById('studentModal').classList.add('active');
+}
+
+function editStudent(id) {
+    const student = students.find(s => s.id === id);
+    if (!student) return;
+    document.getElementById('modalTitle').textContent = '️ Edit Student';
+    document.getElementById('editStudentId').value = student.id;
+    document.getElementById('studentName').value = student.name;
+    document.getElementById('studentClass').value = student.class;
+    document.getElementById('studentIdNum').value = student.id_num || student.idNum || '';
+    document.getElementById('studentGroup').value = student.group_num || student.group;
+    document.getElementById('studentModal').classList.add('active');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+async function saveStudent() {
+    const id = document.getElementById('editStudentId').value;
+    const name = document.getElementById('studentName').value.trim();
+    const cls = document.getElementById('studentClass').value.trim();
+    const idNum = document.getElementById('studentIdNum').value.trim();
+    const group = parseInt(document.getElementById('studentGroup').value);
+    if (!name || !cls) { showToast('Please fill in name and class', 'error'); return; }
+    
+    if (useSupabase) {
+        try {
+            if (id) { await supabase.from('students').update({ name, class: cls, id_num: idNum, group_num: group }).eq('id', id); } 
+            else { await supabase.from('students').insert([{ name, class: cls, id_num: idNum, group_num: group }]); }
+            showToast('✅ Saved to cloud', 'success');
+            await loadData();
+        } catch (error) {
+            console.warn('Cloud save failed, saving locally:', error);
+            useSupabase = false; updateDbStatus(false);
+            saveStudentLocal(id, name, cls, idNum, group);
+        }
+    } else { saveStudentLocal(id, name, cls, idNum, group); }
+    closeModal('studentModal');
+    refreshAll();
+}
+
+function saveStudentLocal(id, name, cls, idNum, group) {
+    if (id) { const index = students.findIndex(s => s.id == id); if (index !== -1) students[index] = { ...students[index], name, class: cls, idNum, group }; } 
+    else { students.push({ id: Date.now(), name, class: cls, idNum, group }); }
+    saveStudents();
+    showToast('✅ Saved locally', 'success');
+}
+
+async function deleteStudent(id) {
+    if (!confirm('Delete this student?')) return;
+    if (useSupabase) {
+        try { await supabase.from('students').delete().eq('id', id); await loadData(); } 
+        catch (e) { useSupabase = false; updateDbStatus(false); students = students.filter(s => s.id !== id); saveStudents(); }
+    } else { students = students.filter(s => s.id !== id); saveStudents(); }
+    refreshAll();
+}
+
+function updateCompStudents() {
+    const group = document.getElementById('compGroupSelect').value;
+    const select = document.getElementById('compStudentSelect');
+    select.innerHTML = '<option value="">-- Choose Student --</option>';
+    if (!group) return;
+    const groupStudents = students.filter(s => (s.group_num || s.group) == group);
+    if (groupStudents.length === 0) { select.innerHTML = '<option value="">No students in this group</option>'; return; }
+    groupStudents.forEach(s => {
+        const hasResult = results.some(r => r.student_id === s.id || r.studentId === s.id);
+        select.innerHTML += `<option value="${s.id}">${s.name}${s.class ? ' (' + s.class + ')' : ''}${hasResult ? ' ✅' : ''}</option>`;
+    });
+}
+
+function quickStart(groupNum) { document.getElementById('compGroupSelect').value = groupNum; updateCompStudents(); showPage('compete'); }
+function quickStartStudent(studentId) {
+    const student = students.find(s => s.id === studentId);
+    if (!student) return;
+    document.getElementById('compGroupSelect').value = student.group_num || student.group;
+    updateCompStudents();
+    document.getElementById('compStudentSelect').value = studentId;
+    showPage('compete');
+}
+
+function launchCompetition() {
+    const groupNum = parseInt(document.getElementById('compGroupSelect').value);
+    const studentId = parseInt(document.getElementById('compStudentSelect').value);
+    if (!groupNum || !studentId) { showToast('Please select group and student', 'error'); return; }
+    const student = students.find(s => s.id === studentId);
+    const group = GROUPS[groupNum];
+    const pool = questionPools[groupNum] || QUESTION_POOLS[groupNum];
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, group.totalQuestions);
+
+    activeComp = { studentId, studentName: student.name, studentClass: student.class, group: groupNum, questions: selected, currentIndex: 0, answers: selected.map(() => ({ status: 'pending' })), score: 0, timeLeft: group.totalTime };
+
+    document.getElementById('fsCompTitle').textContent = `${group.name} - ${group.topic}`;
+    document.getElementById('fsCompStudent').textContent = `👤 ${student.name}${student.class ? ' | ' + student.class : ''}`;
+    document.getElementById('fullscreenComp').classList.add('active');
+    loadCompQuestion();
+    startCompTimer();
+    if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
+}
+
+function loadCompQuestion() {
+    const q = activeComp.questions[activeComp.currentIndex];
+    const total = activeComp.questions.length;
+    const idx = activeComp.currentIndex;
+    document.getElementById('fsQNumber').textContent = `Q${idx + 1}/${total}`;
+    const wordEl = document.getElementById('fsQWord');
+    wordEl.textContent = q.display;
+    wordEl.className = 'fs-q-word';
+    if (q.type === 'letter') wordEl.classList.add('size-letter');
+    else if (q.type === 'sentence') wordEl.classList.add('size-sentence');
+    else wordEl.classList.add('size-word');
+    document.getElementById('fsProgress').style.width = ((idx / total) * 100) + '%';
+    document.getElementById('fsProgressText').textContent = `Question ${idx + 1} of ${total}`;
+    document.getElementById('fsScore').textContent = activeComp.score;
+}
+
+function markCompAnswer(status) {
+    const idx = activeComp.currentIndex;
+    activeComp.answers[idx] = { status, question: activeComp.questions[idx].display, correctAnswer: activeComp.questions[idx].answer };
+    if (status === 'correct') { activeComp.score++; document.getElementById('fsScore').textContent = activeComp.score; }
+    const card = document.getElementById('fsQuestionCard');
+    const colors = { correct: '#16a34a', wrong: '#dc2626', skipped: '#f59e0b' };
+    card.style.boxShadow = `0 0 0 5px ${colors[status]}, 0 30px 80px rgba(0,0,0,0.4)`;
+    setTimeout(() => { card.style.boxShadow = ''; }, 350);
+    setTimeout(() => {
+        if (idx < activeComp.questions.length - 1) { activeComp.currentIndex++; loadCompQuestion(); } 
+        else { finishCompetition(); }
+    }, 280);
+}
+
+function startCompTimer() {
+    updateCompTimerDisplay();
+    compTimer = setInterval(() => { activeComp.timeLeft--; updateCompTimerDisplay(); if (activeComp.timeLeft <= 0) { clearInterval(compTimer); finishCompetition(); } }, 1000);
+}
+
+function updateCompTimerDisplay() {
+    const m = Math.floor(activeComp.timeLeft / 60);
+    const s = activeComp.timeLeft % 60;
+    const el = document.getElementById('fsTimer');
+    el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+    if (activeComp.timeLeft <= 10) el.classList.add('warning'); else el.classList.remove('warning');
+}
+
+async function finishCompetition() {
+    clearInterval(compTimer);
+    const resultData = { student_id: activeComp.studentId, student_name: activeComp.studentName, student_class: activeComp.studentClass, group_num: activeComp.group, score: activeComp.score, total: activeComp.questions.length, answers: activeComp.answers, duration: GROUPS[activeComp.group].totalTime - activeComp.timeLeft, created_at: new Date().toISOString() };
+
+    if (useSupabase) {
+        try { await supabase.from('results').insert([resultData]); showToast(' Saved to cloud!', 'success'); } 
+        catch (e) { results.push({ ...resultData, id: Date.now() }); saveResults(); showToast('Saved locally', 'error'); }
+    } else { results.push({ ...resultData, id: Date.now() }); saveResults(); }
+
+    if (document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+    document.getElementById('fullscreenComp').classList.remove('active');
+    activeComp = null;
+    await loadData();
+    setTimeout(() => showResultDetail(resultData), 400);
+}
+
+function quitCompetition() {
+    if (!confirm('Quit? Progress will be lost.')) return;
+    clearInterval(compTimer);
+    if (document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+    document.getElementById('fullscreenComp').classList.remove('active');
+    activeComp = null;
+}
+
+function renderResults() {
+    const filterGroup = document.getElementById('resultFilterGroup').value;
+    const search = document.getElementById('resultSearch').value.toLowerCase();
+    let filtered = results.filter(r => {
+        const group = r.group_num || r.group;
+        const name = r.student_name || r.studentName;
+        return (filterGroup === 'all' || group == filterGroup) && name.toLowerCase().includes(search);
+    });
+    filtered.sort((a,b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
+    const tbody = document.getElementById('resultsTableBody');
+    const empty = document.getElementById('resultsEmpty');
+    if (filtered.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map((r, i) => {
+        const pct = Math.round((r.score / r.total) * 100);
+        const scoreClass = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
+        const group = r.group_num || r.group;
+        return `<tr><td>${i+1}</td><td><strong>${r.student_name || r.studentName}</strong></td><td>${r.student_class || r.studentClass}</td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td><td>${new Date(r.created_at || r.date).toLocaleString()}</td><td><button class="btn btn-sm btn-primary" onclick='showResultDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>👁️</button><button class="btn btn-sm btn-danger" onclick="deleteResult(${r.id})">🗑️</button></td></tr>`;
+    }).join('');
+}
+
+function showResultDetail(result) {
+    const pct = Math.round((result.score / result.total) * 100);
+    let message = pct >= 80 ? '🌟 Excellent!' : (pct >= 50 ? '👍 Good job!' : '💪 Keep trying!');
+    const group = result.group_num || result.group;
+    let html = `<div class="result-hero" style="background:linear-gradient(135deg, ${GROUPS[group].color}, ${GROUPS[group].color}dd);"><div class="rh-name">${result.student_name || result.studentName}</div><div class="rh-score">${result.score}/${result.total}</div><div style="font-size:1.3em;font-weight:800;">${pct}%</div><div class="rh-message">${message}</div></div><h4 style="margin-bottom:10px;">📝 Breakdown</h4><ul class="breakdown-list">`;
+    result.answers.forEach((a, i) => {
+        const cls = a.status === 'correct' ? 'bi-correct' : (a.status === 'wrong' ? 'bi-wrong' : 'bi-skipped');
+        const statusText = a.status === 'correct' ? '✅ Correct (+1)' : (a.status === 'wrong' ? '❌ Wrong (0)' : '⏭️ Skipped (0)');
+        html += `<li class="breakdown-item ${cls}"><span>Q${i+1}: <strong>${a.question}</strong></span><span class="bi-status">${statusText}</span></li>`;
+    });
+    html += `</ul>`;
+    document.getElementById('resultDetailContent').innerHTML = html;
+    document.getElementById('resultDetailModal').classList.add('active');
+    if (pct >= 80) launchConfetti();
+}
+
+function viewStudentResult(studentId) {
+    const result = results.find(r => r.student_id === studentId || r.studentId === studentId);
+    if (result) showResultDetail(result); else showToast('No result found', 'error');
+}
+
+async function deleteResult(id) {
+    if (!confirm('Delete this result?')) return;
+    if (useSupabase) { try { await supabase.from('results').delete().eq('id', id); await loadData(); } catch(e) { results = results.filter(r => r.id !== id); saveResults(); } } 
+    else { results = results.filter(r => r.id !== id); saveResults(); }
+    refreshAll();
+}
+
+async function clearAllResults() {
+    if (!confirm('⚠️ Delete ALL results?')) return;
+    if (useSupabase) { try { await supabase.from('results').delete().neq('id', 0); await loadData(); } catch(e) { results = []; saveResults(); } } 
+    else { results = []; saveResults(); }
+    refreshAll();
+}
+
+function exportResults() {
+    if (results.length === 0) { showToast('No results to export', 'error'); return; }
+    let csv = 'Rank,Student Name,Class,Group,Topic,Score,Total,Percentage,Date\n';
+    const sorted = [...results].sort((a,b) => (b.score/b.total) - (a.score/a.total));
+    sorted.forEach((r, i) => {
+        const pct = Math.round((r.score/r.total)*100);
+        const group = r.group_num || r.group;
+        csv += `${i+1},"${r.student_name || r.studentName}","${r.student_class || r.studentClass}","${GROUPS[group].name}","${GROUPS[group].topic}",${r.score},${r.total},${pct}%,${new Date(r.created_at || r.date).toLocaleString()}\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `fluent_minds_results_${new Date().toISOString().split('T')[0]}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    showToast('📥 Exported!', 'success');
+}
+
+function renderLeaderboard() {
+    const filterGroup = document.getElementById('leaderboardGroup').value;
+    let filtered = results.filter(r => filterGroup === 'all' || (r.group_num || r.group) == filterGroup);
+    const bestPerStudent = {};
+    filtered.forEach(r => { const key = r.student_id || r.studentId; if (!bestPerStudent[key] || (r.score/r.total) > (bestPerStudent[key].score/bestPerStudent[key].total)) bestPerStudent[key] = r; });
+    const sorted = Object.values(bestPerStudent).sort((a,b) => (b.score/b.total) - (a.score/a.total));
+    const podium = document.getElementById('leaderboardPodium');
+    const tbody = document.getElementById('leaderboardBody');
+    const empty = document.getElementById('leaderboardEmpty');
+    if (sorted.length === 0) { podium.innerHTML = ''; tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    if (sorted.length >= 3) {
+        podium.innerHTML = `<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">${sorted[1].student_name || sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total}</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">${sorted[0].student_name || sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total}</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">${sorted[2].student_name || sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total}</div></div>`;
+    } else { podium.innerHTML = ''; }
+    tbody.innerHTML = sorted.map((r, i) => {
+        const pct = Math.round((r.score/r.total)*100);
+        const medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `#${i+1}`));
+        const group = r.group_num || r.group;
+        return `<tr><td style="font-size:1.3em;">${medal}</td><td><strong>${r.student_name || r.studentName}</strong><br><small style="color:var(--text-light);">${r.student_class || r.studentClass}</small></td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td class="score-cell score-high">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td></tr>`;
+    }).join('');
+}
+
+function loadSettingsQuestions() {
+    const group = parseInt(document.getElementById('settingsGroupSelect').value);
+    const pool = questionPools[group] || QUESTION_POOLS[group];
+    document.getElementById('settingsQuestionsList').innerHTML = `<h4 style="margin-bottom:8px;">Current Pool (${pool.length} questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;">${pool.map((q, i) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px;"><span style="font-size:0.88em;"><strong>${i+1}.</strong> ${q.display} <small style="color:var(--text-light);">→ ${q.answer}</small></span><button class="btn btn-sm btn-danger" onclick="removeQuestion(${group}, ${i})">✕</button></div>`).join('')}</div>`;
+}
+
+async function addQuestionToPool() {
+    const group = parseInt(document.getElementById('settingsGroupSelect').value);
+    const text = document.getElementById('newQuestionText').value.trim();
+    const answer = document.getElementById('newQuestionAnswer').value.trim() || text;
+    if (!text) { showToast('Please enter a question', 'error'); return; }
+    const type = group === 3 ? 'sentence' : (group === 1 ? 'letter' : 'word');
+    if (useSupabase) {
+        try { await supabase.from('question_pools').insert([{ group_num: group, display: text, answer: answer, type: type }]); await loadData(); showToast('✅ Added to cloud', 'success'); } 
+        catch(e) { useSupabase = false; updateDbStatus(false); if(!questionPools[group]) questionPools[group]=[]; questionPools[group].push({display:text,answer:answer,type:type}); localStorage.setItem('fm_pools', JSON.stringify(questionPools)); showToast('Added locally', 'success'); }
+    } else { if(!questionPools[group]) questionPools[group]=[]; questionPools[group].push({display:text,answer:answer,type:type}); localStorage.setItem('fm_pools', JSON.stringify(questionPools)); showToast('✅ Added locally', 'success'); }
+    document.getElementById('newQuestionText').value = ''; document.getElementById('newQuestionAnswer').value = ''; loadSettingsQuestions();
+}
+
+function removeQuestion(group, index) {
+    const pool = questionPools[group] || QUESTION_POOLS[group];
+    if (pool.length <= GROUPS[group].totalQuestions) { showToast(`Minimum ${GROUPS[group].totalQuestions} required`, 'error'); return; }
+    pool.splice(index, 1); localStorage.setItem('fm_pools', JSON.stringify(questionPools)); showToast('Removed', 'success'); loadSettingsQuestions();
+}
+
+function forceLocalMode() {
+    useSupabase = false; updateDbStatus(false); loadFromLocalStorage(); refreshAll(); showToast('🔒 Switched to Local Mode', 'success');
+}
+
+async function resetAllData() {
+    if (!confirm('⚠️ Delete ALL data?')) return; if (!confirm('Are you sure?')) return;
+    if (useSupabase) { try { await supabase.from('results').delete().neq('id', 0); await supabase.from('students').delete().neq('id', 0); await loadData(); } catch(e) {} } 
+    else { students = []; results = []; questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS)); saveStudents(); saveResults(); localStorage.setItem('fm_pools', JSON.stringify(questionPools)); }
+    refreshAll(); showToast('All data reset', 'success');
+}
+
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div'); toast.className = `toast ${type}`; toast.textContent = message; container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function launchConfetti() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#0d9488','#e11d48','#6366f1','#f59e0b','#16a34a','#ec4899','#fbbf24'];
+    for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('div'); piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%'; piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 2 + 's'; piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+        piece.style.width = (5 + Math.random() * 8) + 'px'; piece.style.height = (5 + Math.random() * 8) + 'px';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0'; container.appendChild(piece);
+    }
+    setTimeout(() => container.innerHTML = '', 4000);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); }); });
+document.addEventListener('keydown', (e) => {
+    if (!activeComp) return;
+    if (e.key === '1' || e.key === 'c' || e.key === 'C') markCompAnswer('correct');
+    if (e.key === '2' || e.key === 'w' || e.key === 'W') markCompAnswer('wrong');
+    if (e.key === '3' || e.key === 's' || e.key === 'S') markCompAnswer('skipped');
+    if (e.key === 'Escape') quitCompetition();
+});
+document.addEventListener('click', (e) => {
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && !e.target.classList.contains('mobile-menu-btn')) closeSidebar();
+});
 </script>
 </body>
 </html>
