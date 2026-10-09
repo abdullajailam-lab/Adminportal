@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Gems Fluent Minds Competition Portal 2026</title>
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fredoka+One&display=swap');
@@ -638,16 +639,6 @@
 
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s ease-in-out infinite;
-        }
-
         .db-status {
             position: fixed;
             bottom: 20px;
@@ -979,16 +970,14 @@
 
 <script>
 // ===== SUPABASE CONFIGURATION =====
-// Replace these with your actual Supabase credentials
-const SUPABASE_URL = 'YOUR_SUPABASE_URL'; //https://fvnivnyhkjrumuzmwozb.supabase.co/rest/v1/'
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // sb_publishable_5QiL_M5ji1N_w2nbSP9Xgg_hpx_Ufn2'
+const SUPABASE_URL = 'https://fvnivnyhkjrumuzmwozb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_5QiL_M5ji1N_w2nbSP9Xgg_hpx_Ufn2';
 
-// Initialize Supabase client
 let supabase = null;
 let useSupabase = false;
 
 try {
-    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         useSupabase = true;
         updateDbStatus(true);
@@ -1110,49 +1099,28 @@ let questionPools = {};
 let activeComp = null;
 let compTimer = null;
 
-// ===== DATA LOADING =====
 async function loadData() {
     if (useSupabase) {
         try {
-            // Load students
-            const { data: studentsData, error: studentsError } = await supabase
-                .from('students')
-                .select('*')
-                .order('id');
-            
+            const { data: studentsData, error: studentsError } = await supabase.from('students').select('*').order('id');
             if (studentsError) throw studentsError;
             students = studentsData || [];
             
-            // Load results
-            const { data: resultsData, error: resultsError } = await supabase
-                .from('results')
-                .select('*')
-                .order('created_at', { ascending: false });
-            
+            const { data: resultsData, error: resultsError } = await supabase.from('results').select('*').order('created_at', { ascending: false });
             if (resultsError) throw resultsError;
             results = resultsData || [];
             
-            // Load question pools
-            const { data: poolsData, error: poolsError } = await supabase
-                .from('question_pools')
-                .select('*')
-                .order('group_num, id');
-            
+            const { data: poolsData, error: poolsError } = await supabase.from('question_pools').select('*').order('group_num, id');
             if (poolsError) throw poolsError;
             
             questionPools = { 1: [], 2: [], 3: [], 4: [] };
             if (poolsData) {
                 poolsData.forEach(q => {
                     if (questionPools[q.group_num]) {
-                        questionPools[q.group_num].push({
-                            display: q.display,
-                            answer: q.answer,
-                            type: q.type
-                        });
+                        questionPools[q.group_num].push({ display: q.display, answer: q.answer, type: q.type });
                     }
                 });
             }
-            
             console.log('Data loaded from Supabase');
         } catch (error) {
             console.error('Error loading from Supabase:', error);
@@ -1346,7 +1314,7 @@ function renderStudents() {
     let filtered = students.filter(s => {
         const group = s.group_num || s.group;
         const matchGroup = filterGroup === 'all' || group == filterGroup;
-        const matchSearch = s.name.toLowerCase().includes(search) || s.class.toLowerCase().includes(search);
+        const matchSearch = s.name.toLowerCase().includes(search) || (s.class || '').toLowerCase().includes(search);
         return matchGroup && matchSearch;
     });
 
@@ -1403,18 +1371,11 @@ async function saveStudent() {
     if (useSupabase) {
         try {
             if (id) {
-                const { error } = await supabase
-                    .from('students')
-                    .update({ name, class: cls, id_num: idNum, group_num: group })
-                    .eq('id', id);
+                const { error } = await supabase.from('students').update({ name, class: cls, id_num: idNum, group_num: group }).eq('id', id);
                 if (error) throw error;
                 showToast('✅ Student updated in cloud', 'success');
             } else {
-                const { data, error } = await supabase
-                    .from('students')
-                    .insert([{ name, class: cls, id_num: idNum, group_num: group }])
-                    .select()
-                    .single();
+                const { error } = await supabase.from('students').insert([{ name, class: cls, id_num: idNum, group_num: group }]);
                 if (error) throw error;
                 showToast(`✅ ${name} added to cloud`, 'success');
             }
@@ -1445,7 +1406,6 @@ function saveStudentLocal(id, name, cls, idNum, group) {
 
 async function deleteStudent(id) {
     if (!confirm('Delete this student?')) return;
-    
     if (useSupabase) {
         try {
             const { error } = await supabase.from('students').delete().eq('id', id);
@@ -1737,7 +1697,6 @@ function viewStudentResult(studentId) {
 
 async function deleteResult(id) {
     if (!confirm('Delete this result?')) return;
-    
     if (useSupabase) {
         try {
             const { error } = await supabase.from('results').delete().eq('id', id);
@@ -1760,7 +1719,6 @@ async function deleteResult(id) {
 
 async function clearAllResults() {
     if (!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
-    
     if (useSupabase) {
         try {
             const { error } = await supabase.from('results').delete().neq('id', 0);
@@ -1877,7 +1835,6 @@ async function addQuestionToPool() {
         localStorage.setItem('fm_pools', JSON.stringify(questionPools));
         showToast('✅ Question added', 'success');
     }
-    
     document.getElementById('newQuestionText').value = '';
     document.getElementById('newQuestionAnswer').value = '';
     loadSettingsQuestions();
@@ -1889,22 +1846,15 @@ async function removeQuestion(group, index) {
         showToast(`Cannot remove - minimum ${GROUPS[group].totalQuestions} questions required`, 'error');
         return;
     }
-    
-    if (useSupabase) {
-        // For simplicity, we'll just reload from cloud
-        showToast('Question removal from cloud not implemented yet', 'error');
-    } else {
-        pool.splice(index, 1);
-        localStorage.setItem('fm_pools', JSON.stringify(questionPools));
-        showToast('Question removed', 'success');
-        loadSettingsQuestions();
-    }
+    pool.splice(index, 1);
+    localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+    showToast('Question removed', 'success');
+    loadSettingsQuestions();
 }
 
 async function resetAllData() {
     if (!confirm('⚠️ This will delete ALL students, results, and custom questions. Continue?')) return;
     if (!confirm('Are you absolutely sure?')) return;
-    
     if (useSupabase) {
         try {
             await supabase.from('results').delete().neq('id', 0);
