@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Gems Fluent Minds Competition Portal 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--primary:#0d9488;--primary-dark:#0f766e;--primary-light:#5eead4;--secondary:#e11d48;--accent:#6366f1;--accent2:#f59e0b;--success:#16a34a;--danger:#dc2626;--warning:#f59e0b;--bg:#f0fdfa;--card:#fff;--text:#0f172a;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 8px rgba(0,0,0,0.08);--shadow-lg:0 8px 20px rgba(0,0,0,0.12)}
+:root{--primary:#0d9488;--primary-dark:#0f766e;--primary-light:#5eead4;--secondary:#e11d48;--accent:#6366f1;--success:#16a34a;--danger:#dc2626;--warning:#f59e0b;--bg:#f0fdfa;--card:#fff;--text:#0f172a;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 8px rgba(0,0,0,0.08);--shadow-lg:0 8px 20px rgba(0,0,0,0.12)}
 html{scroll-behavior:smooth}
 body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .app-layout{display:flex;min-height:100vh;width:100%}
@@ -46,10 +47,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
 
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all 0.3s;animation:slideUp 0.5s ease backwards}
-.stat-card:nth-child(1){animation-delay:0.05s}
-.stat-card:nth-child(2){animation-delay:0.1s}
-.stat-card:nth-child(3){animation-delay:0.15s}
-.stat-card:nth-child(4){animation-delay:0.2s}
+.stat-card:nth-child(1){animation-delay:0.05s}.stat-card:nth-child(2){animation-delay:0.1s}.stat-card:nth-child(3){animation-delay:0.15s}.stat-card:nth-child(4){animation-delay:0.2s}
 .stat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
 .stat-card:nth-child(1)::before{background:linear-gradient(90deg,#0d9488,#14b8a6)}
@@ -72,10 +70,7 @@ body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min
 
 .groups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:20px}
 .group-card{background:#fff;border-radius:16px;padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:all 0.3s;cursor:pointer;animation:slideUp 0.5s ease backwards}
-.group-card:nth-child(1){animation-delay:0.05s}
-.group-card:nth-child(2){animation-delay:0.1s}
-.group-card:nth-child(3){animation-delay:0.15s}
-.group-card:nth-child(4){animation-delay:0.2s}
+.group-card:nth-child(1){animation-delay:0.05s}.group-card:nth-child(2){animation-delay:0.1s}.group-card:nth-child(3){animation-delay:0.15s}.group-card:nth-child(4){animation-delay:0.2s}
 .group-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
 .group-card .group-color-bar{position:absolute;top:0;left:0;right:0;height:5px}
 .group-card:nth-child(1) .group-color-bar{background:linear-gradient(90deg,#0d9488,#14b8a6,#5eead4)}
@@ -115,11 +110,8 @@ table tr:hover td{background:#f0fdfa}
 .status-badge{padding:4px 12px;border-radius:20px;font-size:0.75em;font-weight:700;display:inline-block;white-space:nowrap}
 .status-completed{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#166534}
 .status-pending{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e}
-
 .score-cell{font-weight:800;font-size:1.1em}
-.score-high{color:var(--success)}
-.score-mid{color:var(--warning)}
-.score-low{color:var(--danger)}
+.score-high{color:var(--success)}.score-mid{color:var(--warning)}.score-low{color:var(--danger)}
 
 .form-group{margin-bottom:14px}
 .form-group label{display:block;font-weight:700;font-size:0.85em;margin-bottom:5px}
@@ -214,8 +206,13 @@ table tr:hover td{background:#f0fdfa}
 .toast{background:#fff;border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);margin-bottom:8px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:0.88em;animation:slideInToast 0.35s ease;border-left:4px solid var(--primary)}
 .toast.success{border-left-color:var(--success)}
 .toast.error{border-left-color:var(--danger)}
+.toast.info{border-left-color:var(--accent)}
 
 .mobile-menu-btn{display:none;background:none;border:none;font-size:1.5em;cursor:pointer;padding:5px}
+
+.db-status{position:fixed;bottom:20px;right:20px;background:#fff;padding:10px 16px;border-radius:12px;box-shadow:var(--shadow-lg);font-size:0.85em;font-weight:600;z-index:100;display:flex;align-items:center;gap:8px;animation:slideUp 0.5s ease}
+.db-status .status-dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
+.db-status .status-dot.offline{background:var(--danger)}
 
 @media(max-width:768px){
 .sidebar{transform:translateX(-100%);width:240px}
@@ -242,6 +239,7 @@ table tr:hover td{background:#f0fdfa}
 .fs-action-btn{padding:14px 16px;font-size:1em;min-width:100px}
 .fs-actions{padding:14px}
 .topbar h1{font-size:1em}
+.db-status{bottom:10px;right:10px;font-size:0.75em;padding:8px 12px}
 }
 @media(max-width:480px){
 .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px}
@@ -273,26 +271,6 @@ table tr:hover td{background:#f0fdfa}
 .stat-card .stat-value{font-size:1.2em}
 .stat-card .stat-label{font-size:0.7em}
 }
-@media(max-height:600px) and (orientation:portrait){
-.fs-question-card{min-height:40vh;padding:30px 15px}
-.fs-q-word.size-letter{font-size:6em}
-.fs-q-word.size-word{font-size:4em}
-.fs-q-word.size-sentence{font-size:1.8em}
-}
-@media(max-height:500px) and (orientation:landscape){
-.fs-main{padding:8px}
-.fs-question-card{min-height:35vh;padding:25px 15px;margin-bottom:8px}
-.fs-q-word.size-letter{font-size:5em}
-.fs-q-word.size-word{font-size:3.5em}
-.fs-q-word.size-sentence{font-size:1.5em}
-.fs-actions{padding:10px}
-.fs-action-btn{padding:10px 12px;font-size:0.88em}
-}
-@media print{
-.sidebar,.topbar,.btn,.modal-overlay,.fullscreen-comp{display:none!important}
-.main-content{margin-left:0;width:100%}
-.content-area{padding:0}
-}
 </style>
 </head>
 <body>
@@ -321,19 +299,18 @@ table tr:hover td{background:#f0fdfa}
 <main class="main-content">
 <div class="topbar">
 <div style="display:flex;align-items:center;gap:12px">
-<button class="mobile-menu-btn" id="menuBtn" type="button"></button>
-<h1 id="pageTitle"> Dashboard</h1>
+<button class="mobile-menu-btn" id="menuBtn" type="button">☰</button>
+<h1 id="pageTitle">📊 Dashboard</h1>
 </div>
 <div style="font-size:0.82em;color:var(--text-light);font-weight:600" id="currentDate"></div>
 </div>
 
 <div class="content-area">
-
 <div class="page active" id="page-dashboard">
 <div class="stats-grid">
 <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
 <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-<div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+<div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
 <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
 </div>
 <div class="groups-grid" id="dashGroupsGrid"></div>
@@ -348,19 +325,19 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-groups">
 <div class="groups-grid" id="groupsPageGrid"></div>
-<div class="card"><div class="card-header"><h3> Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light)">Click on a group card above to view its rules.</p></div></div>
+<div class="card"><div class="card-header"><h3>📋 Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light)">Click on a group card above to view its rules.</p></div></div>
 </div>
 
 <div class="page" id="page-students">
 <div class="card">
-<div class="card-header"><h3>‍🎓 Student Management</h3><button class="btn btn-primary" id="addStudentBtn">➕ Add Student</button></div>
+<div class="card-header"><h3>👨‍🎓 Student Management</h3><button class="btn btn-primary" id="addStudentBtn">➕ Add Student</button></div>
 <div class="card-body">
 <div class="filter-bar">
 <select id="filterGroup"><option value="all">All Groups</option><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select>
 <input type="text" id="searchStudent" placeholder="🔍 Search student...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
-<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
+<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">👨‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
 </div>
 </div>
 </div>
@@ -380,7 +357,7 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-results">
 <div class="card">
-<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">️ Clear All</button></div></div>
+<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">🗑️ Clear All</button></div></div>
 <div class="card-body">
 <div class="filter-bar">
 <select id="resultFilterGroup"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
@@ -398,7 +375,7 @@ table tr:hover td{background:#f0fdfa}
 <div class="card-body">
 <div class="leaderboard-podium" id="leaderboardPodium"></div>
 <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
+<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
@@ -417,12 +394,11 @@ table tr:hover td{background:#f0fdfa}
 </div>
 <button class="btn btn-primary" id="addQuestionBtn">➕ Add Question</button>
 <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
-<h4 style="margin-bottom:12px">️ Danger Zone</h4>
+<h4 style="margin-bottom:12px">⚠️ Danger Zone</h4>
 <div class="btn-group"><button class="btn btn-warning" id="resetDataBtn">🔄 Reset All Data</button><button class="btn btn-danger" id="clearAllBtn">🗑️ Delete All Results</button></div>
 </div>
 </div>
 </div>
-
 </div>
 </main>
 </div>
@@ -435,7 +411,7 @@ table tr:hover td{background:#f0fdfa}
 <p id="fsCompStudent">Student Name</p>
 </div>
 <div class="fs-stats">
-<div class="fs-stat-box timer-box"><div class="fs-label"> TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
+<div class="fs-stat-box timer-box"><div class="fs-label">⏱ TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
 <div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
 </div>
 </div>
@@ -449,7 +425,7 @@ table tr:hover td{background:#f0fdfa}
 <div class="fs-q-word" id="fsQWord">W w</div>
 </div>
 <div class="fs-actions">
-<h4> Tap to mark this answer:</h4>
+<h4>👇 Tap to mark this answer:</h4>
 <div class="fs-action-btns">
 <button class="fs-action-btn correct-btn" id="btnCorrect" type="button">✅ CORRECT</button>
 <button class="fs-action-btn wrong-btn" id="btnWrong" type="button">❌ WRONG</button>
@@ -483,18 +459,62 @@ table tr:hover td{background:#f0fdfa}
 <div class="toast-container" id="toastContainer"></div>
 <div class="confetti-container" id="confettiContainer"></div>
 
+<div class="db-status" id="dbStatus">
+<div class="status-dot" id="dbStatusDot"></div>
+<span id="dbStatusText">Checking Database...</span>
+</div>
+
 <script>
 (function(){
 'use strict';
 
-var GROUPS = {
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'https://fvnivnyhkjrumuzmwozb.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_5QiL_M5ji1N_w2nbSP9Xgg_hpx_Ufn2';
+let supabase = null;
+let isCloud = false;
+
+try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Test connection silently
+    supabase.from('students').select('id', { count: 'exact', head: true }).then(({ error }) => {
+        if (!error) {
+            isCloud = true;
+            updateDbStatus(true);
+            console.log("✅ Connected to Supabase Cloud");
+        } else {
+            console.warn("⚠️ Supabase connection failed, using Local Storage:", error.message);
+            updateDbStatus(false);
+        }
+    }).catch(() => {
+        updateDbStatus(false);
+    });
+} catch (e) {
+    console.error("Supabase init error:", e);
+    updateDbStatus(false);
+}
+
+function updateDbStatus(connected) {
+    const dot = document.getElementById('dbStatusDot');
+    const text = document.getElementById('dbStatusText');
+    if (connected) {
+        dot.classList.remove('offline');
+        text.textContent = '☁️ Cloud Connected';
+    } else {
+        dot.classList.add('offline');
+        text.textContent = '💻 Local Mode (Offline)';
+    }
+}
+
+// --- DATA ---
+const GROUPS = {
   1: { name: "Group 1", topic: "Letters & Sounds", date: "6th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#0d9488", rules: ["Each student will get 10 letters. They have to tell within 2 minutes.","Students must orally tell the name of the letters and sounds of each letter shown on the TV screen. They may skip a letter if they do not know the letter name or sound.",'Say "Next" or "Skip" if you want to skip the letter.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
   2: { name: "Group 2", topic: "CVC and Sight Words", date: "6th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#e11d48", rules: ["Each student will get 10 words. They have to say the words within 2 minutes.","Students must orally say the words shown on the TV screen. They may skip a word if they do not know.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
   3: { name: "Group 3", topic: "Short Sentences", date: "7th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 180, totalQuestions: 8, color: "#6366f1", rules: ["Each student will get 8 sentences. They have to say the sentences within 3 minutes.","Students must orally say the sentences shown on the TV screen. They may skip a sentence if they don't know.",'Say "Next" or "Skip" if you want to skip the sentence.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
   4: { name: "Group 4", topic: "Past to Present Tense", date: "7th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 60, totalQuestions: 10, color: "#f59e0b", rules: ["Each student will get 1 minute.","Each student will get 10 words.","Students must orally say the past tense of each word shown on the TV screen. They may skip a word if they do not know the answer.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]}
 };
 
-var QUESTION_POOLS = {
+const QUESTION_POOLS = {
   1: [
     {display:"A a",answer:"A",type:"letter"},{display:"B b",answer:"B",type:"letter"},{display:"C c",answer:"C",type:"letter"},
     {display:"D d",answer:"D",type:"letter"},{display:"E e",answer:"E",type:"letter"},{display:"F f",answer:"F",type:"letter"},
@@ -578,7 +598,14 @@ var QUESTION_POOLS = {
   ]
 };
 
-var INITIAL_STUDENTS = [
+let students = [];
+let results = [];
+let questionPools = {};
+let activeComp = null;
+let compTimer = null;
+let nextStudentId = 100;
+
+const INITIAL_STUDENTS = [
   {id:1,name:"Niha",cls:"",idNum:"",group:1},
   {id:2,name:"Adam Nafaah",cls:"6B",idNum:"",group:1},
   {id:3,name:"Naheek",cls:"",idNum:"",group:1},
@@ -634,79 +661,101 @@ var INITIAL_STUDENTS = [
   {id:53,name:"Aluk",cls:"",idNum:"",group:4}
 ];
 
-var students = [];
-var results = [];
-var questionPools = {};
-var activeComp = null;
-var compTimer = null;
-var nextStudentId = 100;
-
 function saveStudents(){try{localStorage.setItem('fm_students',JSON.stringify(students))}catch(e){}}
 function saveResults(){try{localStorage.setItem('fm_results',JSON.stringify(results))}catch(e){}}
 function savePools(){try{localStorage.setItem('fm_pools',JSON.stringify(questionPools))}catch(e){}}
 
-function loadData(){
-  try{
+async function loadData(){
+  if (isCloud && supabase) {
+    try {
+      const { data: sData, error: sErr } = await supabase.from('students').select('*').order('id');
+      if (!sErr && sData && sData.length > 0) {
+        students = sData.map(s => ({id: s.id, name: s.name, cls: s.class, idNum: s.id_num, group: s.group_num}));
+      } else {
+        students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
+        // Seed cloud if empty
+        for (let s of students) {
+          await supabase.from('students').insert([{name: s.name, class: s.cls, id_num: s.idNum, group_num: s.group}]);
+        }
+      }
+      
+      const { data: rData, error: rErr } = await supabase.from('results').select('*').order('created_at', {ascending: false});
+      results = (!rErr && rData) ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class, group: r.group_num, score: r.score, total: r.total, answers: r.answers, date: r.created_at, duration: r.duration})) : [];
+
+      const { data: pData, error: pErr } = await supabase.from('question_pools').select('*');
+      if (!pErr && pData && pData.length > 0) {
+        questionPools = {1:[], 2:[], 3:[], 4:[]};
+        pData.forEach(q => { if(questionPools[q.group_num]) questionPools[q.group_num].push({display: q.display, answer: q.answer, type: q.type}); });
+      } else {
+        questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
+      }
+    } catch (e) {
+      console.error("Cloud load failed, falling back to local", e);
+      loadFromLocal();
+    }
+  } else {
+    loadFromLocal();
+  }
+  
+  nextStudentId = 100;
+  students.forEach(st => { if(st.id >= nextStudentId) nextStudentId = st.id + 1; });
+}
+
+function loadFromLocal(){
+  try {
     var s = localStorage.getItem('fm_students');
-    if(s){students = JSON.parse(s)}
-    else{students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));saveStudents()}
+    if(s){ students = JSON.parse(s); }
+    else { students = JSON.parse(JSON.stringify(INITIAL_STUDENTS)); saveStudents(); }
     var r = localStorage.getItem('fm_results');
     results = r ? JSON.parse(r) : [];
     var p = localStorage.getItem('fm_pools');
     questionPools = p ? JSON.parse(p) : JSON.parse(JSON.stringify(QUESTION_POOLS));
-    nextStudentId = 100;
-    students.forEach(function(st){if(st.id >= nextStudentId) nextStudentId = st.id + 1});
-  }catch(e){
+  } catch(e) {
     students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
     results = [];
     questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
   }
 }
 
-function $(id){return document.getElementById(id)}
+function $(id){ return document.getElementById(id); }
 
-function showToast(msg,type){
+function showToast(msg, type){
   type = type || 'success';
   var c = $('toastContainer');
   var t = document.createElement('div');
   t.className = 'toast ' + type;
   t.textContent = msg;
   c.appendChild(t);
-  setTimeout(function(){if(t.parentNode) t.parentNode.removeChild(t)},3000);
+  setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 3000);
 }
 
 function showPage(pageId){
   var pages = document.querySelectorAll('.page');
-  for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
+  for(var i=0; i<pages.length; i++) pages[i].classList.remove('active');
   var target = $('page-'+pageId);
   if(target) target.classList.add('active');
+  
   var navs = document.querySelectorAll('.nav-item');
-  for(var i=0;i<navs.length;i++) navs[i].classList.remove('active');
+  for(var i=0; i<navs.length; i++) navs[i].classList.remove('active');
   var activeNav = document.querySelector('.nav-item[data-page="'+pageId+'"]');
   if(activeNav) activeNav.classList.add('active');
-  var titles = {dashboard:'📊 Dashboard',groups:' Groups',students:'👨‍ Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:'🔧 Settings'};
+  
+  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍🎓 Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:'🔧 Settings'};
   $('pageTitle').textContent = titles[pageId] || '';
+  
   refreshAll();
   closeSidebar();
   window.scrollTo(0,0);
 }
 
-function toggleSidebar(){
-  var sb = $('sidebar');
-  sb.classList.toggle('open');
-}
-function closeSidebar(){
-  $('sidebar').classList.remove('open');
-}
-
-function updateBadges(){
-  $('totalStudentsBadge').textContent = students.length;
-}
+function toggleSidebar(){ $('sidebar').classList.toggle('open'); }
+function closeSidebar(){ $('sidebar').classList.remove('open'); }
+function updateBadges(){ $('totalStudentsBadge').textContent = students.length; }
 
 function renderDashboard(){
   var total = students.length;
   var completedSet = {};
-  for(var i=0;i<results.length;i++){
+  for(var i=0; i<results.length; i++){
     var sid = results[i].studentId;
     if(!completedSet[sid] || (results[i].score/results[i].total) > (completedSet[sid].score/completedSet[sid].total)){
       completedSet[sid] = results[i];
@@ -714,24 +763,25 @@ function renderDashboard(){
   }
   var completedCount = Object.keys(completedSet).length;
   var pendingCount = total - completedCount;
-  var avgScore = results.length > 0 ? Math.round(results.reduce(function(sum,r){return sum + (r.score/r.total)*100},0)/results.length) : 0;
+  var avgScore = results.length > 0 ? Math.round(results.reduce(function(sum,r){ return sum + (r.score/r.total)*100; }, 0) / results.length) : 0;
+  
   $('statTotalStudents').textContent = total;
   $('statCompleted').textContent = completedCount;
   $('statPending').textContent = pendingCount;
   $('statAvgScore').textContent = avgScore + '%';
 
   var gridHTML = '';
-  for(var i=1;i<=4;i++){
+  for(var i=1; i<=4; i++){
     var g = GROUPS[i];
     var count = 0;
-    for(var j=0;j<students.length;j++){if(students[j].group === i) count++}
+    for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
     var compCount = 0;
-    for(var j=0;j<results.length;j++){if(results[j].group === i) compCount++}
-    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count"> '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
+    for(var j=0; j<results.length; j++){ if(results[j].group === i) compCount++; }
+    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
   }
   $('dashGroupsGrid').innerHTML = gridHTML;
 
-  var recent = results.slice().sort(function(a,b){return new Date(b.date) - new Date(a.date)}).slice(0,5);
+  var recent = results.slice().sort(function(a,b){ return new Date(b.date) - new Date(a.date); }).slice(0,5);
   var tbody = $('recentResultsBody');
   var emptyState = $('dashEmptyState');
   if(recent.length === 0){
@@ -740,7 +790,7 @@ function renderDashboard(){
   } else {
     emptyState.style.display = 'none';
     var html = '';
-    for(var i=0;i<recent.length;i++){
+    for(var i=0; i<recent.length; i++){
       var r = recent[i];
       var pct = Math.round((r.score/r.total)*100);
       var sc = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
@@ -753,11 +803,11 @@ function renderDashboard(){
 
 function renderGroups(){
   var html = '';
-  for(var i=1;i<=4;i++){
+  for(var i=1; i<=4; i++){
     var g = GROUPS[i];
     var count = 0;
-    for(var j=0;j<students.length;j++){if(students[j].group === i) count++}
-    html += '<div class="group-card" onclick="window.showGroupRules('+i+')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>📍 '+g.location+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span> '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();window.showGroupRules('+i+')">📋 Rules</button></div></div>';
+    for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
+    html += '<div class="group-card" onclick="window.showGroupRules('+i+')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>📍 '+g.location+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();window.showGroupRules('+i+')">📋 Rules</button></div></div>';
   }
   $('groupsPageGrid').innerHTML = html;
 }
@@ -766,7 +816,7 @@ function showGroupRules(groupNum){
   var g = GROUPS[groupNum];
   var colors = ['#0d9488','#e11d48','#6366f1','#f59e0b'];
   var html = '<h4 style="margin-bottom:12px;color:'+colors[groupNum-1]+'">'+g.name+' - '+g.topic+'</h4>';
-  for(var i=0;i<g.rules.length;i++){
+  for(var i=0; i<g.rules.length; i++){
     html += '<div style="display:flex;gap:10px;margin-bottom:10px;padding:10px;background:var(--bg);border-radius:8px"><div style="width:28px;height:28px;border-radius:50%;background:'+colors[groupNum-1]+';color:#fff;font-weight:800;font-size:0.82em;line-height:28px;text-align:center;flex-shrink:0">'+(i+1)+'</div><div style="font-size:0.9em;color:var(--text);line-height:1.4">'+g.rules[i]+'</div></div>';
   }
   $('groupRulesContent').innerHTML = html;
@@ -776,7 +826,7 @@ function renderStudents(){
   var filterGroup = $('filterGroup').value;
   var search = $('searchStudent').value.toLowerCase();
   var filtered = [];
-  for(var i=0;i<students.length;i++){
+  for(var i=0; i<students.length; i++){
     var s = students[i];
     var matchGroup = filterGroup === 'all' || s.group == filterGroup;
     var matchSearch = s.name.toLowerCase().indexOf(search) !== -1 || (s.cls||'').toLowerCase().indexOf(search) !== -1;
@@ -791,15 +841,15 @@ function renderStudents(){
   }
   empty.style.display = 'none';
   var html = '';
-  for(var i=0;i<filtered.length;i++){
+  for(var i=0; i<filtered.length; i++){
     var s = filtered[i];
     var result = null;
-    for(var j=0;j<results.length;j++){if(results[j].studentId === s.id){result = results[j];break}}
+    for(var j=0; j<results.length; j++){ if(results[j].studentId === s.id){ result = results[j]; break; } }
     var status = result ? 'completed' : 'pending';
     var scoreText = result ? result.score+'/'+result.total : '-';
     var pct = result ? Math.round((result.score/result.total)*100) : 0;
     var scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':' Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">️</button></div></td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
   }
   tbody.innerHTML = html;
 }
@@ -816,9 +866,9 @@ function openAddStudentModal(){
 
 function editStudent(id){
   var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === id){student = students[i];break}}
+  for(var i=0; i<students.length; i++){ if(students[i].id === id){ student = students[i]; break; } }
   if(!student) return;
-  $('modalTitle').textContent = '️ Edit Student';
+  $('modalTitle').textContent = '✏️ Edit Student';
   $('editStudentId').value = student.id;
   $('studentName').value = student.name;
   $('studentClass').value = student.cls;
@@ -827,36 +877,68 @@ function editStudent(id){
   $('studentModal').classList.add('active');
 }
 
-function closeModal(id){
-  $(id).classList.remove('active');
-}
+function closeModal(id){ $(id).classList.remove('active'); }
 
-function saveStudent(){
+async function saveStudent(){
   var id = $('editStudentId').value;
   var name = $('studentName').value.trim();
   var cls = $('studentClass').value.trim();
   var idNum = $('studentIdNum').value.trim();
   var group = parseInt($('studentGroup').value);
-  if(!name || !cls){showToast('Please fill in name and class','error');return}
-  if(id){
-    var idx = -1;
-    for(var i=0;i<students.length;i++){if(students[i].id == id){idx=i;break}}
-    if(idx !== -1){students[idx].name = name;students[idx].cls = cls;students[idx].idNum = idNum;students[idx].group = group;showToast('✅ Student updated','success')}
+  if(!name || !cls){ showToast('Please fill in name and class', 'error'); return; }
+  
+  if (isCloud && supabase) {
+    try {
+      if(id) {
+        await supabase.from('students').update({name: name, class: cls, id_num: idNum, group_num: group}).eq('id', id);
+      } else {
+        await supabase.from('students').insert([{name: name, class: cls, id_num: idNum, group_num: group}]);
+      }
+      showToast('✅ Saved to Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      console.error("Cloud save failed", e);
+      saveStudentLocal(id, name, cls, idNum, group);
+    }
   } else {
-    students.push({id:nextStudentId++,name:name,cls:cls,idNum:idNum,group:group});
-    showToast('✅ '+name+' added to '+GROUPS[group].name,'success');
+    saveStudentLocal(id, name, cls, idNum, group);
   }
-  saveStudents();
   closeModal('studentModal');
   refreshAll();
 }
 
-function deleteStudent(id){
+function saveStudentLocal(id, name, cls, idNum, group){
+  if(id){
+    var idx = -1;
+    for(var i=0; i<students.length; i++){ if(students[i].id == id){ idx=i; break; } }
+    if(idx !== -1){ students[idx].name = name; students[idx].cls = cls; students[idx].idNum = idNum; students[idx].group = group; showToast('✅ Student updated', 'success'); }
+  } else {
+    students.push({id: nextStudentId++, name: name, cls: cls, idNum: idNum, group: group});
+    showToast('✅ '+name+' added', 'success');
+  }
+  saveStudents();
+}
+
+async function deleteStudent(id){
   if(!confirm('Delete this student?')) return;
-  students = students.filter(function(s){return s.id !== id});
-  results = results.filter(function(r){return r.studentId !== id});
-  saveStudents();saveResults();
-  showToast('Student deleted','success');
+  if (isCloud && supabase) {
+    try {
+      await supabase.from('students').delete().eq('id', id);
+      await supabase.from('results').delete().eq('student_id', id);
+      showToast('Deleted from Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      students = students.filter(function(s){ return s.id !== id; });
+      results = results.filter(function(r){ return r.studentId !== id; });
+      saveStudents(); saveResults();
+      showToast('Deleted locally', 'error');
+    }
+  } else {
+    students = students.filter(function(s){ return s.id !== id; });
+    results = results.filter(function(r){ return r.studentId !== id; });
+    saveStudents(); saveResults();
+    showToast('Student deleted', 'success');
+  }
   refreshAll();
 }
 
@@ -865,14 +947,14 @@ function updateCompStudents(){
   var select = $('compStudentSelect');
   select.innerHTML = '<option value="">-- Choose Student --</option>';
   if(!group) return;
-  var groupStudents = students.filter(function(s){return s.group == group});
+  var groupStudents = students.filter(function(s){ return s.group == group; });
   if(groupStudents.length === 0){
     select.innerHTML = '<option value="">No students in this group</option>';
     return;
   }
-  for(var i=0;i<groupStudents.length;i++){
+  for(var i=0; i<groupStudents.length; i++){
     var s = groupStudents[i];
-    var hasResult = results.some(function(r){return r.studentId === s.id});
+    var hasResult = results.some(function(r){ return r.studentId === s.id; });
     select.innerHTML += '<option value="'+s.id+'">'+s.name+(s.cls?' ('+s.cls+')':'')+(hasResult?' ✅':'')+'</option>';
   }
 }
@@ -885,7 +967,7 @@ function quickStart(groupNum){
 
 function quickStartStudent(studentId){
   var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === studentId){student = students[i];break}}
+  for(var i=0; i<students.length; i++){ if(students[i].id === studentId){ student = students[i]; break; } }
   if(!student) return;
   $('compGroupSelect').value = student.group;
   updateCompStudents();
@@ -896,35 +978,40 @@ function quickStartStudent(studentId){
 function launchCompetition(){
   var groupNum = parseInt($('compGroupSelect').value);
   var studentId = parseInt($('compStudentSelect').value);
-  if(!groupNum || !studentId){showToast('Please select group and student','error');return}
+  if(!groupNum || !studentId){ showToast('Please select group and student', 'error'); return; }
   var student = null;
-  for(var i=0;i<students.length;i++){if(students[i].id === studentId){student = students[i];break}}
-  if(!student){showToast('Student not found','error');return}
+  for(var i=0; i<students.length; i++){ if(students[i].id === studentId){ student = students[i]; break; } }
+  if(!student){ showToast('Student not found', 'error'); return; }
   var group = GROUPS[groupNum];
   var pool = questionPools[groupNum] || QUESTION_POOLS[groupNum];
-  if(!pool || pool.length === 0){showToast('No questions available','error');return}
-  var shuffled = pool.slice().sort(function(){return Math.random()-0.5});
-  var selected = shuffled.slice(0,group.totalQuestions);
+  if(!pool || pool.length === 0){ showToast('No questions available', 'error'); return; }
+  
+  var shuffled = pool.slice().sort(function(){ return Math.random()-0.5; });
+  var selected = shuffled.slice(0, group.totalQuestions);
+  
   activeComp = {
-    studentId:studentId,
-    studentName:student.name,
-    studentClass:student.cls,
-    group:groupNum,
-    questions:selected,
-    currentIndex:0,
-    answers:selected.map(function(){return {status:'pending'}}),
-    score:0,
-    timeLeft:group.totalTime,
-    startTime:new Date().toISOString()
+    studentId: studentId,
+    studentName: student.name,
+    studentClass: student.cls,
+    group: groupNum,
+    questions: selected,
+    currentIndex: 0,
+    answers: selected.map(function(){ return {status:'pending'}; }),
+    score: 0,
+    timeLeft: group.totalTime,
+    startTime: new Date().toISOString()
   };
+  
   $('fsCompTitle').textContent = group.name+' - '+group.topic;
-  $('fsCompStudent').textContent = ' '+student.name+(student.cls?' | '+student.cls:'');
+  $('fsCompStudent').textContent = '👤 '+student.name+(student.cls?' | '+student.cls:'');
   $('fullscreenComp').classList.add('active');
+  
   loadCompQuestion();
   startCompTimer();
-  try{
-    if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen().catch(function(){})}
-  }catch(e){}
+  
+  try {
+    if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(function(){}); }
+  } catch(e){}
 }
 
 function loadCompQuestion(){
@@ -938,6 +1025,7 @@ function loadCompQuestion(){
   if(q.type === 'letter') wordEl.classList.add('size-letter');
   else if(q.type === 'sentence') wordEl.classList.add('size-sentence');
   else wordEl.classList.add('size-word');
+  
   var progress = (idx/total)*100;
   $('fsProgress').style.width = progress+'%';
   $('fsProgressText').textContent = 'Question '+(idx+1)+' of '+total;
@@ -947,26 +1035,37 @@ function loadCompQuestion(){
 function markCompAnswer(status){
   if(!activeComp) return;
   var idx = activeComp.currentIndex;
-  activeComp.answers[idx] = {status:status,question:activeComp.questions[idx].display,correctAnswer:activeComp.questions[idx].answer};
-  if(status === 'correct'){activeComp.score++;$('fsScore').textContent = activeComp.score}
+  activeComp.answers[idx] = {status: status, question: activeComp.questions[idx].display, correctAnswer: activeComp.questions[idx].answer};
+  if(status === 'correct'){
+    activeComp.score++;
+    $('fsScore').textContent = activeComp.score;
+  }
   var card = $('fsQuestionCard');
-  var colors = {correct:'#16a34a',wrong:'#dc2626',skipped:'#f59e0b'};
+  var colors = {correct:'#16a34a', wrong:'#dc2626', skipped:'#f59e0b'};
   card.style.boxShadow = '0 0 0 5px '+colors[status]+', 0 30px 80px rgba(0,0,0,0.4)';
-  setTimeout(function(){card.style.boxShadow = ''},350);
+  setTimeout(function(){ card.style.boxShadow = ''; }, 350);
+  
   setTimeout(function(){
-    if(idx < activeComp.questions.length - 1){activeComp.currentIndex++;loadCompQuestion()}
-    else{finishCompetition()}
-  },280);
+    if(idx < activeComp.questions.length - 1){
+      activeComp.currentIndex++;
+      loadCompQuestion();
+    } else {
+      finishCompetition();
+    }
+  }, 280);
 }
 
 function startCompTimer(){
   updateCompTimerDisplay();
   compTimer = setInterval(function(){
-    if(!activeComp){clearInterval(compTimer);return}
+    if(!activeComp){ clearInterval(compTimer); return; }
     activeComp.timeLeft--;
     updateCompTimerDisplay();
-    if(activeComp.timeLeft <= 0){clearInterval(compTimer);finishCompetition()}
-  },1000);
+    if(activeComp.timeLeft <= 0){
+      clearInterval(compTimer);
+      finishCompetition();
+    }
+  }, 1000);
 }
 
 function updateCompTimerDisplay(){
@@ -979,39 +1078,63 @@ function updateCompTimerDisplay(){
   else el.classList.remove('warning');
 }
 
-function finishCompetition(){
-  if(compTimer){clearInterval(compTimer);compTimer = null}
+async function finishCompetition(){
+  if(compTimer){ clearInterval(compTimer); compTimer = null; }
   if(!activeComp) return;
+  
   var resultData = {
-    id:Date.now(),
-    studentId:activeComp.studentId,
-    studentName:activeComp.studentName,
-    studentClass:activeComp.studentClass,
-    group:activeComp.group,
-    score:activeComp.score,
-    total:activeComp.questions.length,
-    answers:activeComp.answers,
-    date:new Date().toISOString(),
-    duration:GROUPS[activeComp.group].totalTime - activeComp.timeLeft
+    id: Date.now(),
+    studentId: activeComp.studentId,
+    studentName: activeComp.studentName,
+    studentClass: activeComp.studentClass,
+    group: activeComp.group,
+    score: activeComp.score,
+    total: activeComp.questions.length,
+    answers: activeComp.answers,
+    date: new Date().toISOString(),
+    duration: GROUPS[activeComp.group].totalTime - activeComp.timeLeft
   };
-  results.push(resultData);
-  saveResults();
-  try{if(document.exitFullscreen){document.exitFullscreen().catch(function(){})}}catch(e){}
+  
+  if (isCloud && supabase) {
+    try {
+      await supabase.from('results').insert([{
+        student_id: resultData.studentId,
+        student_name: resultData.studentName,
+        student_class: resultData.studentClass,
+        group_num: resultData.group,
+        score: resultData.score,
+        total: resultData.total,
+        answers: resultData.answers,
+        duration: resultData.duration
+      }]);
+      showToast('🏆 Result saved to Cloud!', 'success');
+      await loadData();
+    } catch(e) {
+      console.error("Cloud save failed", e);
+      results.push(resultData);
+      saveResults();
+      showToast('Result saved locally', 'info');
+    }
+  } else {
+    results.push(resultData);
+    saveResults();
+  }
+  
+  try { if(document.exitFullscreen){ document.exitFullscreen().catch(function(){}); } } catch(e){}
   $('fullscreenComp').classList.remove('active');
-  var savedComp = activeComp;
   activeComp = null;
-  showToast('🏆 Competition completed!','success');
+  
   refreshAll();
-  setTimeout(function(){showResultDetail(resultData)},400);
+  setTimeout(function(){ showResultDetail(resultData); }, 400);
 }
 
 function quitCompetition(){
   if(!confirm('Quit this competition? Progress will be lost.')) return;
-  if(compTimer){clearInterval(compTimer);compTimer = null}
-  try{if(document.exitFullscreen){document.exitFullscreen().catch(function(){})}}catch(e){}
+  if(compTimer){ clearInterval(compTimer); compTimer = null; }
+  try { if(document.exitFullscreen){ document.exitFullscreen().catch(function(){}); } } catch(e){}
   $('fullscreenComp').classList.remove('active');
   activeComp = null;
-  showToast('Competition quit','error');
+  showToast('Competition quit', 'error');
 }
 
 function renderResults(){
@@ -1022,25 +1145,27 @@ function renderResults(){
     var matchSearch = r.studentName.toLowerCase().indexOf(search) !== -1;
     return matchGroup && matchSearch;
   });
-  filtered.sort(function(a,b){return new Date(b.date) - new Date(a.date)});
+  filtered.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  
   var tbody = $('resultsTableBody');
   var empty = $('resultsEmpty');
-  if(filtered.length === 0){tbody.innerHTML = '';empty.style.display = 'block';return}
+  if(filtered.length === 0){ tbody.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
+  
   var html = '';
-  for(var i=0;i<filtered.length;i++){
+  for(var i=0; i<filtered.length; i++){
     var r = filtered[i];
     var pct = Math.round((r.score/r.total)*100);
     var sc = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
     var d = new Date(r.date).toLocaleString();
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+r.studentName+'</strong></td><td>'+r.studentClass+'</td><td><span style="color:'+GROUPS[r.group].color+';font-weight:700">'+GROUPS[r.group].name+'</span></td><td class="score-cell '+sc+'">'+r.score+'/'+r.total+'</td><td><strong>'+pct+'%</strong></td><td>'+d+'</td><td><button class="btn btn-sm btn-primary" onclick="window.showResultDetailById('+r.id+')">️ View</button><button class="btn btn-sm btn-danger" onclick="window.deleteResult('+r.id+')">🗑️</button></td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><strong>'+r.studentName+'</strong></td><td>'+r.studentClass+'</td><td><span style="color:'+GROUPS[r.group].color+';font-weight:700">'+GROUPS[r.group].name+'</span></td><td class="score-cell '+sc+'">'+r.score+'/'+r.total+'</td><td><strong>'+pct+'%</strong></td><td>'+d+'</td><td><button class="btn btn-sm btn-primary" onclick="window.showResultDetailById('+r.id+')">👁️ View</button><button class="btn btn-sm btn-danger" onclick="window.deleteResult('+r.id+')">🗑️</button></td></tr>';
   }
   tbody.innerHTML = html;
 }
 
 function showResultDetailById(id){
   var result = null;
-  for(var i=0;i<results.length;i++){if(results[i].id === id){result = results[i];break}}
+  for(var i=0; i<results.length; i++){ if(results[i].id === id){ result = results[i]; break; } }
   if(result) showResultDetail(result);
 }
 
@@ -1050,8 +1175,9 @@ function showResultDetail(result){
   if(pct >= 80) message = '🌟 Excellent! Outstanding performance!';
   else if(pct >= 50) message = '👍 Good job! Keep practicing!';
   else message = '💪 Keep trying! Practice makes perfect!';
+  
   var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px">📝 Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
-  for(var i=0;i<result.answers.length;i++){
+  for(var i=0; i<result.answers.length; i++){
     var a = result.answers[i];
     var cls = a.status === 'correct' ? 'bi-correct' : (a.status === 'wrong' ? 'bi-wrong' : 'bi-skipped');
     var statusText = a.status === 'correct' ? '✅ Correct (+1)' : (a.status === 'wrong' ? '❌ Wrong (0)' : '⏭️ Skipped (0)');
@@ -1059,6 +1185,7 @@ function showResultDetail(result){
   }
   var d = new Date(result.date).toLocaleString();
   html += '</ul><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:8px;font-size:0.82em;color:var(--text-light)">📅 '+d+' | ⏱ Duration: '+result.duration+'s | Total: '+result.score+'/'+result.total+' marks</div>';
+  
   $('resultDetailContent').innerHTML = html;
   $('resultDetailModal').classList.add('active');
   if(pct >= 80) launchConfetti();
@@ -1066,68 +1193,95 @@ function showResultDetail(result){
 
 function viewStudentResult(studentId){
   var result = null;
-  for(var i=0;i<results.length;i++){if(results[i].studentId === studentId){result = results[i];break}}
+  for(var i=0; i<results.length; i++){ if(results[i].studentId === studentId){ result = results[i]; break; } }
   if(result) showResultDetail(result);
-  else showToast('No result found for this student','error');
+  else showToast('No result found for this student', 'error');
 }
 
-function deleteResult(id){
+async function deleteResult(id){
   if(!confirm('Delete this result?')) return;
-  results = results.filter(function(r){return r.id !== id});
-  saveResults();
-  showToast('Result deleted','success');
+  if (isCloud && supabase) {
+    try {
+      await supabase.from('results').delete().eq('id', id);
+      showToast('Deleted from Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      results = results.filter(function(r){ return r.id !== id; });
+      saveResults();
+      showToast('Deleted locally', 'error');
+    }
+  } else {
+    results = results.filter(function(r){ return r.id !== id; });
+    saveResults();
+    showToast('Result deleted', 'success');
+  }
   refreshAll();
 }
 
-function clearAllResults(){
+async function clearAllResults(){
   if(!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
-  results = [];
-  saveResults();
-  showToast('All results cleared','success');
+  if (isCloud && supabase) {
+    try {
+      await supabase.from('results').delete().neq('id', 0);
+      showToast('Cleared from Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      results = [];
+      saveResults();
+      showToast('Cleared locally', 'error');
+    }
+  } else {
+    results = [];
+    saveResults();
+    showToast('All results cleared', 'success');
+  }
   refreshAll();
 }
 
 function exportResults(){
-  if(results.length === 0){showToast('No results to export','error');return}
+  if(results.length === 0){ showToast('No results to export', 'error'); return; }
   var csv = 'Rank,Student Name,Class,Group,Topic,Score,Total,Percentage,Date\n';
-  var sorted = results.slice().sort(function(a,b){return (b.score/b.total)-(a.score/a.total)});
-  for(var i=0;i<sorted.length;i++){
+  var sorted = results.slice().sort(function(a,b){ return (b.score/b.total)-(a.score/a.total); });
+  for(var i=0; i<sorted.length; i++){
     var r = sorted[i];
     var pct = Math.round((r.score/r.total)*100);
     csv += (i+1)+',"'+r.studentName+'","'+r.studentClass+'","'+GROUPS[r.group].name+'","'+GROUPS[r.group].topic+'",'+r.score+','+r.total+','+pct+'%,"'+new Date(r.date).toLocaleString()+'"\n';
   }
-  var blob = new Blob([csv],{type:'text/csv'});
+  var blob = new Blob([csv], {type:'text/csv'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
   a.download = 'fluent_minds_results_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();
   URL.revokeObjectURL(url);
-  showToast('📥 Results exported!','success');
+  showToast('📥 Results exported!', 'success');
 }
 
 function renderLeaderboard(){
   var filterGroup = $('leaderboardGroup').value;
-  var filtered = results.filter(function(r){return filterGroup === 'all' || r.group == filterGroup});
+  var filtered = results.filter(function(r){ return filterGroup === 'all' || r.group == filterGroup; });
   var bestPerStudent = {};
-  for(var i=0;i<filtered.length;i++){
+  for(var i=0; i<filtered.length; i++){
     var r = filtered[i];
     var key = r.studentId;
     if(!bestPerStudent[key] || (r.score/r.total) > (bestPerStudent[key].score/bestPerStudent[key].total)){
       bestPerStudent[key] = r;
     }
   }
-  var sorted = Object.values(bestPerStudent).sort(function(a,b){return (b.score/b.total)-(a.score/a.total)});
+  var sorted = Object.values(bestPerStudent).sort(function(a,b){ return (b.score/b.total)-(a.score/a.total); });
   var podium = $('leaderboardPodium');
   var tbody = $('leaderboardBody');
   var empty = $('leaderboardEmpty');
-  if(sorted.length === 0){podium.innerHTML = '';tbody.innerHTML = '';empty.style.display = 'block';return}
+  
+  if(sorted.length === 0){ podium.innerHTML = ''; tbody.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
+  
   if(sorted.length >= 3){
     podium.innerHTML = '<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
-  } else {podium.innerHTML = ''}
+  } else { podium.innerHTML = ''; }
+  
   var html = '';
-  for(var i=0;i<sorted.length;i++){
+  for(var i=0; i<sorted.length; i++){
     var r = sorted[i];
     var pct = Math.round((r.score/r.total)*100);
     var medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : '#'+(i+1)));
@@ -1141,7 +1295,7 @@ function loadSettingsQuestions(){
   var pool = questionPools[group] || QUESTION_POOLS[group];
   var container = $('settingsQuestionsList');
   var html = '<h4 style="margin-bottom:8px">Current Pool ('+pool.length+' questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px">';
-  for(var i=0;i<pool.length;i++){
+  for(var i=0; i<pool.length; i++){
     var q = pool[i];
     html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px"><span style="font-size:0.88em"><strong>'+(i+1)+'.</strong> '+q.display+' <small style="color:var(--text-light)">→ '+q.answer+'</small></span><button class="btn btn-sm btn-danger" onclick="window.removeQuestion('+group+','+i+')">✕</button></div>';
   }
@@ -1153,41 +1307,70 @@ function addQuestionToPool(){
   var group = parseInt($('settingsGroupSelect').value);
   var text = $('newQuestionText').value.trim();
   var answer = $('newQuestionAnswer').value.trim() || text;
-  if(!text){showToast('Please enter a question','error');return}
+  if(!text){ showToast('Please enter a question', 'error'); return; }
   var type = group === 3 ? 'sentence' : (group === 1 ? 'letter' : 'word');
-  if(!questionPools[group]) questionPools[group] = [];
-  questionPools[group].push({display:text,answer:answer,type:type});
-  savePools();
+  
+  if (isCloud && supabase) {
+    supabase.from('question_pools').insert([{group_num: group, display: text, answer: answer, type: type}]).then(function(res){
+      if(!res.error) {
+        showToast('✅ Question added to Cloud', 'success');
+        loadData().then(function(){ loadSettingsQuestions(); });
+      } else {
+        saveQuestionLocal(group, text, answer, type);
+      }
+    });
+  } else {
+    saveQuestionLocal(group, text, answer, type);
+  }
   $('newQuestionText').value = '';
   $('newQuestionAnswer').value = '';
-  showToast('✅ Question added to pool','success');
-  loadSettingsQuestions();
 }
 
-function removeQuestion(group,index){
-  var pool = questionPools[group] || QUESTION_POOLS[group];
-  if(pool.length <= GROUPS[group].totalQuestions){showToast('Cannot remove - minimum '+GROUPS[group].totalQuestions+' questions required','error');return}
-  pool.splice(index,1);
+function saveQuestionLocal(group, text, answer, type){
+  if(!questionPools[group]) questionPools[group] = [];
+  questionPools[group].push({display: text, answer: answer, type: type});
   savePools();
-  showToast('Question removed','success');
+  showToast('✅ Question added locally', 'success');
   loadSettingsQuestions();
 }
 
-function resetAllData(){
+function removeQuestion(group, index){
+  var pool = questionPools[group] || QUESTION_POOLS[group];
+  if(pool.length <= GROUPS[group].totalQuestions){ showToast('Cannot remove - minimum '+GROUPS[group].totalQuestions+' questions required', 'error'); return; }
+  pool.splice(index, 1);
+  savePools();
+  showToast('Question removed', 'success');
+  loadSettingsQuestions();
+}
+
+async function resetAllData(){
   if(!confirm('⚠️ This will delete ALL students, results, and custom questions. Continue?')) return;
   if(!confirm('Are you absolutely sure?')) return;
-  students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
-  results = [];
-  questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-  saveStudents();saveResults();savePools();
-  showToast('All data reset','success');
+  
+  if (isCloud && supabase) {
+    try {
+      await supabase.from('results').delete().neq('id', 0);
+      await supabase.from('students').delete().neq('id', 0);
+      await supabase.from('question_pools').delete().neq('id', 0);
+      showToast('All data reset in Cloud', 'success');
+      await loadData();
+    } catch(e) {
+      showToast('Failed to reset cloud data', 'error');
+    }
+  } else {
+    students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
+    results = [];
+    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
+    saveStudents(); saveResults(); savePools();
+    showToast('All data reset', 'success');
+  }
   refreshAll();
 }
 
 function launchConfetti(){
   var container = $('confettiContainer');
   var colors = ['#0d9488','#e11d48','#6366f1','#f59e0b','#16a34a','#ec4899','#fbbf24'];
-  for(var i=0;i<60;i++){
+  for(var i=0; i<60; i++){
     var piece = document.createElement('div');
     piece.className = 'confetti-piece';
     piece.style.left = Math.random()*100+'%';
@@ -1199,7 +1382,7 @@ function launchConfetti(){
     piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
     container.appendChild(piece);
   }
-  setTimeout(function(){container.innerHTML = ''},4000);
+  setTimeout(function(){ container.innerHTML = ''; }, 4000);
 }
 
 function refreshAll(){
@@ -1212,7 +1395,7 @@ function refreshAll(){
   updateBadges();
 }
 
-// Expose functions to window for onclick handlers
+// --- EXPOSE TO WINDOW FOR ONCLICK ---
 window.showPage = showPage;
 window.quickStart = quickStart;
 window.quickStartStudent = quickStartStudent;
@@ -1237,46 +1420,45 @@ window.removeQuestion = removeQuestion;
 window.resetAllData = resetAllData;
 window.toggleSidebar = toggleSidebar;
 
-// Initialize on DOM ready
-document.addEventListener('DOMContentLoaded',function(){
-  $('currentDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  loadData();
-  refreshAll();
+// --- INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', function(){
+  $('currentDate').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  loadData().then(function(){ refreshAll(); });
 
-  // Button event listeners
-  $('menuBtn').addEventListener('click',toggleSidebar);
-  $('addStudentBtn').addEventListener('click',openAddStudentModal);
-  $('closeStudentModal').addEventListener('click',function(){closeModal('studentModal')});
-  $('cancelStudentBtn').addEventListener('click',function(){closeModal('studentModal')});
-  $('saveStudentBtn').addEventListener('click',saveStudent);
-  $('closeResultModal').addEventListener('click',function(){closeModal('resultDetailModal')});
-  $('launchBtn').addEventListener('click',launchCompetition);
-  $('btnCorrect').addEventListener('click',function(){markCompAnswer('correct')});
-  $('btnWrong').addEventListener('click',function(){markCompAnswer('wrong')});
-  $('btnSkip').addEventListener('click',function(){markCompAnswer('skipped')});
-  $('fsExitBtn').addEventListener('click',quitCompetition);
-  $('exportBtn').addEventListener('click',exportResults);
-  $('clearResultsBtn').addEventListener('click',clearAllResults);
-  $('addQuestionBtn').addEventListener('click',addQuestionToPool);
-  $('resetDataBtn').addEventListener('click',resetAllData);
-  $('clearAllBtn').addEventListener('click',clearAllResults);
-  $('compGroupSelect').addEventListener('change',updateCompStudents);
-  $('filterGroup').addEventListener('change',renderStudents);
-  $('searchStudent').addEventListener('input',renderStudents);
-  $('resultFilterGroup').addEventListener('change',renderResults);
-  $('resultSearch').addEventListener('input',renderResults);
-  $('leaderboardGroup').addEventListener('change',renderLeaderboard);
-  $('settingsGroupSelect').addEventListener('change',loadSettingsQuestions);
+  // Event Listeners
+  $('menuBtn').addEventListener('click', toggleSidebar);
+  $('addStudentBtn').addEventListener('click', openAddStudentModal);
+  $('closeStudentModal').addEventListener('click', function(){ closeModal('studentModal'); });
+  $('cancelStudentBtn').addEventListener('click', function(){ closeModal('studentModal'); });
+  $('saveStudentBtn').addEventListener('click', saveStudent);
+  $('closeResultModal').addEventListener('click', function(){ closeModal('resultDetailModal'); });
+  $('launchBtn').addEventListener('click', launchCompetition);
+  $('btnCorrect').addEventListener('click', function(){ markCompAnswer('correct'); });
+  $('btnWrong').addEventListener('click', function(){ markCompAnswer('wrong'); });
+  $('btnSkip').addEventListener('click', function(){ markCompAnswer('skipped'); });
+  $('fsExitBtn').addEventListener('click', quitCompetition);
+  $('exportBtn').addEventListener('click', exportResults);
+  $('clearResultsBtn').addEventListener('click', clearAllResults);
+  $('addQuestionBtn').addEventListener('click', addQuestionToPool);
+  $('resetDataBtn').addEventListener('click', resetAllData);
+  $('clearAllBtn').addEventListener('click', clearAllResults);
+  $('compGroupSelect').addEventListener('change', updateCompStudents);
+  $('filterGroup').addEventListener('change', renderStudents);
+  $('searchStudent').addEventListener('input', renderStudents);
+  $('resultFilterGroup').addEventListener('change', renderResults);
+  $('resultSearch').addEventListener('input', renderResults);
+  $('leaderboardGroup').addEventListener('change', renderLeaderboard);
+  $('settingsGroupSelect').addEventListener('change', loadSettingsQuestions);
 
   // Close modals on overlay click
   document.querySelectorAll('.modal-overlay').forEach(function(overlay){
-    overlay.addEventListener('click',function(e){
+    overlay.addEventListener('click', function(e){
       if(e.target === this) this.classList.remove('active');
     });
   });
 
   // Close sidebar on outside click (mobile)
-  document.addEventListener('click',function(e){
+  document.addEventListener('click', function(e){
     var sidebar = $('sidebar');
     if(window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target.id !== 'menuBtn'){
       closeSidebar();
@@ -1284,7 +1466,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 
   // Keyboard shortcuts during competition
-  document.addEventListener('keydown',function(e){
+  document.addEventListener('keydown', function(e){
     if(!activeComp) return;
     if(e.key === '1' || e.key === 'c' || e.key === 'C') markCompAnswer('correct');
     if(e.key === '2' || e.key === 'w' || e.key === 'W') markCompAnswer('wrong');
