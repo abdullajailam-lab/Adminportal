@@ -214,6 +214,10 @@ table tr:hover td{background:#f0fdfa}
 .db-status .status-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
 .db-status .status-dot.offline{background:var(--danger);animation:none}
 
+.setup-banner{background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #f59e0b;border-radius:16px;padding:20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;animation:slideUp 0.5s ease}
+.setup-banner h3{color:#92400e;font-size:1.1em;margin-bottom:5px}
+.setup-banner p{color:#78350f;font-size:0.9em}
+
 @media(max-width:768px){
 .sidebar{transform:translateX(-100%);width:240px}
 .sidebar.open{transform:translateX(0)}
@@ -280,37 +284,48 @@ table tr:hover td{background:#f0fdfa}
 <div class="sidebar-header">
 <div class="logo-icon">🎓</div>
 <h2>Gems Fluent Minds</h2>
-<p>✨ Live Competition Portal </p>
+<p>✨ Live Competition Portal ✨</p>
 </div>
 <nav class="sidebar-nav">
-<div class="nav-section-title"> Main Menu</div>
+<div class="nav-section-title">📌 Main Menu</div>
 <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
 <div class="nav-item" data-page="groups" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
-<div class="nav-item" data-page="students" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
-<div class="nav-section-title"> Competition</div>
+<div class="nav-item" data-page="students" onclick="showPage('students')"><span class="icon">‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
+<div class="nav-section-title">🏆 Competition</div>
 <div class="nav-item" data-page="compete" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
 <div class="nav-item" data-page="results" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
-<div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="icon"></span> Leaderboard</div>
+<div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
 <div class="nav-section-title">⚙️ System</div>
-<div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
+<div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon"></span> Settings</div>
 </nav>
 </aside>
 
 <main class="main-content">
 <div class="topbar">
 <div style="display:flex;align-items:center;gap:12px">
-<button class="mobile-menu-btn" id="menuBtn" type="button"></button>
-<h1 id="pageTitle"> Dashboard</h1>
+<button class="mobile-menu-btn" id="menuBtn" type="button">☰</button>
+<h1 id="pageTitle">📊 Dashboard</h1>
 </div>
 <div style="font-size:0.82em;color:var(--text-light);font-weight:600" id="currentDate"></div>
 </div>
 
 <div class="content-area">
+
+<div id="setupBanner" style="display:none">
+<div class="setup-banner">
+<div>
+<h3>️ Database is Empty!</h3>
+<p>Click the button below to add all 53 students to your database (one-time setup).</p>
+</div>
+<button class="btn btn-primary btn-lg" id="setupStudentsBtn">🚀 Setup Initial Students</button>
+</div>
+</div>
+
 <div class="page active" id="page-dashboard">
 <div class="stats-grid">
 <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
 <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-<div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+<div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
 <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
 </div>
 <div class="groups-grid" id="dashGroupsGrid"></div>
@@ -330,7 +345,7 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-students">
 <div class="card">
-<div class="card-header"><h3>‍🎓 Student Management</h3><button class="btn btn-primary" id="addStudentBtn">➕ Add Student</button></div>
+<div class="card-header"><h3>👨‍🎓 Student Management</h3><button class="btn btn-primary" id="addStudentBtn">➕ Add Student</button></div>
 <div class="card-body">
 <div class="filter-bar">
 <select id="filterGroup"><option value="all">All Groups</option><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select>
@@ -364,7 +379,7 @@ table tr:hover td{background:#f0fdfa}
 <input type="text" id="resultSearch" placeholder="🔍 Search...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
-<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
+<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
@@ -382,9 +397,17 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-settings">
 <div class="card">
-<div class="card-header"><h3>🔧 Settings</h3></div>
+<div class="card-header"><h3> Settings</h3></div>
 <div class="card-body">
-<h4 style="margin-bottom:12px">📝 Question Pool Management</h4>
+<h4 style="margin-bottom:12px">📝 Database Management</h4>
+<p style="color:var(--text-light);margin-bottom:16px">Manage your cloud database. <strong>Deleted students stay deleted!</strong></p>
+<div class="btn-group" style="margin-bottom:20px">
+<button class="btn btn-primary" id="setupStudentsBtn2">🚀 Add All 53 Students (One-Time)</button>
+<button class="btn btn-warning" id="resetDataBtn">🔄 Reset All Data</button>
+<button class="btn btn-danger" id="clearAllBtn">🗑️ Delete All Results</button>
+</div>
+<hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+<h4 style="margin-bottom:12px"> Question Pool Management</h4>
 <p style="color:var(--text-light);margin-bottom:16px">Each student receives <strong>randomized questions</strong> from the pool below.</p>
 <div class="form-group"><label>Select Group to Edit Questions</label><select class="form-control" id="settingsGroupSelect"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
 <div id="settingsQuestionsList" style="margin-bottom:16px"></div>
@@ -393,12 +416,10 @@ table tr:hover td{background:#f0fdfa}
 <div class="form-group"><label>Answer (for reference)</label><input type="text" class="form-control" id="newQuestionAnswer" placeholder="e.g., cat"></div>
 </div>
 <button class="btn btn-primary" id="addQuestionBtn">➕ Add Question</button>
-<hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
-<h4 style="margin-bottom:12px">⚠️ Danger Zone</h4>
-<div class="btn-group"><button class="btn btn-warning" id="resetDataBtn">🔄 Reset All Data</button><button class="btn btn-danger" id="clearAllBtn">️ Delete All Results</button></div>
 </div>
 </div>
 </div>
+
 </div>
 </main>
 </div>
@@ -411,7 +432,7 @@ table tr:hover td{background:#f0fdfa}
 <p id="fsCompStudent">Student Name</p>
 </div>
 <div class="fs-stats">
-<div class="fs-stat-box timer-box"><div class="fs-label">⏱ TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
+<div class="fs-stat-box timer-box"><div class="fs-label"> TIME</div><div class="fs-value" id="fsTimer">2:00</div></div>
 <div class="fs-stat-box score-box"><div class="fs-label">✅ SCORE</div><div class="fs-value" id="fsScore">0</div></div>
 </div>
 </div>
@@ -429,7 +450,7 @@ table tr:hover td{background:#f0fdfa}
 <div class="fs-action-btns">
 <button class="fs-action-btn correct-btn" id="btnCorrect" type="button">✅ CORRECT</button>
 <button class="fs-action-btn wrong-btn" id="btnWrong" type="button">❌ WRONG</button>
-<button class="fs-action-btn skip-btn" id="btnSkip" type="button">️ SKIP</button>
+<button class="fs-action-btn skip-btn" id="btnSkip" type="button">⏭️ SKIP</button>
 </div>
 </div>
 </div>
@@ -445,7 +466,7 @@ table tr:hover td{background:#f0fdfa}
 <div class="form-group"><label>Student ID (optional)</label><input type="text" class="form-control" id="studentIdNum" placeholder="ID number"></div>
 <div class="form-group"><label>Assign to Group *</label><select class="form-control" id="studentGroup"><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select></div>
 </div>
-<div class="modal-footer"><button class="btn btn-secondary" id="cancelStudentBtn" type="button">Cancel</button><button class="btn btn-primary" id="saveStudentBtn" type="button"> Save Student</button></div>
+<div class="modal-footer"><button class="btn btn-secondary" id="cancelStudentBtn" type="button">Cancel</button><button class="btn btn-primary" id="saveStudentBtn" type="button">💾 Save Student</button></div>
 </div>
 </div>
 
@@ -468,7 +489,6 @@ table tr:hover td{background:#f0fdfa}
 (function(){
 'use strict';
 
-// --- SUPABASE CONFIGURATION ---
 const SUPABASE_URL = 'https://fvnivnyhkjrumuzmwozb.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2bml2bnloa2pydW11em13b3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1NTEwNzIsImV4cCI6MjEwNzEyNzA3Mn0.QuF4ToayigdM4PmZvsmNKheQd3r_o5VP_e34cin3UYQ';
 let supabase = null;
@@ -476,13 +496,12 @@ let isCloud = false;
 
 try {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    // Test connection
     supabase.from('students').select('id', { count: 'exact', head: true }).then(({ error }) => {
         if (!error) {
             isCloud = true;
             updateDbStatus(true);
             console.log("✅ Connected to Supabase Cloud");
-            loadData(); // Load live data
+            loadData();
         } else {
             console.warn("⚠️ Supabase connection failed:", error.message);
             updateDbStatus(false);
@@ -509,11 +528,10 @@ function updateDbStatus(connected) {
         text.textContent = '🟢 Live Data Connected';
     } else {
         dot.classList.add('offline');
-        text.textContent = '🔴 Local Mode Only';
+        text.textContent = ' Local Mode Only';
     }
 }
 
-// --- DATA ---
 const GROUPS = {
   1: { name: "Group 1", topic: "Letters & Sounds", date: "6th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#0d9488", rules: ["Each student will get 10 letters. They have to tell within 2 minutes.","Students must orally tell the name of the letters and sounds of each letter shown on the TV screen. They may skip a letter if they do not know the letter name or sound.",'Say "Next" or "Skip" if you want to skip the letter.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
   2: { name: "Group 2", topic: "CVC and Sight Words", date: "6th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#e11d48", rules: ["Each student will get 10 words. They have to say the words within 2 minutes.","Students must orally say the words shown on the TV screen. They may skip a word if they do not know.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."]},
@@ -613,83 +631,43 @@ let compTimer = null;
 let nextStudentId = 100;
 
 const INITIAL_STUDENTS = [
-  {id:1,name:"Niha",cls:"",idNum:"",group:1},
-  {id:2,name:"Adam Nafaah",cls:"6B",idNum:"",group:1},
-  {id:3,name:"Naheek",cls:"",idNum:"",group:1},
-  {id:4,name:"Raahin",cls:"",idNum:"",group:1},
-  {id:5,name:"Aika",cls:"",idNum:"",group:1},
-  {id:6,name:"Shiura",cls:"",idNum:"",group:1},
-  {id:7,name:"Azin",cls:"",idNum:"",group:1},
-  {id:8,name:"Aain",cls:"",idNum:"",group:1},
-  {id:9,name:"Azoof",cls:"",idNum:"",group:1},
-  {id:10,name:"Alaau",cls:"",idNum:"",group:1},
-  {id:11,name:"Sunooh",cls:"",idNum:"",group:1},
-  {id:12,name:"Shadaf",cls:"",idNum:"",group:1},
-  {id:13,name:"Nooh",cls:"",idNum:"",group:1},
-  {id:14,name:"Jool",cls:"",idNum:"",group:1},
-  {id:15,name:"Ishfaan",cls:"",idNum:"",group:1},
-  {id:16,name:"Zukaan",cls:"",idNum:"",group:1},
-  {id:17,name:"Mauil",cls:"",idNum:"",group:1},
-  {id:18,name:"Ma'aan",cls:"",idNum:"",group:1},
-  {id:19,name:"Ayyoob",cls:"",idNum:"",group:1},
-  {id:20,name:"Aarish",cls:"",idNum:"",group:1},
-  {id:21,name:"Shabeen",cls:"",idNum:"",group:2},
-  {id:22,name:"Naavith",cls:"",idNum:"",group:2},
-  {id:23,name:"Yalvy",cls:"",idNum:"",group:2},
-  {id:24,name:"Ausaf",cls:"",idNum:"",group:2},
-  {id:25,name:"Siraau",cls:"",idNum:"",group:2},
-  {id:26,name:"Yana",cls:"",idNum:"",group:2},
-  {id:27,name:"Baasil",cls:"",idNum:"",group:2},
-  {id:28,name:"Ali Ahmed",cls:"LKG",idNum:"",group:2},
-  {id:29,name:"Reez",cls:"",idNum:"",group:3},
-  {id:30,name:"Yumaan",cls:"",idNum:"",group:3},
-  {id:31,name:"Raamin",cls:"",idNum:"",group:3},
-  {id:32,name:"Yooaan",cls:"",idNum:"",group:3},
-  {id:33,name:"Nafaah",cls:"3C",idNum:"",group:3},
-  {id:34,name:"Ma'aal",cls:"",idNum:"",group:3},
-  {id:35,name:"Mufthee",cls:"",idNum:"",group:3},
-  {id:36,name:"Adhiyaan",cls:"",idNum:"",group:3},
-  {id:37,name:"Zalaan",cls:"",idNum:"",group:3},
-  {id:38,name:"Iyaadh",cls:"",idNum:"",group:3},
-  {id:39,name:"Yana",cls:"",idNum:"",group:3},
-  {id:40,name:"Neeshaan",cls:"",idNum:"",group:3},
-  {id:41,name:"Rayn",cls:"",idNum:"",group:4},
-  {id:42,name:"Alyas",cls:"",idNum:"",group:4},
-  {id:43,name:"Jailaan",cls:"",idNum:"",group:4},
-  {id:44,name:"Arushal",cls:"",idNum:"",group:4},
-  {id:45,name:"Shiraa",cls:"",idNum:"",group:4},
-  {id:46,name:"Naash",cls:"",idNum:"",group:4},
-  {id:47,name:"Shaarif",cls:"",idNum:"",group:4},
-  {id:48,name:"Aflaak",cls:"",idNum:"",group:4},
-  {id:49,name:"Shanoon",cls:"",idNum:"",group:4},
-  {id:50,name:"Zaan",cls:"",idNum:"",group:4},
-  {id:51,name:"Saleef",cls:"",idNum:"",group:4},
-  {id:52,name:"Alyaan",cls:"",idNum:"",group:4},
-  {id:53,name:"Aluk",cls:"",idNum:"",group:4}
+  {name:"Niha",cls:"",group:1},{name:"Adam Nafaah",cls:"6B",group:1},{name:"Naheek",cls:"",group:1},
+  {name:"Raahin",cls:"",group:1},{name:"Aika",cls:"",group:1},{name:"Shiura",cls:"",group:1},
+  {name:"Azin",cls:"",group:1},{name:"Aain",cls:"",group:1},{name:"Azoof",cls:"",group:1},
+  {name:"Alaau",cls:"",group:1},{name:"Sunooh",cls:"",group:1},{name:"Shadaf",cls:"",group:1},
+  {name:"Nooh",cls:"",group:1},{name:"Jool",cls:"",group:1},{name:"Ishfaan",cls:"",group:1},
+  {name:"Zukaan",cls:"",group:1},{name:"Mauil",cls:"",group:1},{name:"Ma'aan",cls:"",group:1},
+  {name:"Ayyoob",cls:"",group:1},{name:"Aarish",cls:"",group:1},
+  {name:"Shabeen",cls:"",group:2},{name:"Naavith",cls:"",group:2},{name:"Yalvy",cls:"",group:2},
+  {name:"Ausaf",cls:"",group:2},{name:"Siraau",cls:"",group:2},{name:"Yana",cls:"",group:2},
+  {name:"Baasil",cls:"",group:2},{name:"Ali Ahmed",cls:"LKG",group:2},
+  {name:"Reez",cls:"",group:3},{name:"Yumaan",cls:"",group:3},{name:"Raamin",cls:"",group:3},
+  {name:"Yooaan",cls:"",group:3},{name:"Nafaah",cls:"3C",group:3},{name:"Ma'aal",cls:"",group:3},
+  {name:"Mufthee",cls:"",group:3},{name:"Adhiyaan",cls:"",group:3},{name:"Zalaan",cls:"",group:3},
+  {name:"Iyaadh",cls:"",group:3},{name:"Yana",cls:"",group:3},{name:"Neeshaan",cls:"",group:3},
+  {name:"Rayn",cls:"",group:4},{name:"Alyas",cls:"",group:4},{name:"Jailaan",cls:"",group:4},
+  {name:"Arushal",cls:"",group:4},{name:"Shiraa",cls:"",group:4},{name:"Naash",cls:"",group:4},
+  {name:"Shaarif",cls:"",group:4},{name:"Aflaak",cls:"",group:4},{name:"Shanoon",cls:"",group:4},
+  {name:"Zaan",cls:"",group:4},{name:"Saleef",cls:"",group:4},{name:"Alyaan",cls:"",group:4},
+  {name:"Aluk",cls:"",group:4}
 ];
 
 function saveStudents(){try{localStorage.setItem('fm_students',JSON.stringify(students))}catch(e){}}
 function saveResults(){try{localStorage.setItem('fm_results',JSON.stringify(results))}catch(e){}}
-function savePools(){try{localStorage.setItem('fm_pools',JSON.stringify(questionPools))}catch(e){}}
 
 async function loadData(){
   if (isCloud && supabase) {
     try {
       const { data: sData, error: sErr } = await supabase.from('students').select('*').order('id');
-      if (!sErr && sData && sData.length > 0) {
-        students = sData.map(s => ({id: s.id, name: s.name, cls: s.class, idNum: s.id_num || '', group: s.group_num}));
+      if (!sErr && sData) {
+        students = sData.map(s => ({id: s.id, name: s.name, cls: s.class || '', idNum: s.id_num || '', group: s.group_num}));
       } else {
-        students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
-        // Seed cloud if empty
-        for (let s of students) {
-          await supabase.from('students').insert([{name: s.name, class: s.cls, id_num: s.idNum, group_num: s.group}]);
-        }
+        students = [];
       }
       
       const { data: rData, error: rErr } = await supabase.from('results').select('*').order('date', {ascending: false});
-      results = (!rErr && rData) ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class, group: r.group_num, score: r.score, total: r.total, answers: r.answers || [], date: r.date, duration: r.duration})) : [];
+      results = (!rErr && rData) ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class || '', group: r.group_num, score: r.score, total: r.total, answers: r.answers || [], date: r.date, duration: r.duration})) : [];
 
-      // Question pools are static for now, loaded from local/constant
       questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
     } catch (e) {
       console.error("Cloud load failed, falling back to local", e);
@@ -701,6 +679,14 @@ async function loadData(){
   
   nextStudentId = 100;
   students.forEach(st => { if(st.id >= nextStudentId) nextStudentId = st.id + 1; });
+  
+  // Show setup banner if no students
+  if (students.length === 0 && isCloud) {
+    document.getElementById('setupBanner').style.display = 'block';
+  } else {
+    document.getElementById('setupBanner').style.display = 'none';
+  }
+  
   refreshAll();
 }
 
@@ -708,15 +694,45 @@ function loadFromLocal(){
   try {
     var s = localStorage.getItem('fm_students');
     if(s){ students = JSON.parse(s); }
-    else { students = JSON.parse(JSON.stringify(INITIAL_STUDENTS)); saveStudents(); }
+    else { students = []; }
     var r = localStorage.getItem('fm_results');
     results = r ? JSON.parse(r) : [];
-    var p = localStorage.getItem('fm_pools');
-    questionPools = p ? JSON.parse(p) : JSON.parse(JSON.stringify(QUESTION_POOLS));
+    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
   } catch(e) {
-    students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
+    students = [];
     results = [];
     questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
+  }
+}
+
+async function setupInitialStudents(){
+  if(!confirm('This will add all 53 students to your database. Continue?')) return;
+  
+  showToast('⏳ Adding 53 students...', 'info');
+  
+  if (isCloud && supabase) {
+    try {
+      const studentsToInsert = INITIAL_STUDENTS.map(s => ({
+        name: s.name,
+        class: s.cls,
+        id_num: '',
+        group_num: s.group
+      }));
+      
+      const { error } = await supabase.from('students').insert(studentsToInsert);
+      if (error) throw error;
+      
+      showToast('✅ All 53 students added to cloud!', 'success');
+      await loadData();
+    } catch(e) {
+      console.error("Setup failed:", e);
+      showToast('❌ Failed to add students: ' + e.message, 'error');
+    }
+  } else {
+    students = INITIAL_STUDENTS.map((s, i) => ({id: i+1, name: s.name, cls: s.cls, idNum: '', group: s.group}));
+    saveStudents();
+    showToast('✅ All 53 students added locally!', 'success');
+    refreshAll();
   }
 }
 
@@ -743,7 +759,7 @@ function showPage(pageId){
   var activeNav = document.querySelector('.nav-item[data-page="'+pageId+'"]');
   if(activeNav) activeNav.classList.add('active');
   
-  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍ Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:' Leaderboard',settings:'🔧 Settings'};
+  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍🎓 Students',compete:' Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:' Settings'};
   $('pageTitle').textContent = titles[pageId] || '';
   
   refreshAll();
@@ -780,7 +796,7 @@ function renderDashboard(){
     for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
     var compCount = 0;
     for(var j=0; j<results.length; j++){ if(results[j].group === i) compCount++; }
-    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
+    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span> '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
   }
   $('dashGroupsGrid').innerHTML = gridHTML;
 
@@ -810,7 +826,7 @@ function renderGroups(){
     var g = GROUPS[i];
     var count = 0;
     for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
-    html += '<div class="group-card" onclick="window.showGroupRules('+i+')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span> '+g.date+'</span><span>🕐 '+g.time+'</span><span>📍 '+g.location+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();window.showGroupRules('+i+')">📋 Rules</button></div></div>';
+    html += '<div class="group-card" onclick="window.showGroupRules('+i+')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬','🔄'][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span>📅 '+g.date+'</span><span>🕐 '+g.time+'</span><span>📍 '+g.location+'</span><span>⏱ '+(g.totalTime/60)+' min</span><span> '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students assigned</div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();window.showGroupRules('+i+')">📋 Rules</button></div></div>';
   }
   $('groupsPageGrid').innerHTML = html;
 }
@@ -852,13 +868,13 @@ function renderStudents(){
     var scoreText = result ? result.score+'/'+result.total : '-';
     var pct = result ? Math.round((result.score/result.total)*100) : 0;
     var scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':' Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong>'+(s.idNum?'<br><small style="color:var(--text-light)">ID: '+s.idNum+'</small>':'')+'</td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
   }
   tbody.innerHTML = html;
 }
 
 function openAddStudentModal(){
-  $('modalTitle').textContent = ' Add New Student';
+  $('modalTitle').textContent = '➕ Add New Student';
   $('editStudentId').value = '';
   $('studentName').value = '';
   $('studentClass').value = '';
@@ -893,7 +909,7 @@ async function saveStudent(){
   if (isCloud && supabase) {
     try {
       if(id) {
-        await supabase.from('students').update({name: name, class: cls, id_num: idNum, group_num: group}).eq('id', id);
+        await supabase.from('students').update({name: name, class: cls, id_num: idNum, group_num: group}).eq('id', parseInt(id));
       } else {
         await supabase.from('students').insert([{name: name, class: cls, id_num: idNum, group_num: group}]);
       }
@@ -928,13 +944,14 @@ async function deleteStudent(id){
     try {
       await supabase.from('students').delete().eq('id', id);
       await supabase.from('results').delete().eq('student_id', id);
-      showToast('Deleted from Cloud', 'success');
+      showToast('✅ Student deleted from Cloud', 'success');
       await loadData();
     } catch(e) {
+      console.error("Cloud delete failed", e);
       students = students.filter(function(s){ return s.id !== id; });
       results = results.filter(function(r){ return r.studentId !== id; });
       saveStudents(); saveResults();
-      showToast('Deleted locally', 'error');
+      showToast('Deleted locally (cloud failed)', 'error');
     }
   } else {
     students = students.filter(function(s){ return s.id !== id; });
@@ -1206,7 +1223,7 @@ async function deleteResult(id){
   if (isCloud && supabase) {
     try {
       await supabase.from('results').delete().eq('id', id);
-      showToast('Deleted from Cloud', 'success');
+      showToast('✅ Result deleted from Cloud', 'success');
       await loadData();
     } catch(e) {
       results = results.filter(function(r){ return r.id !== id; });
@@ -1226,7 +1243,7 @@ async function clearAllResults(){
   if (isCloud && supabase) {
     try {
       await supabase.from('results').delete().neq('id', 0);
-      showToast('Cleared from Cloud', 'success');
+      showToast('✅ All results cleared from Cloud', 'success');
       await loadData();
     } catch(e) {
       results = [];
@@ -1280,7 +1297,7 @@ function renderLeaderboard(){
   empty.style.display = 'none';
   
   if(sorted.length >= 3){
-    podium.innerHTML = '<div class="podium-item"><div class="podium-rank"></div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
+    podium.innerHTML = '<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
   } else { podium.innerHTML = ''; }
   
   var html = '';
@@ -1300,7 +1317,7 @@ function loadSettingsQuestions(){
   var html = '<h4 style="margin-bottom:8px">Current Pool ('+pool.length+' questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px">';
   for(var i=0; i<pool.length; i++){
     var q = pool[i];
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px"><span style="font-size:0.88em"><strong>'+(i+1)+'.</strong> '+q.display+' <small style="color:var(--text-light)">→ '+q.answer+'</small></span><button class="btn btn-sm btn-danger" onclick="window.removeQuestion('+group+','+i+')"></button></div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px"><span style="font-size:0.88em"><strong>'+(i+1)+'.</strong> '+q.display+' <small style="color:var(--text-light)">→ '+q.answer+'</small></span><button class="btn btn-sm btn-danger" onclick="window.removeQuestion('+group+','+i+')">✕</button></div>';
   }
   html += '</div>';
   container.innerHTML = html;
@@ -1332,7 +1349,6 @@ function addQuestionToPool(){
 function saveQuestionLocal(group, text, answer, type){
   if(!questionPools[group]) questionPools[group] = [];
   questionPools[group].push({display: text, answer: answer, type: type});
-  savePools();
   showToast('✅ Question added locally', 'success');
   loadSettingsQuestions();
 }
@@ -1341,29 +1357,27 @@ function removeQuestion(group, index){
   var pool = questionPools[group] || QUESTION_POOLS[group];
   if(pool.length <= GROUPS[group].totalQuestions){ showToast('Cannot remove - minimum '+GROUPS[group].totalQuestions+' questions required', 'error'); return; }
   pool.splice(index, 1);
-  savePools();
   showToast('Question removed', 'success');
   loadSettingsQuestions();
 }
 
 async function resetAllData(){
-  if(!confirm('⚠️ This will delete ALL students, results, and custom questions. Continue?')) return;
+  if(!confirm('⚠️ This will delete ALL students and results. Continue?')) return;
   if(!confirm('Are you absolutely sure?')) return;
   
   if (isCloud && supabase) {
     try {
       await supabase.from('results').delete().neq('id', 0);
       await supabase.from('students').delete().neq('id', 0);
-      showToast('All data reset in Cloud', 'success');
+      showToast('✅ All data reset in Cloud', 'success');
       await loadData();
     } catch(e) {
       showToast('Failed to reset cloud data', 'error');
     }
   } else {
-    students = JSON.parse(JSON.stringify(INITIAL_STUDENTS));
+    students = [];
     results = [];
-    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-    saveStudents(); saveResults(); savePools();
+    saveStudents(); saveResults();
     showToast('All data reset', 'success');
   }
   refreshAll();
@@ -1397,7 +1411,6 @@ function refreshAll(){
   updateBadges();
 }
 
-// --- EXPOSE TO WINDOW FOR ONCLICK ---
 window.showPage = showPage;
 window.quickStart = quickStart;
 window.quickStartStudent = quickStartStudent;
@@ -1421,13 +1434,11 @@ window.addQuestionToPool = addQuestionToPool;
 window.removeQuestion = removeQuestion;
 window.resetAllData = resetAllData;
 window.toggleSidebar = toggleSidebar;
+window.setupInitialStudents = setupInitialStudents;
 
-// --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', function(){
   $('currentDate').textContent = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-  // loadData is called automatically when Supabase connects, or fallback in catch block
 
-  // Event Listeners
   $('menuBtn').addEventListener('click', toggleSidebar);
   $('addStudentBtn').addEventListener('click', openAddStudentModal);
   $('closeStudentModal').addEventListener('click', function(){ closeModal('studentModal'); });
@@ -1444,6 +1455,8 @@ document.addEventListener('DOMContentLoaded', function(){
   $('addQuestionBtn').addEventListener('click', addQuestionToPool);
   $('resetDataBtn').addEventListener('click', resetAllData);
   $('clearAllBtn').addEventListener('click', clearAllResults);
+  $('setupStudentsBtn').addEventListener('click', setupInitialStudents);
+  $('setupStudentsBtn2').addEventListener('click', setupInitialStudents);
   $('compGroupSelect').addEventListener('change', updateCompStudents);
   $('filterGroup').addEventListener('change', renderStudents);
   $('searchStudent').addEventListener('input', renderStudents);
@@ -1451,14 +1464,13 @@ document.addEventListener('DOMContentLoaded', function(){
   $('resultSearch').addEventListener('input', renderResults);
   $('leaderboardGroup').addEventListener('change', renderLeaderboard);
   $('settingsGroupSelect').addEventListener('change', loadSettingsQuestions);
-  // Close modals on overlay click
+
   document.querySelectorAll('.modal-overlay').forEach(function(overlay){
     overlay.addEventListener('click', function(e){
       if(e.target === this) this.classList.remove('active');
     });
   });
 
-  // Close sidebar on outside click (mobile)
   document.addEventListener('click', function(e){
     var sidebar = $('sidebar');
     if(window.innerWidth <= 768 && sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target.id !== 'menuBtn'){
@@ -1466,7 +1478,6 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
-  // Keyboard shortcuts during competition
   document.addEventListener('keydown', function(e){
     if(!activeComp) return;
     if(e.key === '1' || e.key === 'c' || e.key === 'C') markCompAnswer('correct');
