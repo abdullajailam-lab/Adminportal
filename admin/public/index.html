@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Gems Fluent Minds Competition Portal 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Fredoka+One&display=swap');
 
@@ -55,8 +56,8 @@
         @keyframes slideInToast { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes scaleIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             width: 260px;
             background: linear-gradient(180deg, #134e4a 0%, #0f3d3a 100%);
@@ -144,7 +145,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* ===== MAIN ===== */
         .main-content { 
             margin-left: 260px; 
             flex: 1; 
@@ -181,7 +181,6 @@
         .page { display: none; width: 100%; }
         .page.active { display: block; animation: fadeIn 0.35s ease; }
 
-        /* ===== STATS ===== */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
@@ -417,7 +416,6 @@
         .modal-body { padding: 20px; }
         .modal-footer { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
 
-        /* ===== FULLSCREEN COMPETITION - MUCH BIGGER ===== */
         .fullscreen-comp {
             display: none;
             position: fixed;
@@ -477,7 +475,6 @@
             position: relative;
         }
 
-        /* MUCH BIGGER QUESTION CARD */
         .fs-question-card {
             background: white;
             border-radius: 32px;
@@ -637,10 +634,47 @@
         }
         .toast.success { border-left-color: var(--success); }
         .toast.error { border-left-color: var(--danger); }
+        .toast.loading { border-left-color: var(--accent); }
 
         .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5em; cursor: pointer; padding: 5px; }
 
-        /* ===== MOBILE RESPONSIVE ===== */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        .db-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            font-size: 0.85em;
+            font-weight: 600;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .db-status .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .db-status .status-dot.offline {
+            background: var(--danger);
+        }
+
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); width: 240px; }
             .sidebar.open { transform: translateX(0); }
@@ -676,6 +710,8 @@
             .fs-actions { padding: 14px; }
             
             .topbar h1 { font-size: 1em; }
+            
+            .db-status { bottom: 10px; right: 10px; font-size: 0.75em; padding: 8px 12px; }
         }
 
         @media (max-width: 480px) {
@@ -740,7 +776,7 @@
         }
 
         @media print {
-            .sidebar, .topbar, .btn, .modal-overlay, .fullscreen-comp { display: none !important; }
+            .sidebar, .topbar, .btn, .modal-overlay, .fullscreen-comp, .db-status { display: none !important; }
             .main-content { margin-left: 0; width: 100%; }
             .content-area { padding: 0; }
         }
@@ -756,15 +792,15 @@
             <p>✨ Competition Portal 2026 ✨</p>
         </div>
         <nav class="sidebar-nav">
-            <div class="nav-section-title">📌 Main Menu</div>
+            <div class="nav-section-title"> Main Menu</div>
             <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
             <div class="nav-item" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
-            <div class="nav-item" onclick="showPage('students')"><span class="icon">👨🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
+            <div class="nav-item" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
             <div class="nav-section-title">🏆 Competition</div>
             <div class="nav-item" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
             <div class="nav-item" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
             <div class="nav-item" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
-            <div class="nav-section-title">⚙️ System</div>
+            <div class="nav-section-title">️ System</div>
             <div class="nav-item" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
         </nav>
     </aside>
@@ -781,14 +817,14 @@
         <div class="content-area">
             <div class="page active" id="page-dashboard">
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
+                    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statTotalStudents">0</div><div class="stat-label">Total Students</div></div>
                     <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" id="statCompleted">0</div><div class="stat-label">Completed</div></div>
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
-                    <div class="stat-card"><div class="stat-icon"></div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
+                    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+                    <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-value" id="statAvgScore">0%</div><div class="stat-label">Average Score</div></div>
                 </div>
                 <div class="groups-grid" id="dashGroupsGrid"></div>
                 <div class="card">
-                    <div class="card-header"><h3>📈 Recent Results</h3><button class="btn btn-sm btn-primary" onclick="showPage('results')">View All →</button></div>
+                    <div class="card-header"><h3> Recent Results</h3><button class="btn btn-sm btn-primary" onclick="showPage('results')">View All →</button></div>
                     <div class="card-body">
                         <div class="table-wrapper"><table><thead><tr><th>Student</th><th>Group</th><th>Score</th><th>Date</th><th>Status</th></tr></thead><tbody id="recentResultsBody"></tbody></table></div>
                         <div class="empty-state" id="dashEmptyState" style="display:none;"><div class="empty-icon">📭</div><h4>No results yet</h4><p>Start a competition to see results here</p></div>
@@ -798,12 +834,12 @@
 
             <div class="page" id="page-groups">
                 <div class="groups-grid" id="groupsPageGrid"></div>
-                <div class="card"><div class="card-header"><h3> Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light);">Click on a group card above to view its rules.</p></div></div>
+                <div class="card"><div class="card-header"><h3>📋 Group Rules</h3></div><div class="card-body" id="groupRulesContent"><p style="color:var(--text-light);">Click on a group card above to view its rules.</p></div></div>
             </div>
 
             <div class="page" id="page-students">
                 <div class="card">
-                    <div class="card-header"><h3>👨‍🎓 Student Management</h3><button class="btn btn-primary" onclick="openAddStudentModal()">➕ Add Student</button></div>
+                    <div class="card-header"><h3>‍🎓 Student Management</h3><button class="btn btn-primary" onclick="openAddStudentModal()">➕ Add Student</button></div>
                     <div class="card-body">
                         <div class="filter-bar">
                             <select id="filterGroup" onchange="renderStudents()"><option value="all">All Groups</option><option value="1">Group 1 - Letters & Sounds</option><option value="2">Group 2 - CVC & Sight Words</option><option value="3">Group 3 - Short Sentences</option><option value="4">Group 4 - Past Tense</option></select>
@@ -830,7 +866,7 @@
 
             <div class="page" id="page-results">
                 <div class="card">
-                    <div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()">📥 Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
+                    <div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" onclick="exportResults()"> Export</button><button class="btn btn-sm btn-danger" onclick="clearAllResults()">🗑️ Clear All</button></div></div>
                     <div class="card-body">
                         <div class="filter-bar">
                             <select id="resultFilterGroup" onchange="renderResults()"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
@@ -844,11 +880,11 @@
 
             <div class="page" id="page-leaderboard">
                 <div class="card">
-                    <div class="card-header"><h3>🥇 Leaderboard</h3><select id="leaderboardGroup" onchange="renderLeaderboard()" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600;"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
+                    <div class="card-header"><h3> Leaderboard</h3><select id="leaderboardGroup" onchange="renderLeaderboard()" style="padding:8px 12px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins';font-weight:600;"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select></div>
                     <div class="card-body">
                         <div class="leaderboard-podium" id="leaderboardPodium"></div>
                         <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon"></div><h4>No results yet</h4></div>
+                        <div class="empty-state" id="leaderboardEmpty" style="display:none;"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
                     </div>
                 </div>
             </div>
@@ -865,9 +901,9 @@
                             <div class="form-group"><label>Question / Word / Sentence</label><input type="text" class="form-control" id="newQuestionText" placeholder="e.g., cat"></div>
                             <div class="form-group"><label>Answer (for reference)</label><input type="text" class="form-control" id="newQuestionAnswer" placeholder="e.g., cat"></div>
                         </div>
-                        <button class="btn btn-primary" onclick="addQuestionToPool()">➕ Add Question</button>
+                        <button class="btn btn-primary" onclick="addQuestionToPool()"> Add Question</button>
                         <hr style="margin:24px 0;border:none;border-top:1px solid var(--border);">
-                        <h4 style="margin-bottom:12px;">⚠️ Danger Zone</h4>
+                        <h4 style="margin-bottom:12px;">️ Danger Zone</h4>
                         <div class="btn-group"><button class="btn btn-warning" onclick="resetAllData()">🔄 Reset All Data</button><button class="btn btn-danger" onclick="clearAllResults()">🗑️ Delete All Results</button></div>
                     </div>
                 </div>
@@ -928,7 +964,7 @@
 
 <div class="modal-overlay" id="resultDetailModal">
     <div class="modal" style="max-width:600px;">
-        <div class="modal-header"><h3> Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')"></button></div>
+        <div class="modal-header"><h3>📋 Result Details</h3><button class="modal-close" onclick="closeModal('resultDetailModal')">✕</button></div>
         <div class="modal-body" id="resultDetailContent"></div>
     </div>
 </div>
@@ -936,7 +972,47 @@
 <div class="toast-container" id="toastContainer"></div>
 <div class="confetti-container" id="confettiContainer"></div>
 
+<div class="db-status" id="dbStatus">
+    <div class="status-dot" id="dbStatusDot"></div>
+    <span id="dbStatusText">Connecting...</span>
+</div>
+
 <script>
+// ===== SUPABASE CONFIGURATION =====
+// Replace these with your actual Supabase credentials
+const SUPABASE_URL = 'YOUR_SUPABASE_URL'; //https://fvnivnyhkjrumuzmwozb.supabase.co/rest/v1/'
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // sb_publishable_5QiL_M5ji1N_w2nbSP9Xgg_hpx_Ufn2'
+
+// Initialize Supabase client
+let supabase = null;
+let useSupabase = false;
+
+try {
+    if (SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        useSupabase = true;
+        updateDbStatus(true);
+    } else {
+        console.log('Supabase not configured - using localStorage');
+        updateDbStatus(false);
+    }
+} catch (error) {
+    console.error('Supabase initialization failed:', error);
+    updateDbStatus(false);
+}
+
+function updateDbStatus(connected) {
+    const dot = document.getElementById('dbStatusDot');
+    const text = document.getElementById('dbStatusText');
+    if (connected) {
+        dot.classList.remove('offline');
+        text.textContent = '☁️ Cloud Connected';
+    } else {
+        dot.classList.add('offline');
+        text.textContent = '💻 Local Mode';
+    }
+}
+
 const GROUPS = {
     1: { name: "Group 1", topic: "Letters & Sounds", date: "6th October 2026", time: "13:30", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#0d9488", rules: ["Each student will get 10 letters. They have to tell within 2 minutes.","Students must orally tell the name of the letters and sounds of each letter shown on the TV screen. They may skip a letter if they do not know the letter name or sound.",'Say "Next" or "Skip" if you want to skip the letter.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."] },
     2: { name: "Group 2", topic: "CVC and Sight Words", date: "6th October 2026", time: "13:00", location: "Multi-purpose Hall", totalTime: 120, totalQuestions: 10, color: "#e11d48", rules: ["Each student will get 10 words. They have to say the words within 2 minutes.","Students must orally say the words shown on the TV screen. They may skip a word if they do not know.",'Say "Next" or "Skip" if you want to skip the word.',"The 5 students who get the highest marks out of the students will be in the top 5.","First, second and third place will be chosen from the top five students who score the highest marks."] },
@@ -1028,9 +1104,77 @@ const QUESTION_POOLS = {
     ]
 };
 
-// ALL 53 STUDENTS CORRECTLY GROUPED
+let students = [];
+let results = [];
+let questionPools = {};
+let activeComp = null;
+let compTimer = null;
+
+// ===== DATA LOADING =====
+async function loadData() {
+    if (useSupabase) {
+        try {
+            // Load students
+            const { data: studentsData, error: studentsError } = await supabase
+                .from('students')
+                .select('*')
+                .order('id');
+            
+            if (studentsError) throw studentsError;
+            students = studentsData || [];
+            
+            // Load results
+            const { data: resultsData, error: resultsError } = await supabase
+                .from('results')
+                .select('*')
+                .order('created_at', { ascending: false });
+            
+            if (resultsError) throw resultsError;
+            results = resultsData || [];
+            
+            // Load question pools
+            const { data: poolsData, error: poolsError } = await supabase
+                .from('question_pools')
+                .select('*')
+                .order('group_num, id');
+            
+            if (poolsError) throw poolsError;
+            
+            questionPools = { 1: [], 2: [], 3: [], 4: [] };
+            if (poolsData) {
+                poolsData.forEach(q => {
+                    if (questionPools[q.group_num]) {
+                        questionPools[q.group_num].push({
+                            display: q.display,
+                            answer: q.answer,
+                            type: q.type
+                        });
+                    }
+                });
+            }
+            
+            console.log('Data loaded from Supabase');
+        } catch (error) {
+            console.error('Error loading from Supabase:', error);
+            showToast('Failed to load from cloud - using local data', 'error');
+            loadFromLocalStorage();
+        }
+    } else {
+        loadFromLocalStorage();
+    }
+}
+
+function loadFromLocalStorage() {
+    students = JSON.parse(localStorage.getItem('fm_students') || 'null');
+    if (!students || students.length === 0) {
+        students = INITIAL_STUDENTS;
+        saveStudents();
+    }
+    results = JSON.parse(localStorage.getItem('fm_results') || '[]');
+    questionPools = JSON.parse(localStorage.getItem('fm_pools') || 'null') || QUESTION_POOLS;
+}
+
 const INITIAL_STUDENTS = [
-    // GROUP 1 - 20 students
     { id: 1, name: "Niha", class: "", idNum: "", group: 1 },
     { id: 2, name: "Adam Nafaah", class: "6B", idNum: "", group: 1 },
     { id: 3, name: "Naheek", class: "", idNum: "", group: 1 },
@@ -1051,8 +1195,6 @@ const INITIAL_STUDENTS = [
     { id: 18, name: "Ma'aan", class: "", idNum: "", group: 1 },
     { id: 19, name: "Ayyoob", class: "", idNum: "", group: 1 },
     { id: 20, name: "Aarish", class: "", idNum: "", group: 1 },
-    
-    // GROUP 2 - 8 students
     { id: 21, name: "Shabeen", class: "", idNum: "", group: 2 },
     { id: 22, name: "Naavith", class: "", idNum: "", group: 2 },
     { id: 23, name: "Yalvy", class: "", idNum: "", group: 2 },
@@ -1061,8 +1203,6 @@ const INITIAL_STUDENTS = [
     { id: 26, name: "Yana", class: "", idNum: "", group: 2 },
     { id: 27, name: "Baasil", class: "", idNum: "", group: 2 },
     { id: 28, name: "Ali Ahmed", class: "LKG", idNum: "", group: 2 },
-    
-    // GROUP 3 - 12 students
     { id: 29, name: "Reez", class: "", idNum: "", group: 3 },
     { id: 30, name: "Yumaan", class: "", idNum: "", group: 3 },
     { id: 31, name: "Raamin", class: "", idNum: "", group: 3 },
@@ -1075,8 +1215,6 @@ const INITIAL_STUDENTS = [
     { id: 38, name: "Iyaadh", class: "", idNum: "", group: 3 },
     { id: 39, name: "Yana", class: "", idNum: "", group: 3 },
     { id: 40, name: "Neeshaan", class: "", idNum: "", group: 3 },
-    
-    // GROUP 4 - 13 students
     { id: 41, name: "Rayn", class: "", idNum: "", group: 4 },
     { id: 42, name: "Alyas", class: "", idNum: "", group: 4 },
     { id: 43, name: "Jailaan", class: "", idNum: "", group: 4 },
@@ -1092,15 +1230,9 @@ const INITIAL_STUDENTS = [
     { id: 53, name: "Aluk", class: "", idNum: "", group: 4 }
 ];
 
-let questionPools = JSON.parse(localStorage.getItem('fm_pools') || 'null') || QUESTION_POOLS;
-let students = JSON.parse(localStorage.getItem('fm_students') || 'null');
-if (!students || students.length === 0) { students = INITIAL_STUDENTS; saveStudents(); }
-let results = JSON.parse(localStorage.getItem('fm_results') || '[]');
-let activeComp = null;
-let compTimer = null;
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    await loadData();
     refreshAll();
 });
 
@@ -1111,7 +1243,7 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const titles = { dashboard: '📊 Dashboard', groups: ' Groups', students: '👨‍ Students', compete: '🎯 Competition', results: '📋 Results', leaderboard: ' Leaderboard', settings: '🔧 Settings' };
+    const titles = { dashboard: ' Dashboard', groups: '📚 Groups', students: '👨‍🎓 Students', compete: '🎯 Competition', results: ' Results', leaderboard: '🥇 Leaderboard', settings: '🔧 Settings' };
     document.getElementById('pageTitle').textContent = titles[pageId] || '';
     refreshAll();
     closeSidebar();
@@ -1123,7 +1255,7 @@ function closeSidebar() { document.getElementById('sidebar').classList.remove('o
 
 function renderDashboard() {
     const total = students.length;
-    const studentsWithResults = new Set(results.map(r => r.studentId)).size;
+    const studentsWithResults = new Set(results.map(r => r.student_id || r.studentId)).size;
     const pendingCount = total - studentsWithResults;
     const avgScore = results.length > 0 ? Math.round(results.reduce((sum, r) => sum + (r.score / r.total) * 100, 0) / results.length) : 0;
 
@@ -1135,8 +1267,8 @@ function renderDashboard() {
     let gridHTML = '';
     for (let i = 1; i <= 4; i++) {
         const g = GROUPS[i];
-        const count = students.filter(s => s.group == i).length;
-        const compCount = results.filter(r => r.group == i).length;
+        const count = students.filter(s => s.group_num === i || s.group === i).length;
+        const compCount = results.filter(r => r.group_num === i || r.group === i).length;
         gridHTML += `
             <div class="group-card" onclick="showPage('groups')">
                 <div class="group-color-bar"></div>
@@ -1144,10 +1276,10 @@ function renderDashboard() {
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
-                    <span> ${g.date}</span>
+                    <span>📅 ${g.date}</span>
                     <span>🕐 ${g.time}</span>
-                    <span>⏱ ${g.totalTime/60} min</span>
-                    <span> ${g.totalQuestions} items</span>
+                    <span> ${g.totalTime/60} min</span>
+                    <span>📝 ${g.totalQuestions} items</span>
                 </div>
                 <div class="student-count">👥 ${count} students | ✅ ${compCount} done</div>
                 <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button>
@@ -1156,7 +1288,7 @@ function renderDashboard() {
     }
     document.getElementById('dashGroupsGrid').innerHTML = gridHTML;
 
-    const recent = [...results].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+    const recent = [...results].sort((a,b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date)).slice(0, 5);
     const tbody = document.getElementById('recentResultsBody');
     const emptyState = document.getElementById('dashEmptyState');
 
@@ -1166,7 +1298,8 @@ function renderDashboard() {
         tbody.innerHTML = recent.map(r => {
             const pct = Math.round((r.score / r.total) * 100);
             const scoreClass = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
-            return `<tr><td><strong>${r.studentName}</strong></td><td>${GROUPS[r.group].name}</td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td>${new Date(r.date).toLocaleDateString()}</td><td><span class="status-badge status-completed">✅ Done</span></td></tr>`;
+            const date = new Date(r.created_at || r.date).toLocaleDateString();
+            return `<tr><td><strong>${r.student_name || r.studentName}</strong></td><td>${GROUPS[r.group_num || r.group].name}</td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td>${date}</td><td><span class="status-badge status-completed">✅ Done</span></td></tr>`;
         }).join('');
     }
 }
@@ -1175,7 +1308,7 @@ function renderGroups() {
     let gridHTML = '';
     for (let i = 1; i <= 4; i++) {
         const g = GROUPS[i];
-        const count = students.filter(s => s.group == i).length;
+        const count = students.filter(s => s.group_num === i || s.group === i).length;
         gridHTML += `
             <div class="group-card" onclick="showGroupRules(${i})">
                 <div class="group-color-bar"></div>
@@ -1183,13 +1316,13 @@ function renderGroups() {
                 <h3>${g.name}</h3>
                 <p class="topic">${g.topic}</p>
                 <div class="meta">
-                    <span> ${g.date}</span><span> ${g.time}</span><span> ${g.location}</span>
+                    <span>📅 ${g.date}</span><span>🕐 ${g.time}</span><span>📍 ${g.location}</span>
                     <span>⏱ ${g.totalTime/60} min</span><span>📝 ${g.totalQuestions} items</span>
                 </div>
                 <div class="student-count">👥 ${count} students assigned</div>
                 <div class="btn-group">
                     <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();quickStart(${i})">🏆 Start</button>
-                    <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showGroupRules(${i})"> Rules</button>
+                    <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();showGroupRules(${i})">📋 Rules</button>
                 </div>
             </div>
         `;
@@ -1211,7 +1344,8 @@ function renderStudents() {
     const filterGroup = document.getElementById('filterGroup').value;
     const search = document.getElementById('searchStudent').value.toLowerCase();
     let filtered = students.filter(s => {
-        const matchGroup = filterGroup === 'all' || s.group == filterGroup;
+        const group = s.group_num || s.group;
+        const matchGroup = filterGroup === 'all' || group == filterGroup;
         const matchSearch = s.name.toLowerCase().includes(search) || s.class.toLowerCase().includes(search);
         return matchGroup && matchSearch;
     });
@@ -1223,17 +1357,19 @@ function renderStudents() {
     empty.style.display = 'none';
 
     tbody.innerHTML = filtered.map((s, i) => {
-        const result = results.find(r => r.studentId === s.id);
+        const studentId = s.id;
+        const result = results.find(r => r.student_id === studentId || r.studentId === studentId);
         const status = result ? 'completed' : 'pending';
         const scoreText = result ? `${result.score}/${result.total}` : '-';
         const pct = result ? Math.round((result.score/result.total)*100) : 0;
         const scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[s.group].color};font-weight:700;">${GROUPS[s.group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Done' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${s.id})">🏆</button><button class="btn btn-sm btn-warning" onclick="editStudent(${s.id})">✏️</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${s.id})">👁️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.id})">️</button></div></td></tr>`;
+        const group = s.group_num || s.group;
+        return `<tr><td>${i+1}</td><td><strong>${s.name}</strong>${s.id_num || s.idNum ? `<br><small style="color:var(--text-light);">ID: ${s.id_num || s.idNum}</small>` : ''}</td><td>${s.class}</td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td><span class="status-badge status-${status}">${status === 'completed' ? '✅ Done' : '⏳ Pending'}</span></td><td class="score-cell ${scoreClass}">${scoreText}</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="quickStartStudent(${studentId})">🏆</button><button class="btn btn-sm btn-warning" onclick="editStudent(${studentId})">✏️</button><button class="btn btn-sm btn-secondary" onclick="viewStudentResult(${studentId})">👁️</button><button class="btn btn-sm btn-danger" onclick="deleteStudent(${studentId})">🗑️</button></div></td></tr>`;
     }).join('');
 }
 
 function openAddStudentModal() {
-    document.getElementById('modalTitle').textContent = '➕ Add New Student';
+    document.getElementById('modalTitle').textContent = ' Add New Student';
     document.getElementById('editStudentId').value = '';
     document.getElementById('studentName').value = '';
     document.getElementById('studentClass').value = '';
@@ -1242,63 +1378,111 @@ function openAddStudentModal() {
     document.getElementById('studentModal').classList.add('active');
 }
 
-function editStudent(id) {
+async function editStudent(id) {
     const student = students.find(s => s.id === id);
     if (!student) return;
     document.getElementById('modalTitle').textContent = '✏️ Edit Student';
     document.getElementById('editStudentId').value = student.id;
     document.getElementById('studentName').value = student.name;
     document.getElementById('studentClass').value = student.class;
-    document.getElementById('studentIdNum').value = student.idNum || '';
-    document.getElementById('studentGroup').value = student.group;
+    document.getElementById('studentIdNum').value = student.id_num || student.idNum || '';
+    document.getElementById('studentGroup').value = student.group_num || student.group;
     document.getElementById('studentModal').classList.add('active');
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-function saveStudent() {
+async function saveStudent() {
     const id = document.getElementById('editStudentId').value;
     const name = document.getElementById('studentName').value.trim();
     const cls = document.getElementById('studentClass').value.trim();
     const idNum = document.getElementById('studentIdNum').value.trim();
     const group = parseInt(document.getElementById('studentGroup').value);
     if (!name || !cls) { showToast('Please fill in name and class', 'error'); return; }
+    
+    if (useSupabase) {
+        try {
+            if (id) {
+                const { error } = await supabase
+                    .from('students')
+                    .update({ name, class: cls, id_num: idNum, group_num: group })
+                    .eq('id', id);
+                if (error) throw error;
+                showToast('✅ Student updated in cloud', 'success');
+            } else {
+                const { data, error } = await supabase
+                    .from('students')
+                    .insert([{ name, class: cls, id_num: idNum, group_num: group }])
+                    .select()
+                    .single();
+                if (error) throw error;
+                showToast(`✅ ${name} added to cloud`, 'success');
+            }
+            await loadData();
+        } catch (error) {
+            console.error('Error saving to Supabase:', error);
+            showToast('Failed to save to cloud - saving locally', 'error');
+            saveStudentLocal(id, name, cls, idNum, group);
+        }
+    } else {
+        saveStudentLocal(id, name, cls, idNum, group);
+    }
+    closeModal('studentModal');
+    refreshAll();
+}
+
+function saveStudentLocal(id, name, cls, idNum, group) {
     if (id) {
         const index = students.findIndex(s => s.id == id);
         if (index !== -1) { students[index] = { ...students[index], name, class: cls, idNum, group }; showToast('✅ Student updated', 'success'); }
     } else {
         const student = { id: Date.now(), name, class: cls, idNum, group, createdAt: new Date().toISOString() };
         students.push(student);
-        showToast(`✅ ${name} added to ${GROUPS[group].name}`, 'success');
+        showToast(`✅ ${name} added`, 'success');
     }
     saveStudents();
-    closeModal('studentModal');
-    refreshAll();
 }
 
-function deleteStudent(id) {
+async function deleteStudent(id) {
     if (!confirm('Delete this student?')) return;
-    students = students.filter(s => s.id !== id);
-    results = results.filter(r => r.studentId !== id);
-    saveStudents(); saveResults();
-    showToast('Student deleted', 'success');
+    
+    if (useSupabase) {
+        try {
+            const { error } = await supabase.from('students').delete().eq('id', id);
+            if (error) throw error;
+            await loadData();
+            showToast('Student deleted from cloud', 'success');
+        } catch (error) {
+            console.error('Error deleting from Supabase:', error);
+            students = students.filter(s => s.id !== id);
+            results = results.filter(r => r.student_id !== id && r.studentId !== id);
+            saveStudents(); saveResults();
+            showToast('Deleted locally (cloud failed)', 'error');
+        }
+    } else {
+        students = students.filter(s => s.id !== id);
+        results = results.filter(r => r.student_id !== id && r.studentId !== id);
+        saveStudents(); saveResults();
+        showToast('Student deleted', 'success');
+    }
     refreshAll();
 }
 
 function saveStudents() { localStorage.setItem('fm_students', JSON.stringify(students)); }
+function saveResults() { localStorage.setItem('fm_results', JSON.stringify(results)); }
 
 function updateCompStudents() {
     const group = document.getElementById('compGroupSelect').value;
     const select = document.getElementById('compStudentSelect');
     select.innerHTML = '<option value="">-- Choose Student --</option>';
     if (!group) return;
-    const groupStudents = students.filter(s => s.group == group);
+    const groupStudents = students.filter(s => (s.group_num || s.group) == group);
     if (groupStudents.length === 0) {
         select.innerHTML = '<option value="">No students in this group</option>';
         return;
     }
     groupStudents.forEach(s => {
-        const hasResult = results.some(r => r.studentId === s.id);
+        const hasResult = results.some(r => r.student_id === s.id || r.studentId === s.id);
         select.innerHTML += `<option value="${s.id}">${s.name}${s.class ? ' (' + s.class + ')' : ''}${hasResult ? ' ✅' : ''}</option>`;
     });
 }
@@ -1312,7 +1496,7 @@ function quickStart(groupNum) {
 function quickStartStudent(studentId) {
     const student = students.find(s => s.id === studentId);
     if (!student) return;
-    document.getElementById('compGroupSelect').value = student.group;
+    document.getElementById('compGroupSelect').value = student.group_num || student.group;
     updateCompStudents();
     document.getElementById('compStudentSelect').value = studentId;
     showPage('compete');
@@ -1325,7 +1509,7 @@ function launchCompetition() {
 
     const student = students.find(s => s.id === studentId);
     const group = GROUPS[groupNum];
-    const pool = questionPools[groupNum];
+    const pool = questionPools[groupNum] || QUESTION_POOLS[groupNum];
 
     const shuffled = [...pool].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, group.totalQuestions);
@@ -1426,24 +1610,36 @@ function updateCompTimerDisplay() {
     else el.classList.remove('warning');
 }
 
-function finishCompetition() {
+async function finishCompetition() {
     clearInterval(compTimer);
 
-    const result = {
-        id: Date.now(),
-        studentId: activeComp.studentId,
-        studentName: activeComp.studentName,
-        studentClass: activeComp.studentClass,
-        group: activeComp.group,
+    const resultData = {
+        student_id: activeComp.studentId,
+        student_name: activeComp.studentName,
+        student_class: activeComp.studentClass,
+        group_num: activeComp.group,
         score: activeComp.score,
         total: activeComp.questions.length,
         answers: activeComp.answers,
-        date: new Date().toISOString(),
-        duration: GROUPS[activeComp.group].totalTime - activeComp.timeLeft
+        duration: GROUPS[activeComp.group].totalTime - activeComp.timeLeft,
+        created_at: new Date().toISOString()
     };
 
-    results.push(result);
-    saveResults();
+    if (useSupabase) {
+        try {
+            const { error } = await supabase.from('results').insert([resultData]);
+            if (error) throw error;
+            showToast('🏆 Result saved to cloud!', 'success');
+        } catch (error) {
+            console.error('Error saving result to Supabase:', error);
+            results.push({ ...resultData, id: Date.now() });
+            saveResults();
+            showToast('Result saved locally (cloud failed)', 'error');
+        }
+    } else {
+        results.push({ ...resultData, id: Date.now() });
+        saveResults();
+    }
 
     if (document.exitFullscreen) {
         document.exitFullscreen().catch(err => console.log('Exit fullscreen error'));
@@ -1452,9 +1648,9 @@ function finishCompetition() {
     document.getElementById('fullscreenComp').classList.remove('active');
     activeComp = null;
 
-    showToast(' Competition completed!', 'success');
+    await loadData();
     refreshAll();
-    setTimeout(() => showResultDetail(result), 400);
+    setTimeout(() => showResultDetail(resultData), 400);
 }
 
 function quitCompetition() {
@@ -1466,17 +1662,17 @@ function quitCompetition() {
     showToast('Competition quit', 'error');
 }
 
-function saveResults() { localStorage.setItem('fm_results', JSON.stringify(results)); }
-
 function renderResults() {
     const filterGroup = document.getElementById('resultFilterGroup').value;
     const search = document.getElementById('resultSearch').value.toLowerCase();
     let filtered = results.filter(r => {
-        const matchGroup = filterGroup === 'all' || r.group == filterGroup;
-        const matchSearch = r.studentName.toLowerCase().includes(search);
+        const group = r.group_num || r.group;
+        const name = r.student_name || r.studentName;
+        const matchGroup = filterGroup === 'all' || group == filterGroup;
+        const matchSearch = name.toLowerCase().includes(search);
         return matchGroup && matchSearch;
     });
-    filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+    filtered.sort((a,b) => new Date(b.created_at || b.date) - new Date(a.created_at || a.date));
 
     const tbody = document.getElementById('resultsTableBody');
     const empty = document.getElementById('resultsEmpty');
@@ -1487,21 +1683,29 @@ function renderResults() {
     tbody.innerHTML = filtered.map((r, i) => {
         const pct = Math.round((r.score / r.total) * 100);
         const scoreClass = pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low');
-        return `<tr><td>${i+1}</td><td><strong>${r.studentName}</strong></td><td>${r.studentClass}</td><td><span style="color:${GROUPS[r.group].color};font-weight:700;">${GROUPS[r.group].name}</span></td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td><td>${new Date(r.date).toLocaleString()}</td><td><button class="btn btn-sm btn-primary" onclick='showResultDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>👁️ View</button><button class="btn btn-sm btn-danger" onclick="deleteResult(${r.id})">🗑️</button></td></tr>`;
+        const group = r.group_num || r.group;
+        const name = r.student_name || r.studentName;
+        const cls = r.student_class || r.studentClass;
+        const date = new Date(r.created_at || r.date).toLocaleString();
+        return `<tr><td>${i+1}</td><td><strong>${name}</strong></td><td>${cls}</td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td class="score-cell ${scoreClass}">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td><td>${date}</td><td><button class="btn btn-sm btn-primary" onclick='showResultDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>👁️ View</button><button class="btn btn-sm btn-danger" onclick="deleteResult(${r.id})">🗑️</button></td></tr>`;
     }).join('');
 }
 
 function showResultDetail(result) {
     const pct = Math.round((result.score / result.total) * 100);
     let message = '';
-    if (pct >= 80) { message = '🌟 Excellent! Outstanding performance!'; }
+    if (pct >= 80) { message = ' Excellent! Outstanding performance!'; }
     else if (pct >= 50) { message = '👍 Good job! Keep practicing!'; }
     else { message = '💪 Keep trying! Practice makes perfect!'; }
 
+    const group = result.group_num || result.group;
+    const name = result.student_name || result.studentName;
+    const cls = result.student_class || result.studentClass;
+
     let html = `
-        <div class="result-hero" style="background:linear-gradient(135deg, ${GROUPS[result.group].color}, ${GROUPS[result.group].color}dd);">
-            <div class="rh-name">${result.studentName}</div>
-            <div class="rh-group">${GROUPS[result.group].name} - ${GROUPS[result.group].topic}</div>
+        <div class="result-hero" style="background:linear-gradient(135deg, ${GROUPS[group].color}, ${GROUPS[group].color}dd);">
+            <div class="rh-name">${name}</div>
+            <div class="rh-group">${GROUPS[group].name} - ${GROUPS[group].topic}</div>
             <div class="rh-score">${result.score}/${result.total}</div>
             <div style="font-size:1.3em;font-weight:800;">${pct}%</div>
             <div class="rh-message">${message}</div>
@@ -1516,7 +1720,8 @@ function showResultDetail(result) {
         html += `<li class="breakdown-item ${cls}"><span>Q${i+1}: <strong>${a.question}</strong></span><span class="bi-status">${statusText}</span></li>`;
     });
 
-    html += `</ul><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:8px;font-size:0.82em;color:var(--text-light);">📅 ${new Date(result.date).toLocaleString()} | ⏱ Duration: ${result.duration}s | Total: ${result.score}/${result.total} marks</div>`;
+    const date = new Date(result.created_at || result.date).toLocaleString();
+    html += `</ul><div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:8px;font-size:0.82em;color:var(--text-light);">📅 ${date} | ⏱ Duration: ${result.duration}s | Total: ${result.score}/${result.total} marks</div>`;
 
     document.getElementById('resultDetailContent').innerHTML = html;
     document.getElementById('resultDetailModal').classList.add('active');
@@ -1525,24 +1730,54 @@ function showResultDetail(result) {
 }
 
 function viewStudentResult(studentId) {
-    const result = results.find(r => r.studentId === studentId);
+    const result = results.find(r => r.student_id === studentId || r.studentId === studentId);
     if (result) showResultDetail(result);
     else showToast('No result found for this student', 'error');
 }
 
-function deleteResult(id) {
+async function deleteResult(id) {
     if (!confirm('Delete this result?')) return;
-    results = results.filter(r => r.id !== id);
-    saveResults();
-    showToast('Result deleted', 'success');
+    
+    if (useSupabase) {
+        try {
+            const { error } = await supabase.from('results').delete().eq('id', id);
+            if (error) throw error;
+            await loadData();
+            showToast('Result deleted from cloud', 'success');
+        } catch (error) {
+            console.error('Error deleting from Supabase:', error);
+            results = results.filter(r => r.id !== id);
+            saveResults();
+            showToast('Deleted locally (cloud failed)', 'error');
+        }
+    } else {
+        results = results.filter(r => r.id !== id);
+        saveResults();
+        showToast('Result deleted', 'success');
+    }
     refreshAll();
 }
 
-function clearAllResults() {
+async function clearAllResults() {
     if (!confirm('⚠️ Delete ALL results? This cannot be undone!')) return;
-    results = [];
-    saveResults();
-    showToast('All results cleared', 'success');
+    
+    if (useSupabase) {
+        try {
+            const { error } = await supabase.from('results').delete().neq('id', 0);
+            if (error) throw error;
+            await loadData();
+            showToast('All results cleared from cloud', 'success');
+        } catch (error) {
+            console.error('Error clearing from Supabase:', error);
+            results = [];
+            saveResults();
+            showToast('Cleared locally (cloud failed)', 'error');
+        }
+    } else {
+        results = [];
+        saveResults();
+        showToast('All results cleared', 'success');
+    }
     refreshAll();
 }
 
@@ -1552,7 +1787,11 @@ function exportResults() {
     const sorted = [...results].sort((a,b) => (b.score/b.total) - (a.score/a.total));
     sorted.forEach((r, i) => {
         const pct = Math.round((r.score/r.total)*100);
-        csv += `${i+1},"${r.studentName}","${r.studentClass}","${GROUPS[r.group].name}","${GROUPS[r.group].topic}",${r.score},${r.total},${pct}%,${new Date(r.date).toLocaleString()}\n`;
+        const group = r.group_num || r.group;
+        const name = r.student_name || r.studentName;
+        const cls = r.student_class || r.studentClass;
+        const date = new Date(r.created_at || r.date).toLocaleString();
+        csv += `${i+1},"${name}","${cls}","${GROUPS[group].name}","${GROUPS[group].topic}",${r.score},${r.total},${pct}%,${date}\n`;
     });
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
@@ -1566,11 +1805,14 @@ function exportResults() {
 
 function renderLeaderboard() {
     const filterGroup = document.getElementById('leaderboardGroup').value;
-    let filtered = results.filter(r => filterGroup === 'all' || r.group == filterGroup);
+    let filtered = results.filter(r => {
+        const group = r.group_num || r.group;
+        return filterGroup === 'all' || group == filterGroup;
+    });
 
     const bestPerStudent = {};
     filtered.forEach(r => {
-        const key = r.studentId;
+        const key = r.student_id || r.studentId;
         if (!bestPerStudent[key] || (r.score/r.total) > (bestPerStudent[key].score/bestPerStudent[key].total)) {
             bestPerStudent[key] = r;
         }
@@ -1586,59 +1828,101 @@ function renderLeaderboard() {
 
     if (sorted.length >= 3) {
         podium.innerHTML = `
-            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total} (${Math.round(sorted[1].score/sorted[1].total*100)}%)</div></div>
-            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total} (${Math.round(sorted[0].score/sorted[0].total*100)}%)</div></div>
-            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank"></div><div class="podium-name">${sorted[1].student_name || sorted[1].studentName}</div><div class="podium-score">${sorted[1].score}/${sorted[1].total} (${Math.round(sorted[1].score/sorted[1].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">${sorted[0].student_name || sorted[0].studentName}</div><div class="podium-score">${sorted[0].score}/${sorted[0].total} (${Math.round(sorted[0].score/sorted[0].total*100)}%)</div></div>
+            <div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">${sorted[2].student_name || sorted[2].studentName}</div><div class="podium-score">${sorted[2].score}/${sorted[2].total} (${Math.round(sorted[2].score/sorted[2].total*100)}%)</div></div>
         `;
     } else { podium.innerHTML = ''; }
 
     tbody.innerHTML = sorted.map((r, i) => {
         const pct = Math.round((r.score/r.total)*100);
-        const medal = i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : `#${i+1}`));
-        return `<tr><td style="font-size:1.3em;">${medal}</td><td><strong>${r.studentName}</strong><br><small style="color:var(--text-light);">${r.studentClass}</small></td><td><span style="color:${GROUPS[r.group].color};font-weight:700;">${GROUPS[r.group].name}</span></td><td class="score-cell score-high">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td></tr>`;
+        const medal = i === 0 ? '' : (i === 1 ? '' : (i === 2 ? '' : `#${i+1}`));
+        const group = r.group_num || r.group;
+        const name = r.student_name || r.studentName;
+        const cls = r.student_class || r.studentClass;
+        return `<tr><td style="font-size:1.3em;">${medal}</td><td><strong>${name}</strong><br><small style="color:var(--text-light);">${cls}</small></td><td><span style="color:${GROUPS[group].color};font-weight:700;">${GROUPS[group].name}</span></td><td class="score-cell score-high">${r.score}/${r.total}</td><td><strong>${pct}%</strong></td></tr>`;
     }).join('');
 }
 
 function loadSettingsQuestions() {
     const group = parseInt(document.getElementById('settingsGroupSelect').value);
-    const pool = questionPools[group];
+    const pool = questionPools[group] || QUESTION_POOLS[group];
     const container = document.getElementById('settingsQuestionsList');
     container.innerHTML = `<h4 style="margin-bottom:8px;">Current Pool (${pool.length} questions)</h4><div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;">${pool.map((q, i) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--bg);border-radius:6px;margin-bottom:4px;"><span style="font-size:0.88em;"><strong>${i+1}.</strong> ${q.display} <small style="color:var(--text-light);">→ ${q.answer}</small></span><button class="btn btn-sm btn-danger" onclick="removeQuestion(${group}, ${i})">✕</button></div>`).join('')}</div>`;
 }
 
-function addQuestionToPool() {
+async function addQuestionToPool() {
     const group = parseInt(document.getElementById('settingsGroupSelect').value);
     const text = document.getElementById('newQuestionText').value.trim();
     const answer = document.getElementById('newQuestionAnswer').value.trim() || text;
     if (!text) { showToast('Please enter a question', 'error'); return; }
     const type = group === 3 ? 'sentence' : (group === 1 ? 'letter' : 'word');
-    questionPools[group].push({ display: text, answer: answer, type: type });
-    localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+    
+    if (useSupabase) {
+        try {
+            const { error } = await supabase.from('question_pools').insert([{ group_num: group, display: text, answer: answer, type: type }]);
+            if (error) throw error;
+            showToast('✅ Question added to cloud', 'success');
+            await loadData();
+        } catch (error) {
+            console.error('Error adding to Supabase:', error);
+            if (!questionPools[group]) questionPools[group] = [];
+            questionPools[group].push({ display: text, answer: answer, type: type });
+            localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+            showToast('Added locally (cloud failed)', 'error');
+        }
+    } else {
+        if (!questionPools[group]) questionPools[group] = [];
+        questionPools[group].push({ display: text, answer: answer, type: type });
+        localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+        showToast('✅ Question added', 'success');
+    }
+    
     document.getElementById('newQuestionText').value = '';
     document.getElementById('newQuestionAnswer').value = '';
-    showToast('✅ Question added to pool', 'success');
     loadSettingsQuestions();
 }
 
-function removeQuestion(group, index) {
-    if (questionPools[group].length <= GROUPS[group].totalQuestions) {
+async function removeQuestion(group, index) {
+    const pool = questionPools[group] || QUESTION_POOLS[group];
+    if (pool.length <= GROUPS[group].totalQuestions) {
         showToast(`Cannot remove - minimum ${GROUPS[group].totalQuestions} questions required`, 'error');
         return;
     }
-    questionPools[group].splice(index, 1);
-    localStorage.setItem('fm_pools', JSON.stringify(questionPools));
-    loadSettingsQuestions();
-    showToast('Question removed', 'success');
+    
+    if (useSupabase) {
+        // For simplicity, we'll just reload from cloud
+        showToast('Question removal from cloud not implemented yet', 'error');
+    } else {
+        pool.splice(index, 1);
+        localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+        showToast('Question removed', 'success');
+        loadSettingsQuestions();
+    }
 }
 
-function resetAllData() {
+async function resetAllData() {
     if (!confirm('⚠️ This will delete ALL students, results, and custom questions. Continue?')) return;
     if (!confirm('Are you absolutely sure?')) return;
-    students = []; results = [];
-    questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
-    saveStudents(); saveResults();
-    localStorage.setItem('fm_pools', JSON.stringify(questionPools));
-    showToast('All data reset', 'success');
+    
+    if (useSupabase) {
+        try {
+            await supabase.from('results').delete().neq('id', 0);
+            await supabase.from('students').delete().neq('id', 0);
+            await supabase.from('question_pools').delete().neq('id', 0);
+            showToast('All data reset in cloud', 'success');
+            await loadData();
+        } catch (error) {
+            console.error('Error resetting Supabase:', error);
+            showToast('Failed to reset cloud data', 'error');
+        }
+    } else {
+        students = []; results = [];
+        questionPools = JSON.parse(JSON.stringify(QUESTION_POOLS));
+        saveStudents(); saveResults();
+        localStorage.setItem('fm_pools', JSON.stringify(questionPools));
+        showToast('All data reset', 'success');
+    }
     refreshAll();
 }
 
