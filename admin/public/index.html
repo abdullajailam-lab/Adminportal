@@ -286,12 +286,12 @@ table tr:hover td{background:#f0fdfa}
 <div class="nav-section-title">📌 Main Menu</div>
 <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</div>
 <div class="nav-item" data-page="groups" onclick="showPage('groups')"><span class="icon">📚</span> Groups</div>
-<div class="nav-item" data-page="students" onclick="showPage('students')"><span class="icon">‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
+<div class="nav-item" data-page="students" onclick="showPage('students')"><span class="icon">👨‍🎓</span> Students <span class="badge" id="totalStudentsBadge">0</span></div>
 <div class="nav-section-title">🏆 Competition</div>
 <div class="nav-item" data-page="compete" onclick="showPage('compete')"><span class="icon">🎯</span> Start Competition</div>
 <div class="nav-item" data-page="results" onclick="showPage('results')"><span class="icon">📋</span> Results</div>
 <div class="nav-item" data-page="leaderboard" onclick="showPage('leaderboard')"><span class="icon">🥇</span> Leaderboard</div>
-<div class="nav-section-title">️ System</div>
+<div class="nav-section-title">⚙️ System</div>
 <div class="nav-item" data-page="settings" onclick="showPage('settings')"><span class="icon">🔧</span> Settings</div>
 </nav>
 </aside>
@@ -338,14 +338,14 @@ table tr:hover td{background:#f0fdfa}
 <input type="text" id="searchStudent" placeholder="🔍 Search student...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Class</th><th>Group</th><th>Status</th><th>Score</th><th>Actions</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
-<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">👨‍</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
+<div class="empty-state" id="studentsEmpty" style="display:none"><div class="empty-icon">👨‍🎓</div><h4>No students found</h4><p>Click "Add Student" to get started</p></div>
 </div>
 </div>
 </div>
 
 <div class="page" id="page-compete">
 <div class="card">
-<div class="card-header"><h3> Start Competition</h3></div>
+<div class="card-header"><h3>🎯 Start Competition</h3></div>
 <div class="card-body">
 <div class="form-row">
 <div class="form-group"><label>Select Group</label><select class="form-control" id="compGroupSelect"><option value="">-- Choose Group --</option><option value="1">Group 1 - Letters & Sounds (10 letters, 2 min)</option><option value="2">Group 2 - CVC & Sight Words (10 words, 2 min)</option><option value="3">Group 3 - Short Sentences (8 sentences, 3 min)</option><option value="4">Group 4 - Past Tense (10 words, 1 min)</option></select></div>
@@ -358,14 +358,14 @@ table tr:hover td{background:#f0fdfa}
 
 <div class="page" id="page-results">
 <div class="card">
-<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">🗑️ Clear All</button></div></div>
+<div class="card-header"><h3>📋 All Results</h3><div class="btn-group"><button class="btn btn-sm btn-secondary" id="exportBtn">📥 Export</button><button class="btn btn-sm btn-danger" id="clearResultsBtn">️ Clear All</button></div></div>
 <div class="card-body">
 <div class="filter-bar">
 <select id="resultFilterGroup"><option value="all">All Groups</option><option value="1">Group 1</option><option value="2">Group 2</option><option value="3">Group 3</option><option value="4">Group 4</option></select>
 <input type="text" id="resultSearch" placeholder="🔍 Search...">
 </div>
 <div class="table-wrapper"><table><thead><tr><th>#</th><th>Student</th><th>Class</th><th>Group</th><th>Score</th><th>Percentage</th><th>Date</th><th>Actions</th></tr></thead><tbody id="resultsTableBody"></tbody></table></div>
-<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon">📋</div><h4>No results yet</h4></div>
+<div class="empty-state" id="resultsEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
@@ -376,7 +376,7 @@ table tr:hover td{background:#f0fdfa}
 <div class="card-body">
 <div class="leaderboard-podium" id="leaderboardPodium"></div>
 <div class="table-wrapper"><table><thead><tr><th>Rank</th><th>Student</th><th>Group</th><th>Score</th><th>Percentage</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon"></div><h4>No results yet</h4></div>
+<div class="empty-state" id="leaderboardEmpty" style="display:none"><div class="empty-icon">🏆</div><h4>No results yet</h4></div>
 </div>
 </div>
 </div>
@@ -388,7 +388,7 @@ table tr:hover td{background:#f0fdfa}
 <h4 style="margin-bottom:12px">🗄️ Database Management</h4>
 <p style="color:var(--text-light);margin-bottom:16px">All data is live from Supabase. Deleted students stay deleted!</p>
 <div class="btn-group" style="margin-bottom:20px">
-<button class="btn btn-danger" id="clearAllStudentsBtn">🗑️ Delete ALL Students</button>
+<button class="btn btn-danger" id="clearAllStudentsBtn">️ Delete ALL Students</button>
 <button class="btn btn-warning" id="clearAllResultsBtn2">🗑️ Delete ALL Results</button>
 </div>
 <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
@@ -483,7 +483,7 @@ try {
         } else {
             console.warn("⚠️ Supabase connection failed:", error.message);
             updateDbStatus(false);
-            showToast('❌ Database connection failed: ' + error.message, 'error');
+            showToast(' Database connection failed: ' + error.message, 'error');
         }
     }).catch((err) => {
         console.error("Supabase connection error:", err);
@@ -623,15 +623,27 @@ async function loadData(){
   }
   
   try {
-    // Load students from Supabase
     const { data: sData, error: sErr } = await supabase.from('students').select('*').order('id');
     if (sErr) throw sErr;
     students = sData ? sData.map(s => ({id: s.id, name: s.name, cls: s.class || '', group: s.group_num})) : [];
     
-    // Load results from Supabase
-    const { data: rData, error: rErr } = await supabase.from('results').select('*').order('date', {ascending: false});
+    // FIX: Use 'created_at' instead of 'date'
+    const { data: rData, error: rErr } = await supabase.from('results').select('*').order('created_at', {ascending: false});
     if (rErr) throw rErr;
-    results = rData ? rData.map(r => ({id: r.id, studentId: r.student_id, studentName: r.student_name, studentClass: r.student_class || '', group: r.group_num, score: r.score, total: r.total, answers: r.answers || [], date: r.date, duration: r.duration})) : [];
+    
+    // FIX: Map 'created_at' to 'date' for internal use
+    results = rData ? rData.map(r => ({
+        id: r.id, 
+        studentId: r.student_id, 
+        studentName: r.student_name, 
+        studentClass: r.student_class || '', 
+        group: r.group_num, 
+        score: r.score, 
+        total: r.total, 
+        answers: r.answers || [], 
+        date: r.created_at, 
+        duration: r.duration
+    })) : [];
     
     refreshAll();
   } catch (e) {
@@ -651,7 +663,7 @@ function showPage(pageId){
   var activeNav = document.querySelector('.nav-item[data-page="'+pageId+'"]');
   if(activeNav) activeNav.classList.add('active');
   
-  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍🎓 Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:'🥇 Leaderboard',settings:'⚙️ Settings'};
+  var titles = {dashboard:'📊 Dashboard',groups:'📚 Groups',students:'👨‍ Students',compete:'🎯 Competition',results:'📋 Results',leaderboard:' Leaderboard',settings:'⚙️ Settings'};
   $('pageTitle').textContent = titles[pageId] || '';
   
   refreshAll();
@@ -688,7 +700,7 @@ function renderDashboard(){
     for(var j=0; j<students.length; j++){ if(students[j].group === i) count++; }
     var compCount = 0;
     for(var j=0; j<results.length; j++){ if(results[j].group === i) compCount++; }
-    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span> '+g.date+'</span><span>🕐 '+g.time+'</span><span> '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
+    gridHTML += '<div class="group-card" onclick="window.showPage(\'groups\')"><div class="group-color-bar"></div><div class="group-icon">'+['🔤','📖','💬',''][i-1]+'</div><h3>'+g.name+'</h3><p class="topic">'+g.topic+'</p><div class="meta"><span> '+g.date+'</span><span> '+g.time+'</span><span> '+(g.totalTime/60)+' min</span><span>📝 '+g.totalQuestions+' items</span></div><div class="student-count">👥 '+count+' students | ✅ '+compCount+' done</div><button class="btn btn-sm btn-primary" onclick="event.stopPropagation();window.quickStart('+i+')">🏆 Start</button></div>';
   }
   $('dashGroupsGrid').innerHTML = gridHTML;
 
@@ -760,13 +772,13 @@ function renderStudents(){
     var scoreText = result ? result.score+'/'+result.total : '-';
     var pct = result ? Math.round((result.score/result.total)*100) : 0;
     var scoreClass = result ? (pct >= 80 ? 'score-high' : (pct >= 50 ? 'score-mid' : 'score-low')) : '';
-    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong></td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">✏️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
+    html += '<tr><td>'+(i+1)+'</td><td><strong>'+s.name+'</strong></td><td>'+s.cls+'</td><td><span style="color:'+GROUPS[s.group].color+';font-weight:700">'+GROUPS[s.group].name+'</span></td><td><span class="status-badge status-'+status+'">'+(status==='completed'?'✅ Done':'⏳ Pending')+'</span></td><td class="score-cell '+scoreClass+'">'+scoreText+'</td><td><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="window.quickStartStudent('+s.id+')">🏆</button><button class="btn btn-sm btn-warning" onclick="window.editStudent('+s.id+')">️</button><button class="btn btn-sm btn-secondary" onclick="window.viewStudentResult('+s.id+')">👁️</button><button class="btn btn-sm btn-danger" onclick="window.deleteStudent('+s.id+')">🗑️</button></div></td></tr>';
   }
   tbody.innerHTML = html;
 }
 
 function openAddStudentModal(){
-  $('modalTitle').textContent = '➕ Add New Student';
+  $('modalTitle').textContent = ' Add New Student';
   $('editStudentId').value = '';
   $('studentName').value = '';
   $('studentClass').value = '';
@@ -821,16 +833,14 @@ async function deleteStudent(id){
   if(!confirm('Delete this student from the database?')) return;
   if (isCloud && supabase) {
     try {
-      // Delete results first
       await supabase.from('results').delete().eq('student_id', id);
-      // Then delete student
       const { error } = await supabase.from('students').delete().eq('id', id);
       if (error) throw error;
       showToast('✅ Student deleted from Cloud', 'success');
       await loadData();
     } catch(e) {
       console.error("Delete error:", e);
-      showToast('❌ Failed to delete: ' + e.message, 'error');
+      showToast(' Failed to delete: ' + e.message, 'error');
     }
   } else {
     showToast('❌ Database not connected', 'error');
@@ -985,12 +995,12 @@ async function finishCompetition(){
     score: activeComp.score,
     total: activeComp.questions.length,
     answers: activeComp.answers,
-    date: new Date().toISOString(),
     duration: GROUPS[activeComp.group].totalTime - activeComp.timeLeft
   };
   
   if (isCloud && supabase) {
     try {
+      // FIX: Removed 'date' from insert so Supabase uses DEFAULT NOW() for created_at
       const { error } = await supabase.from('results').insert([{
         student_id: resultData.studentId,
         student_name: resultData.studentName,
@@ -1002,7 +1012,7 @@ async function finishCompetition(){
         duration: resultData.duration
       }]);
       if (error) throw error;
-      showToast('🏆 Result saved to Cloud!', 'success');
+      showToast(' Result saved to Cloud!', 'success');
       await loadData();
     } catch(e) {
       console.error("Save result error:", e);
@@ -1064,11 +1074,11 @@ function showResultDetailById(id){
 function showResultDetail(result){
   var pct = Math.round((result.score/result.total)*100);
   var message = '';
-  if(pct >= 80) message = ' Excellent! Outstanding performance!';
+  if(pct >= 80) message = '🌟 Excellent! Outstanding performance!';
   else if(pct >= 50) message = '👍 Good job! Keep practicing!';
   else message = '💪 Keep trying! Practice makes perfect!';
   
-  var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px"> Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
+  var html = '<div class="result-hero" style="background:linear-gradient(135deg,'+GROUPS[result.group].color+','+GROUPS[result.group].color+'dd)"><div class="rh-name">'+result.studentName+'</div><div class="rh-group">'+GROUPS[result.group].name+' - '+GROUPS[result.group].topic+'</div><div class="rh-score">'+result.score+'/'+result.total+'</div><div style="font-size:1.3em;font-weight:800">'+pct+'%</div><div class="rh-message">'+message+'</div></div><h4 style="margin-bottom:10px">📝 Question Breakdown (1 mark each)</h4><ul class="breakdown-list">';
   for(var i=0; i<result.answers.length; i++){
     var a = result.answers[i];
     var cls = a.status === 'correct' ? 'bi-correct' : (a.status === 'wrong' ? 'bi-wrong' : 'bi-skipped');
@@ -1129,9 +1139,7 @@ async function clearAllStudents(){
   if(!confirm('Are you absolutely sure? All students will be permanently deleted!')) return;
   if (isCloud && supabase) {
     try {
-      // Delete all results first
       await supabase.from('results').delete().neq('id', 0);
-      // Then delete all students
       const { error } = await supabase.from('students').delete().neq('id', 0);
       if (error) throw error;
       showToast('✅ All students deleted from Cloud', 'success');
@@ -1161,7 +1169,7 @@ function exportResults(){
   a.download = 'fluent_minds_results_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();
   URL.revokeObjectURL(url);
-  showToast(' Results exported!', 'success');
+  showToast('📥 Results exported!', 'success');
 }
 
 function renderLeaderboard(){
@@ -1184,7 +1192,7 @@ function renderLeaderboard(){
   empty.style.display = 'none';
   
   if(sorted.length >= 3){
-    podium.innerHTML = '<div class="podium-item"><div class="podium-rank"></div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
+    podium.innerHTML = '<div class="podium-item"><div class="podium-rank">🥈</div><div class="podium-name">'+sorted[1].studentName+'</div><div class="podium-score">'+sorted[1].score+'/'+sorted[1].total+' ('+Math.round(sorted[1].score/sorted[1].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥇</div><div class="podium-name">'+sorted[0].studentName+'</div><div class="podium-score">'+sorted[0].score+'/'+sorted[0].total+' ('+Math.round(sorted[0].score/sorted[0].total*100)+'%)</div></div><div class="podium-item"><div class="podium-rank">🥉</div><div class="podium-name">'+sorted[2].studentName+'</div><div class="podium-score">'+sorted[2].score+'/'+sorted[2].total+' ('+Math.round(sorted[2].score/sorted[2].total*100)+'%)</div></div>';
   } else { podium.innerHTML = ''; }
   
   var html = '';
