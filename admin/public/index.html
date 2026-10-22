@@ -8,76 +8,82 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root{
-    --bg:#04060c;
-    --bg-2:#0a0f1a;
-    --surface:#0f1624;
-    --surface-2:#172033;
-    --surface-3:#1f2a42;
-    --border:#222d45;
-    --border-2:#2f3d5c;
-    --text:#eaf0f9;
-    --text-2:#b8c4d9;
-    --muted:#7583a0;
+    --primary:#003cffad;
+    --primary-dark:#0e3774;
+    --primary-light:#05285d;
+    --primary-glow:rgba(5, 61, 145, 0.15);
+    --secondary:#00d4ff;
     --accent:#ff6b35;
-    --accent-2:#ff8c42;
-    --accent-glow:rgba(255,107,53,0.4);
-    --cyan:#00d4ff;
-    --cyan-glow:rgba(0,212,255,0.3);
-    --success:#10d47a;
-    --warning:#f5b30b;
-    --danger:#ef4444;
-    --radius:12px;
-    --radius-sm:8px;
-    --shadow:0 12px 36px rgba(0,0,0,0.6);
+    --success:#00c853;
+    --success-light:rgba(0,200,83,0.1);
+    --warning:#ffb300;
+    --warning-light:rgba(255,179,0,0.1);
+    --danger:#ff1744;
+    --danger-light:rgba(255,23,68,0.1);
+    --bg:#f0f4f8;
+    --bg-2:#e8eef5;
+    --surface:#ffffff;
+    --surface-2:#f5f8fc;
+    --surface-3:#eef3f9;
+    --border:#e1e8f0;
+    --border-2:#d0d9e4;
+    --dark:#0a0e27;
+    --text:#1a2342;
+    --text-2:#5a6a8a;
+    --text-muted:#8a9bb8;
+    --shadow:0 2px 12px rgba(10,14,39,0.06);
+    --shadow-md:0 4px 20px rgba(10,14,39,0.08);
+    --shadow-lg:0 8px 30px rgba(10,14,39,0.12);
+    --radius:14px;
+    --radius-sm:10px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(1200px 600px at 90% -10%, rgba(255,107,53,0.09), transparent 60%),radial-gradient(900px 500px at -10% 40%, rgba(0,212,255,0.06), transparent 60%)}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
   input,select,textarea{font-family:inherit;color:inherit}
 
   .logo-svg{width:100%;height:100%;display:block}
 
-  .app{display:flex;min-height:100vh;position:relative;z-index:1}
-  .sidebar{width:250px;background:rgba(10,15,26,0.95);backdrop-filter:blur(14px);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;padding:24px 16px}
-  .brand{display:flex;align-items:center;gap:12px;padding:0 8px 22px;border-bottom:1px solid var(--border);margin-bottom:16px}
-  .brand-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ff6b35 0%,#ff8c42 50%,#00d4ff 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px var(--accent-glow);flex-shrink:0}
-  .brand-name{font-family:'Rajdhani';font-weight:700;font-size:17px;line-height:1.1;letter-spacing:0.5px}
-  .brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:600}
-  .nav{display:flex;flex-direction:column;gap:3px;flex:1}
-  .nav-item{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:10px;color:var(--text-2);font-weight:500;font-size:14px;transition:all .2s;border-left:2px solid transparent}
-  .nav-item:hover{background:var(--surface);color:var(--text)}
-  .nav-item.active{background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);color:var(--accent);border-left-color:var(--accent)}
+  .app{display:flex;min-height:100vh;position:relative}
+  .sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;z-index:50;display:flex;flex-direction:column;padding:20px 0}
+  .brand{padding:0 24px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  .brand-logo{display:flex;align-items:center;gap:12px}
+  .brand-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;box-shadow:0 4px 14px var(--primary-glow)}
+  .brand-name{font-family:'Rajdhani';font-size:22px;font-weight:700;color:var(--dark);letter-spacing:-0.5px;line-height:1}
+  .brand-sub{font-size:10px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;font-weight:600}
+  .nav{padding:0 12px;flex:1;overflow-y:auto}
+  .nav-section{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;padding:14px 12px 6px;font-weight:700}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:var(--text-2);font-weight:500;font-size:14px;transition:all .2s;margin-bottom:2px}
+  .nav-item:hover{background:var(--surface-2);color:var(--primary)}
+  .nav-item.active{background:var(--primary-glow);color:var(--primary);font-weight:600}
   .nav-item svg{width:18px;height:18px;flex-shrink:0}
-  .nav-section{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;padding:14px 13px 6px;font-weight:700}
-  .sidebar-foot{padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+  .sidebar-foot{padding:20px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted)}
 
-  .main{margin-left:250px;flex:1;padding:32px 40px;max-width:100%}
-  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
-  .page-title{font-family:'Rajdhani';font-size:30px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
-  .page-sub{color:var(--muted);font-size:13px;margin-top:4px}
+  .main{margin-left:260px;flex:1;padding:28px 36px;max-width:100%}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+  .page-title{font-family:'Rajdhani';font-size:30px;font-weight:700;color:var(--dark);letter-spacing:-0.5px;text-transform:uppercase}
+  .page-sub{color:var(--text-muted);font-size:13px;margin-top:2px}
   .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
   .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;font-size:13px;transition:all .2s;border:1px solid transparent;letter-spacing:0.3px}
-  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 4px 14px var(--accent-glow)}
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--accent-glow)}
+  .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;box-shadow:0 4px 14px var(--primary-glow)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--primary-glow)}
   .btn-secondary{background:var(--surface);border-color:var(--border);color:var(--text)}
-  .btn-secondary:hover{background:var(--surface-2);border-color:var(--accent)}
-  .btn-ghost{color:var(--muted);padding:8px 12px}
-  .btn-ghost:hover{color:var(--text);background:var(--surface)}
-  .btn-danger{background:rgba(239,68,68,0.12);color:var(--danger);border-color:rgba(239,68,68,0.3)}
-  .btn-danger:hover{background:rgba(239,68,68,0.2)}
-  .btn-cyan{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#060912;box-shadow:0 4px 14px var(--cyan-glow)}
-  .btn-success{background:linear-gradient(135deg,var(--success),#0aa866);color:#fff;box-shadow:0 4px 14px rgba(16,212,122,0.3)}
+  .btn-secondary:hover{background:var(--surface-2);border-color:var(--primary);color:var(--primary)}
+  .btn-ghost{color:var(--text-muted);padding:8px 12px}
+  .btn-ghost:hover{color:var(--primary);background:var(--primary-glow)}
+  .btn-danger{background:var(--danger-light);color:var(--danger);border-color:rgba(255,23,68,0.2)}
+  .btn-danger:hover{background:rgba(255,23,68,0.15)}
+  .btn-success{background:linear-gradient(135deg,var(--success),#00a844);color:#fff;box-shadow:0 4px 14px rgba(0,200,83,0.3)}
   .btn-sm{padding:6px 12px;font-size:12px}
   .btn-icon{padding:8px;width:36px;height:36px;justify-content:center}
 
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:all .2s}
-  .card:hover{border-color:var(--border-2)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:all .2s;box-shadow:var(--shadow)}
+  .card:hover{border-color:var(--border-2);box-shadow:var(--shadow-md)}
   .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-  .card-title{font-family:'Rajdhani';font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+  .card-title{font-family:'Rajdhani';font-size:17px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:0.5px}
 
   .grid{display:grid;gap:16px}
   .grid-2{grid-template-columns:repeat(2,1fr)}
@@ -86,111 +92,109 @@
   @media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:720px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
 
-  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden}
-  .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--cyan))}
-  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
-  .stat-value{font-family:'Rajdhani';font-size:34px;font-weight:700;margin-top:6px;letter-spacing:0.5px;line-height:1}
-  .stat-delta{font-size:12px;color:var(--accent);margin-top:4px;font-weight:500}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--secondary))}
+  .stat-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700}
+  .stat-value{font-family:'Rajdhani';font-size:34px;font-weight:700;margin-top:6px;letter-spacing:0.5px;line-height:1;color:var(--dark)}
+  .stat-delta{font-size:12px;color:var(--primary);margin-top:4px;font-weight:500}
 
-  .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)}
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow)}
   table{width:100%;border-collapse:collapse;font-size:14px}
-  th{text-align:left;padding:13px 16px;background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
+  th{text-align:left;padding:13px 16px;background:var(--surface-2);color:var(--text-muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border)}
   td{padding:13px 16px;border-bottom:1px solid var(--border)}
   tr:last-child td{border-bottom:none}
   tbody tr{transition:background .15s}
-  tbody tr:hover{background:rgba(255,255,255,0.02)}
+  tbody tr:hover{background:var(--surface-2)}
 
   .form-group{margin-bottom:15px}
-  .form-label{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-  .form-input,.form-select,.form-textarea{width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;transition:all .2s}
-  .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+  .form-label{display:block;font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+  .form-input,.form-select,.form-textarea{width:100%;padding:11px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;transition:all .2s}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);background:var(--surface)}
   .form-textarea{resize:vertical;min-height:80px}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
   @media(max-width:600px){.form-row,.form-row-3{grid-template-columns:1fr}}
 
   .badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase}
-  .badge-open{background:rgba(16,185,129,0.15);color:var(--success);border:1px solid rgba(16,185,129,0.3)}
-  .badge-active{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
-  .badge-completed{background:rgba(122,134,153,0.15);color:var(--muted);border:1px solid rgba(122,134,153,0.3)}
-  .badge-draft{background:rgba(245,158,11,0.15);color:var(--warning);border:1px solid rgba(245,158,11,0.3)}
-  .badge-format{background:rgba(255,107,53,0.12);color:var(--accent);border:1px solid rgba(255,107,53,0.3)}
-  .badge-live{background:rgba(239,68,68,0.15);color:var(--danger);border:1px solid rgba(239,68,68,0.3);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+  .badge-open{background:var(--success-light);color:var(--success);border:1px solid rgba(0,200,83,0.25)}
+  .badge-active{background:rgba(0,102,255,0.1);color:var(--primary);border:1px solid rgba(0,102,255,0.25)}
+  .badge-completed{background:rgba(138,155,184,0.15);color:var(--text-muted);border:1px solid rgba(138,155,184,0.3)}
+  .badge-draft{background:var(--warning-light);color:var(--warning);border:1px solid rgba(255,179,0,0.3)}
+  .badge-format{background:var(--primary-glow);color:var(--primary);border:1px solid rgba(0,102,255,0.25)}
 
-  .modal-overlay{position:fixed;inset:0;background:rgba(3,6,12,0.85);backdrop-filter:blur(10px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-overlay{position:fixed;inset:0;background:rgba(10,14,39,0.5);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
   .modal-overlay.show{display:flex;animation:fadeIn .2s}
-  .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:580px;max-height:90vh;overflow-y:auto;animation:slideUp .3s}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:slideUp .3s}
   .modal-lg{max-width:880px}
   .modal-xl{max-width:1000px}
   .modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-  .modal-title{font-family:'Rajdhani';font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+  .modal-title{font-family:'Rajdhani';font-size:20px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:0.5px}
   .modal-body{padding:22px 24px}
   .modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  .player-card{background:linear-gradient(135deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;transition:all .25s}
-  .player-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow)}
-  .player-avatar{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;margin-bottom:12px;font-family:'Rajdhani';box-shadow:0 4px 14px var(--accent-glow);overflow:hidden;flex-shrink:0}
+  .player-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;transition:all .25s;box-shadow:var(--shadow)}
+  .player-card:hover{transform:translateY(-3px);border-color:var(--primary);box-shadow:var(--shadow-md)}
+  .player-avatar{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;margin-bottom:12px;font-family:'Rajdhani';box-shadow:0 4px 14px var(--primary-glow);overflow:hidden;flex-shrink:0}
   .player-avatar img{width:100%;height:100%;object-fit:cover}
-  .player-name{font-family:'Rajdhani';font-size:18px;font-weight:700;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
-  .player-meta{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .player-name{font-family:'Rajdhani';font-size:18px;font-weight:700;margin-bottom:4px;color:var(--dark);text-transform:uppercase;letter-spacing:0.5px}
+  .player-meta{font-size:12px;color:var(--text-muted);margin-bottom:12px}
   .player-stats{display:flex;gap:16px;padding-top:12px;border-top:1px solid var(--border)}
-  .player-stat-val{font-family:'Rajdhani';font-size:20px;font-weight:700;line-height:1}
-  .player-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
+  .player-stat-val{font-family:'Rajdhani';font-size:20px;font-weight:700;line-height:1;color:var(--dark)}
+  .player-stat-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px}
 
-  .tourney-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-  .tourney-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
-  .tourney-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .tourney-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .tourney-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .tourney-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));transform:scaleX(0);transform-origin:left;transition:transform .3s}
   .tourney-card:hover::after{transform:scaleX(1)}
   .tourney-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:10px}
-  .tourney-name{font-family:'Rajdhani';font-size:19px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;line-height:1.2}
-  .tourney-date{font-size:12px;color:var(--muted);margin-top:4px}
+  .tourney-name{font-family:'Rajdhani';font-size:19px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:0.5px;line-height:1.2}
+  .tourney-date{font-size:12px;color:var(--text-muted);margin-top:4px}
   .tourney-stats{display:flex;gap:18px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
   .tourney-stat{flex:1}
-  .tourney-stat-val{font-family:'Rajdhani';font-size:20px;font-weight:700;line-height:1}
-  .tourney-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-top:2px}
+  .tourney-stat-val{font-family:'Rajdhani';font-size:20px;font-weight:700;line-height:1;color:var(--dark)}
+  .tourney-stat-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.6px;margin-top:2px}
 
-  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto}
-  .tab{padding:12px 18px;font-weight:600;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px}
-  .tab:hover{color:var(--text)}
-  .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:22px;overflow-x:auto}
+  .tab{padding:12px 18px;font-weight:600;font-size:13px;color:var(--text-muted);border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:-2px}
+  .tab:hover{color:var(--primary)}
+  .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 
-  .group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
-  .group-title{font-family:'Rajdhani';font-weight:700;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;text-transform:uppercase;letter-spacing:1px}
-  .group-title::before{content:'';width:4px;height:20px;background:linear-gradient(180deg,var(--accent),var(--cyan));border-radius:2px}
+  .group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .group-title{font-family:'Rajdhani';font-weight:700;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;color:var(--dark);text-transform:uppercase;letter-spacing:1px}
+  .group-title::before{content:'';width:4px;height:20px;background:linear-gradient(180deg,var(--primary),var(--secondary));border-radius:2px}
   .group-table{width:100%;font-size:13px}
   .group-table th{padding:8px 10px;font-size:10px}
   .group-table td{padding:10px}
-  .qualify{background:rgba(16,185,129,0.06)}
+  .qualify{background:var(--success-light)}
   .qualify td:first-child{position:relative}
   .qualify td:first-child::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--success)}
 
   .bracket{display:flex;gap:36px;overflow-x:auto;padding:20px 0}
   .bracket-round{display:flex;flex-direction:column;justify-content:space-around;min-width:240px;gap:18px}
-  .bracket-match{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px}
-  .bracket-match-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
+  .bracket-match{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;box-shadow:var(--shadow)}
+  .bracket-match-title{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:700}
   .bracket-team{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border)}
   .bracket-team:last-child{border-bottom:none}
-  .bracket-team.winner{color:var(--accent);font-weight:700}
-  .bracket-team.tbd{color:var(--muted);font-style:italic}
+  .bracket-team.winner{color:var(--primary);font-weight:700}
+  .bracket-team.tbd{color:var(--text-muted);font-style:italic}
 
-  .toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--accent);padding:14px 20px;border-radius:10px;font-size:14px;z-index:200;font-weight:500;box-shadow:var(--shadow);animation:slideIn .3s}
-  .toast.error{border-color:var(--danger)}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:14px 20px;border-radius:10px;font-size:14px;z-index:200;font-weight:500;box-shadow:var(--shadow-lg);animation:slideIn .3s;border-left:4px solid var(--primary)}
+  .toast.error{border-left-color:var(--danger)}
   @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-  .empty{text-align:center;padding:60px 20px;color:var(--muted)}
-  .empty-title{font-family:'Rajdhani';font-size:20px;color:var(--text);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
+  .empty{text-align:center;padding:60px 20px;color:var(--text-muted)}
+  .empty-title{font-family:'Rajdhani';font-size:20px;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px}
 
   .login-wrap{min-height:70vh;display:flex;align-items:center;justify-content:center;padding:20px}
-  .login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:40px;width:100%;max-width:420px}
+  .login-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:40px;width:100%;max-width:420px;box-shadow:var(--shadow-lg)}
   .login-brand{text-align:center;margin-bottom:28px}
-  .login-brand .brand-logo{width:70px;height:70px;margin:0 auto 18px;border-radius:18px}
-  .login-brand h1{font-family:'Rajdhani';font-size:26px;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
-  .login-brand p{color:var(--muted);font-size:13px}
+  .login-brand .brand-icon{width:70px;height:70px;margin:0 auto 18px;border-radius:18px;font-size:32px}
+  .login-brand h1{font-family:'Rajdhani';font-size:26px;margin-bottom:4px;color:var(--dark);text-transform:uppercase;letter-spacing:1px}
+  .login-brand p{color:var(--text-muted);font-size:13px}
 
-  .mobile-toggle{display:none;position:fixed;top:16px;left:16px;z-index:60;background:var(--surface);border:1px solid var(--border);padding:8px;border-radius:8px}
+  .mobile-toggle{display:none;position:fixed;top:16px;left:16px;z-index:60;background:var(--surface);border:1px solid var(--border);padding:8px;border-radius:8px;box-shadow:var(--shadow)}
   @media(max-width:900px){
     .sidebar{transform:translateX(-100%);transition:transform .3s}
     .sidebar.open{transform:translateX(0)}
@@ -200,97 +204,111 @@
 
   ::-webkit-scrollbar{width:8px;height:8px}
   ::-webkit-scrollbar-track{background:var(--bg)}
-  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-  ::-webkit-scrollbar-thumb:hover{background:var(--border-2)}
+  ::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
   .flex{display:flex}
   .flex-between{display:flex;justify-content:space-between;align-items:center}
   .gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
   .mt-16{margin-top:16px}.mt-24{margin-top:24px}.mb-16{margin-bottom:16px}
-  .text-muted{color:var(--muted)}
+  .text-muted{color:var(--text-muted)}
   .text-sm{font-size:13px}
   .text-xs{font-size:11px}
   .hidden{display:none !important}
-  .text-accent{color:var(--accent)}
-  .text-cyan{color:var(--cyan)}
+  .text-primary{color:var(--primary)}
+  .text-success{color:var(--success)}
 
-  .prize-card{background:linear-gradient(135deg,var(--surface),var(--surface-2));border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;position:relative;overflow:hidden}
+  .prize-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow)}
   .prize-card.gold{border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,rgba(255,215,0,0.08),var(--surface))}
-  .prize-card.silver{border-color:rgba(192,192,192,0.3);background:linear-gradient(135deg,rgba(192,192,192,0.06),var(--surface))}
+  .prize-card.silver{border-color:rgba(192,192,192,0.4);background:linear-gradient(135deg,rgba(192,192,192,0.06),var(--surface))}
   .prize-card.bronze{border-color:rgba(205,127,50,0.3);background:linear-gradient(135deg,rgba(205,127,50,0.06),var(--surface))}
   .prize-icon{font-size:32px;margin-bottom:6px}
-  .prize-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
-  .prize-value{font-family:'Rajdhani';font-size:22px;font-weight:700;margin-top:4px}
-  .prize-winner{font-size:12px;color:var(--accent);margin-top:4px;font-weight:600}
+  .prize-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+  .prize-value{font-family:'Rajdhani';font-size:22px;font-weight:700;margin-top:4px;color:var(--dark)}
+  .prize-winner{font-size:12px;color:var(--primary);margin-top:4px;font-weight:600}
 
   .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:700;font-size:12px;font-family:'Rajdhani'}
-  .rank-1{background:linear-gradient(135deg,#ffd700,#ff9500);color:#060912;box-shadow:0 4px 12px rgba(255,215,0,0.3)}
-  .rank-2{background:linear-gradient(135deg,#c0c0c0,#8a8a8a);color:#060912}
+  .rank-1{background:linear-gradient(135deg,#ffd700,#ff9500);color:#fff;box-shadow:0 4px 12px rgba(255,215,0,0.3)}
+  .rank-2{background:linear-gradient(135deg,#c0c0c0,#8a8a8a);color:#fff}
   .rank-3{background:linear-gradient(135deg,#cd7f32,#8b4513);color:#fff}
-  .rank-other{background:var(--surface-2);color:var(--muted)}
+  .rank-other{background:var(--surface-2);color:var(--text-muted);border:1px solid var(--border)}
 
-  .admin-indicator{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:rgba(255,107,53,0.12);color:var(--accent);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(255,107,53,0.3)}
-  .admin-indicator::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .admin-indicator{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;background:var(--primary-glow);color:var(--primary);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid rgba(0,102,255,0.25)}
+  .admin-indicator::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary)}
 
-  .countdown-card{background:linear-gradient(135deg,rgba(255,107,53,0.12),rgba(0,212,255,0.08));border:1px solid var(--border-2);border-radius:var(--radius);padding:24px;text-align:center;position:relative;overflow:hidden;margin-bottom:20px}
-  .countdown-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(255,107,53,0.2), transparent 60%);pointer-events:none}
-  .countdown-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:10px}
+  .countdown-card{background:linear-gradient(135deg,var(--primary-glow),rgba(0,212,255,0.08));border:1px solid rgba(0,102,255,0.2);border-radius:var(--radius);padding:24px;text-align:center;position:relative;overflow:hidden;margin-bottom:20px}
+  .countdown-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(0,102,255,0.15), transparent 60%);pointer-events:none}
+  .countdown-label{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:10px}
   .countdown-timer{display:flex;justify-content:center;gap:14px;margin:14px 0}
-  .countdown-unit{background:var(--surface-2);border:1px solid var(--border-2);border-radius:10px;padding:12px 16px;min-width:70px}
-  .countdown-num{font-family:'Rajdhani';font-size:32px;font-weight:700;color:var(--accent);line-height:1}
-  .countdown-txt{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:700}
-  .countdown-status{font-family:'Rajdhani';font-size:18px;font-weight:700;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+  .countdown-unit{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;min-width:70px;box-shadow:var(--shadow)}
+  .countdown-num{font-family:'Rajdhani';font-size:32px;font-weight:700;color:var(--primary);line-height:1}
+  .countdown-txt{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:700}
+  .countdown-status{font-family:'Rajdhani';font-size:18px;font-weight:700;margin-top:8px;text-transform:uppercase;letter-spacing:1px;color:var(--dark)}
   .countdown-status.live{color:var(--danger);animation:pulse 1.5s infinite}
-  .countdown-status.upcoming{color:var(--cyan)}
-  .countdown-status.ended{color:var(--muted)}
+  .countdown-status.upcoming{color:var(--primary)}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
 
-  .player-check-list{max-height:380px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;background:var(--bg-2)}
-  .player-check-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+  .player-check-list{max-height:380px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
+  .player-check-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;background:var(--surface)}
   .player-check-item:last-child{border-bottom:none}
-  .player-check-item:hover{background:var(--surface)}
-  .player-check-item.selected{background:rgba(255,107,53,0.08)}
-  .player-check-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+  .player-check-item:hover{background:var(--surface-3)}
+  .player-check-item.selected{background:var(--primary-glow);border-left:3px solid var(--primary)}
+  .player-check-item input[type="checkbox"]{width:18px;height:18px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
   .player-check-item .player-avatar{width:34px;height:34px;font-size:14px;margin:0}
   .player-check-item .info{flex:1;min-width:0}
-  .player-check-item .info .name{font-weight:600;font-size:14px}
-  .player-check-item .info .meta{font-size:11px;color:var(--muted)}
+  .player-check-item .info .name{font-weight:600;font-size:14px;color:var(--dark)}
+  .player-check-item .info .meta{font-size:11px;color:var(--text-muted)}
 
-  .fixture-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
-  .fixture-stage{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;min-width:80px}
+  .fixture-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+  .fixture-stage{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;min-width:80px}
   .fixture-teams{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .fixture-team{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;flex:1}
+  .fixture-team{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--dark);flex:1}
   .fixture-team.right{justify-content:flex-end;text-align:right}
-  .fixture-team.highlight{color:var(--accent)}
-  .fixture-score{font-family:'Rajdhani';font-size:22px;font-weight:700;background:var(--surface-2);padding:6px 14px;border-radius:8px;min-width:70px;text-align:center;border:1px solid var(--border-2)}
-  .fixture-score.pending{color:var(--muted);font-size:14px}
+  .fixture-team.highlight{color:var(--primary)}
+  .fixture-score{font-family:'Rajdhani';font-size:22px;font-weight:700;background:var(--surface-2);padding:6px 14px;border-radius:8px;min-width:70px;text-align:center;border:1px solid var(--border);color:var(--dark)}
+  .fixture-score.pending{color:var(--text-muted);font-size:14px}
   .fixture-result{font-size:10px;padding:3px 8px;border-radius:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
-  .fixture-result.win{background:rgba(16,185,129,0.15);color:var(--success)}
-  .fixture-result.loss{background:rgba(239,68,68,0.15);color:var(--danger)}
-  .fixture-result.draw{background:rgba(245,158,11,0.15);color:var(--warning)}
+  .fixture-result.win{background:var(--success-light);color:var(--success)}
+  .fixture-result.loss{background:var(--danger-light);color:var(--danger)}
+  .fixture-result.draw{background:var(--warning-light);color:var(--warning)}
 
-  .export-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);font-size:12px;font-weight:600;transition:all .2s}
-  .export-btn:hover{background:var(--surface-3);border-color:var(--accent);color:var(--accent)}
+  .export-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text-2);font-size:12px;font-weight:600;transition:all .2s}
+  .export-btn:hover{background:var(--primary-glow);border-color:var(--primary);color:var(--primary)}
 
-  .config-helper{background:var(--bg-2);border:1px dashed var(--border-2);border-radius:10px;padding:14px;margin-top:10px;font-size:13px;color:var(--text-2)}
-  .config-helper strong{color:var(--accent)}
+  .config-helper{background:var(--surface-2);border:1px dashed var(--border-2);border-radius:10px;padding:14px;margin-top:10px;font-size:13px;color:var(--text-2)}
+  .config-helper strong{color:var(--primary)}
 
-  /* Photo upload */
   .photo-upload{display:flex;align-items:center;gap:16px;margin-bottom:16px}
-  .photo-preview{width:80px;height:80px;border-radius:14px;background:var(--bg-2);border:2px dashed var(--border-2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;color:var(--muted);font-size:11px;text-align:center;padding:4px}
+  .photo-preview{width:80px;height:80px;border-radius:14px;background:var(--surface-2);border:2px dashed var(--border-2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;color:var(--text-muted);font-size:11px;text-align:center;padding:4px}
   .photo-preview img{width:100%;height:100%;object-fit:cover}
   .photo-upload-controls{flex:1}
   .photo-upload-controls input[type="file"]{display:none}
-  .photo-upload-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
-  .photo-upload-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .photo-upload-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+  .photo-upload-btn:hover{border-color:var(--primary);color:var(--primary)}
 
-  /* Start tournament banner */
-  .start-banner{background:linear-gradient(135deg,rgba(16,212,122,0.15),rgba(0,212,255,0.08));border:1px solid rgba(16,212,122,0.3);border-radius:var(--radius);padding:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .start-banner{background:linear-gradient(135deg,var(--success-light),rgba(0,212,255,0.08));border:1px solid rgba(0,200,83,0.3);border-radius:var(--radius);padding:20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .start-banner-info{flex:1;min-width:200px}
-  .start-banner-title{font-family:'Rajdhani';font-size:18px;font-weight:700;text-transform:uppercase;color:var(--success);margin-bottom:4px}
+  .start-banner-title{font-family:'Rajdhani';font-size:18px;font-weight:700;color:var(--success);margin-bottom:4px;text-transform:uppercase}
   .start-banner-desc{font-size:13px;color:var(--text-2)}
 
-  /* Locked overlay for scores */
-  .locked-notice{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:16px;text-align:center;color:var(--warning);font-size:13px;margin-bottom:16px}
+  .locked-notice{background:var(--warning-light);border:1px solid rgba(255,179,0,0.3);border-radius:10px;padding:16px;text-align:center;color:var(--warning);font-size:13px;margin-bottom:16px;font-weight:500}
+
+  .deadline-notice{background:var(--warning-light);border:1px solid rgba(255,179,0,0.3);border-radius:10px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+  .deadline-notice-icon{font-size:24px}
+  .deadline-notice-content{flex:1}
+  .deadline-notice-title{font-weight:700;color:var(--warning);margin-bottom:4px}
+  .deadline-notice-text{font-size:13px;color:var(--text-2)}
+
+  .export-container{background:var(--surface);padding:24px;border-radius:var(--radius);margin-bottom:20px;border:1px solid var(--border)}
+  .export-header{text-align:center;margin-bottom:20px}
+  .export-title{font-family:'Rajdhani';font-size:26px;font-weight:700;color:var(--dark);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+  .export-subtitle{font-size:13px;color:var(--text-muted)}
+
+  .hero-banner{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:var(--radius);padding:32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+  .hero-banner::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.15),transparent 70%);pointer-events:none}
+  .hero-title{font-family:'Rajdhani';font-size:36px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;position:relative}
+  .hero-sub{font-size:14px;opacity:0.9;position:relative}
+  .hero-tagline{font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-top:12px;opacity:0.8;position:relative}
 </style>
 </head>
 <body>
@@ -303,22 +321,11 @@
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-logo">
-        <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#fff" stop-opacity="0.95"/>
-              <stop offset="100%" stop-color="#fff" stop-opacity="0.7"/>
-            </linearGradient>
-          </defs>
-          <path d="M30 4 L52 14 L52 34 Q52 48 30 56 Q8 48 8 34 L8 14 Z" fill="url(#lg1)" opacity="0.15"/>
-          <path d="M30 4 L52 14 L52 34 Q52 48 30 56 Q8 48 8 34 L8 14 Z" fill="none" stroke="#fff" stroke-width="2" opacity="0.9"/>
-          <path d="M17 42 L17 20 L24 32 L30 22 L36 32 L43 20 L43 42" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="30" cy="12" r="1.5" fill="#fff"/>
-        </svg>
-      </div>
-      <div>
-        <div class="brand-name">Milandhoo</div>
-        <div class="brand-sub">eFootball</div>
+        <div class="brand-icon">M</div>
+        <div>
+          <div class="brand-name">MILANDHOO</div>
+          <div class="brand-sub">eFootball Community</div>
+        </div>
       </div>
     </div>
     <nav class="nav">
@@ -342,12 +349,12 @@
       <div class="nav-section">Administration</div>
       <a class="nav-item" data-view="admin" onclick="navigate('admin')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Admin Portal
+        Admin Panel
       </a>
     </nav>
     <div class="sidebar-foot">
       <div>v4.0 · October 2026</div>
-      <div style="margin-top:3px;opacity:0.7">© Milandhoo eFootball</div>
+      <div style="margin-top:3px;opacity:0.7">Play • Compete • Belong</div>
     </div>
   </aside>
 
@@ -373,71 +380,75 @@ const DB = {
 };
 DB.init();
 
-/* Seed demo data */
 if(DB.get('players').length === 0){
   const demoPlayers = [
-    {id:uid(), name:'Ahmed Rilwan'},
-    {id:uid(), name:'Ibrahim Shaan'},
-    {id:uid(), name:'Hassan Ziad'},
-    {id:uid(), name:'Mohamed Fais'},
-    {id:uid(), name:'Ali Nazim'},
-    {id:uid(), name:'Yoosuf Rihan'}
+    {id:uid(), name:'MG L30', achievements:'Champion Season 4'},
+    {id:uid(), name:'AXE77', achievements:'Runner-up Season 3'},
+    {id:uid(), name:'FALCON', achievements:'Champion Season 3'},
+    {id:uid(), name:'PRODIGY'},
+    {id:uid(), name:'NIGHT'},
+    {id:uid(), name:'SHADOW'},
+    {id:uid(), name:'RAVEN'},
+    {id:uid(), name:'BLAZE'}
   ];
   DB.set('players', demoPlayers);
 
   const t1 = {
     id: uid(),
-    name: 'Milandhoo Cup Season 1',
-    date: '2026-06-15',
-    startDateTime: '2026-06-15T18:00',
+    name: 'Milandhoo Champions League Season 5',
+    date: '2026-10-20',
+    startDateTime: '2026-10-20T18:00',
+    groupDeadline: '2026-10-29T23:59',
     format: 'group_knockout',
-    groups: 2,
-    groupSize: 3,
+    groups: 4,
+    groupSize: 4,
     qualifyPerGroup: 2,
     knockoutFormat: 'bo3',
     prize: {champion:'5000 MVR', runnerUp:'2500 MVR', thirdPlace:'1000 MVR'},
-    status: 'completed',
-    description: 'Inaugural season of the Milandhoo eFootball Cup.',
-    registrations: demoPlayers.map(p=>({playerId:p.id, date:'2026-06-01'})),
+    status: 'active',
+    description: 'The ultimate eFootball competition in Milandhoo.',
+    registrations: demoPlayers.map(p=>({playerId:p.id, date:'2026-10-01'})),
     groupsDrawn: true,
-    startedAt: '2026-06-15T18:00:00Z',
+    startedAt: '2026-10-20T18:00:00Z',
     groupData: [
       {name:'A', players:[
-        {playerId:demoPlayers[0].id, played:2, wins:2, draws:0, losses:0, gf:6, ga:1, points:6},
-        {playerId:demoPlayers[1].id, played:2, wins:1, draws:0, losses:1, gf:3, ga:3, points:3},
-        {playerId:demoPlayers[2].id, played:2, wins:0, draws:0, losses:2, gf:1, ga:6, points:0}
+        {playerId:demoPlayers[0].id, played:3, wins:2, draws:1, losses:0, gf:6, ga:2, points:7},
+        {playerId:demoPlayers[1].id, played:3, wins:2, draws:0, losses:1, gf:5, ga:3, points:6},
+        {playerId:demoPlayers[2].id, played:3, wins:1, draws:0, losses:2, gf:3, ga:5, points:3},
+        {playerId:demoPlayers[3].id, played:3, wins:0, draws:1, losses:2, gf:2, ga:6, points:1}
       ]},
       {name:'B', players:[
-        {playerId:demoPlayers[3].id, played:2, wins:2, draws:0, losses:0, gf:5, ga:2, points:6},
-        {playerId:demoPlayers[4].id, played:2, wins:1, draws:0, losses:1, gf:3, ga:4, points:3},
-        {playerId:demoPlayers[5].id, played:2, wins:0, draws:0, losses:2, gf:2, ga:5, points:0}
+        {playerId:demoPlayers[4].id, played:3, wins:2, draws:1, losses:0, gf:7, ga:2, points:7},
+        {playerId:demoPlayers[5].id, played:3, wins:1, draws:1, losses:1, gf:4, ga:4, points:4},
+        {playerId:demoPlayers[6].id, played:3, wins:1, draws:0, losses:2, gf:3, ga:5, points:3},
+        {playerId:demoPlayers[7].id, played:3, wins:0, draws:0, losses:3, gf:1, ga:4, points:0}
       ]}
+    ],
+    fixtures: [
+      {group:'A', team1:demoPlayers[0].id, team2:demoPlayers[1].id, score1:2, score2:1, played:true},
+      {group:'A', team1:demoPlayers[2].id, team2:demoPlayers[3].id, score1:1, score2:0, played:true},
+      {group:'B', team1:demoPlayers[4].id, team2:demoPlayers[5].id, score1:3, score2:1, played:true}
     ],
     knockoutDrawn: true,
     knockoutBracket: [
       [
-        {id:uid(), team1:demoPlayers[0].id, team2:demoPlayers[4].id, score1:2, score2:1, winner:demoPlayers[0].id, round:'SF', label:'A1 vs B2'},
-        {id:uid(), team1:demoPlayers[3].id, team2:demoPlayers[1].id, score1:2, score2:0, winner:demoPlayers[3].id, round:'SF', label:'B1 vs A2'}
+        {id:uid(), team1:demoPlayers[0].id, team2:demoPlayers[5].id, score1:2, score2:1, winner:demoPlayers[0].id, round:'Quarter Finals', label:'Group A1 vs Group B2'},
+        {id:uid(), team1:demoPlayers[4].id, team2:demoPlayers[1].id, score1:1, score2:2, winner:demoPlayers[1].id, round:'Quarter Finals', label:'Group B1 vs Group A2'}
       ],
       [
-        {id:uid(), team1:demoPlayers[0].id, team2:demoPlayers[3].id, score1:1, score2:2, winner:demoPlayers[3].id, round:'Final', label:'Final'}
+        {id:uid(), team1:demoPlayers[0].id, team2:demoPlayers[1].id, score1:null, score2:null, winner:null, round:'Semi Finals', label:'Winner advances'}
       ]
     ],
-    champion: demoPlayers[3].id,
-    runnerUp: demoPlayers[0].id,
-    thirdPlace: demoPlayers[1].id,
-    completedAt: '2026-06-15T20:00:00Z'
+    champion: null,
+    runnerUp: null,
+    thirdPlace: null
   };
   DB.set('tournaments', [t1]);
 }
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,9) }
 function fmtDate(d){ if(!d) return '—'; const dt=new Date(d); return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) }
-function fmtDateTime(d){
-  if(!d) return '—';
-  const dt = new Date(d);
-  return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) + ' · ' + dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-}
+function fmtDateTime(d){ if(!d) return '—'; const dt = new Date(d); return dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) + ' · ' + dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
 function isAdmin(){ return !!DB.get('session') }
 
 /* =========================
@@ -458,7 +469,7 @@ function calculateAllStats(){
           if(stats[row.playerId]){
             stats[row.playerId].matches += row.played;
             stats[row.playerId].wins += row.wins;
-            stats[row.playerId].draws += row.draws;
+            stats[row.playerId].draws += row.draws||0;
             stats[row.playerId].losses += row.losses;
             stats[row.playerId].gf += row.gf;
             stats[row.playerId].ga += row.ga;
@@ -588,7 +599,7 @@ async function exportAsJPEG(elementId, filename){
   if(!el){ toast('Nothing to export', true); return }
   toast('Generating image...');
   try{
-    const canvas = await html2canvas(el, {backgroundColor: '#04060c', scale: 2, useCORS: true, logging: false});
+    const canvas = await html2canvas(el, {backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false});
     const link = document.createElement('a');
     link.download = `${filename}.jpeg`;
     link.href = canvas.toDataURL('image/jpeg', 0.95);
@@ -615,7 +626,7 @@ function distributePlayersToGroups(playerCount, numGroups){
 function nextPow2(n){ let p=1; while(p<n) p*=2; return p; }
 
 /* =========================
-   PHOTO UPLOAD (resize to thumbnail)
+   PHOTO UPLOAD
    ========================= */
 function handlePhotoUpload(inputEl, previewEl, callback){
   const file = inputEl.files[0];
@@ -624,13 +635,11 @@ function handlePhotoUpload(inputEl, previewEl, callback){
   reader.onload = (e)=>{
     const img = new Image();
     img.onload = ()=>{
-      // Resize to 200x200 thumbnail
       const canvas = document.createElement('canvas');
       const size = 200;
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext('2d');
-      // Crop to square from center
       const min = Math.min(img.width, img.height);
       const sx = (img.width - min) / 2;
       const sy = (img.height - min) / 2;
@@ -645,10 +654,10 @@ function handlePhotoUpload(inputEl, previewEl, callback){
 }
 
 function renderAvatar(player, size=54){
-  if(player.photo){
+  if(player && player.photo){
     return `<div class="player-avatar" style="width:${size}px;height:${size}px;font-size:${size*0.37}px"><img src="${player.photo}" alt="${player.name}"></div>`;
   }
-  return `<div class="player-avatar" style="width:${size}px;height:${size}px;font-size:${size*0.37}px">${player.name.charAt(0)}</div>`;
+  return `<div class="player-avatar" style="width:${size}px;height:${size}px;font-size:${size*0.37}px">${player?player.name.charAt(0):'?'}</div>`;
 }
 
 /* =========================
@@ -662,24 +671,46 @@ function renderDashboard(){
   const openT = tourneys.filter(t=>t.status==='open');
 
   document.getElementById('main').innerHTML = `
-    <div class="topbar">
+    <div class="hero-banner">
+      <div class="hero-title">MILANDHOO eFootball</div>
+      <div class="hero-sub">The home of competitive eFootball in our community</div>
+      <div class="hero-tagline">Play · Compete · Belong</div>
+    </div>
+
+    <div class="topbar" style="margin-top:0">
       <div>
-        <div class="page-title">Milandhoo eFootball</div>
-        <div class="page-sub">The home of competitive eFootball in our community.</div>
+        <div class="page-title">Dashboard</div>
+        <div class="page-sub">Welcome back to the community</div>
       </div>
       <div class="top-actions">
         ${isAdmin() ? `<span class="admin-indicator">Admin Mode</span><button class="btn btn-primary" onclick="navigate('admin')">Open Admin</button>` : `<button class="btn btn-secondary" onclick="navigate('admin')">Admin Login</button>`}
       </div>
     </div>
 
-    <div class="grid grid-4">
-      <div class="stat"><div class="stat-label">Players</div><div class="stat-value">${players.length}</div><div class="stat-delta">Active community</div></div>
-      <div class="stat"><div class="stat-label">Tournaments</div><div class="stat-value">${tourneys.length}</div><div class="stat-delta">${openT.length} open now</div></div>
-      <div class="stat"><div class="stat-label">Matches Played</div><div class="stat-value">${totalMatches}</div><div class="stat-delta">All-time</div></div>
-      <div class="stat"><div class="stat-label">Completed</div><div class="stat-value">${tourneys.filter(t=>t.status==='completed').length}</div><div class="stat-delta">Tournaments</div></div>
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px">
+      <div class="stat">
+        <div class="stat-label">Players</div>
+        <div class="stat-value">${players.length}</div>
+        <div class="stat-delta">Active community</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tournaments</div>
+        <div class="stat-value">${tourneys.length}</div>
+        <div class="stat-delta">${openT.length} open now</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Matches Played</div>
+        <div class="stat-value">${totalMatches}</div>
+        <div class="stat-delta">All-time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Completed</div>
+        <div class="stat-value">${tourneys.filter(t=>t.status==='completed').length}</div>
+        <div class="stat-delta">Tournaments</div>
+      </div>
     </div>
 
-    <div class="grid grid-2 mt-24">
+    <div class="grid grid-2">
       <div class="card">
         <div class="card-head">
           <div class="card-title">🔥 Open for Registration</div>
@@ -726,20 +757,20 @@ function renderTopPlayersList(){
         <div class="rank-badge ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other'}">${i+1}</div>
         ${renderAvatar(x.p, 36)}
         <div>
-          <div style="font-weight:600;font-size:14px">${x.p.name}</div>
+          <div style="font-weight:600;font-size:14px;color:var(--dark)">${x.p.name}</div>
           <div class="text-xs text-muted">${x.s.matches||0} matches · ${x.s.winPct||0}% win</div>
         </div>
       </div>
       <div style="text-align:right">
-        <div style="font-family:'Rajdhani';font-weight:700;color:var(--accent);font-size:18px">${x.s.wins||0}W</div>
-        ${x.s.tourneyWins>0?`<div class="text-xs text-accent">🏆 ${x.s.tourneyWins}</div>`:''}
+        <div style="font-family:'Rajdhani';font-weight:700;color:var(--primary);font-size:18px">${x.s.wins||0}W</div>
+        ${x.s.tourneyWins>0?`<div class="text-xs text-primary">🏆 ${x.s.tourneyWins}</div>`:''}
       </div>
     </div>
   `).join('');
 }
 
 /* =========================
-   PLAYERS (with photo)
+   PLAYERS
    ========================= */
 function renderPlayers(){
   const players = DB.get('players');
@@ -784,7 +815,7 @@ function renderPlayerCards(players, stats){
       <div class="player-stats">
         <div><div class="player-stat-val">${s.matches}</div><div class="player-stat-lbl">Matches</div></div>
         <div><div class="player-stat-val">${s.wins}</div><div class="player-stat-lbl">Wins</div></div>
-        <div><div class="player-stat-val" style="color:var(--accent)">${s.winPct}%</div><div class="player-stat-lbl">Win%</div></div>
+        <div><div class="player-stat-val" style="color:var(--primary)">${s.winPct}%</div><div class="player-stat-lbl">Win%</div></div>
       </div>
     </div>
   `}).join('');
@@ -799,7 +830,7 @@ function filterPlayers(){
 function openPlayerModal(id){
   if(!isAdmin()){ toast('Admin login required', true); return }
   const players = DB.get('players');
-  const p = id ? players.find(x=>x.id===id) : {name:'', photo:null};
+  const p = id ? players.find(x=>x.id===id) : {name:'', photo:null, achievements:''};
   openModal(`
     <div class="modal-head">
       <div class="modal-title">${id?'Edit':'Add'} Player</div>
@@ -822,7 +853,11 @@ function openPlayerModal(id){
       </div>
       <div class="form-group">
         <label class="form-label">Player Name</label>
-        <input class="form-input" id="p_name" value="${p.name||''}" placeholder="e.g. Ahmed Rilwan">
+        <input class="form-input" id="p_name" value="${p.name||''}" placeholder="e.g. MG L30">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Previous Achievements</label>
+        <input class="form-input" id="p_achievements" value="${p.achievements||''}" placeholder="e.g. Champion Season 4">
       </div>
       <div class="text-sm text-muted">Stats (matches, wins, win%, achievements) are auto-calculated from tournament results.</div>
     </div>
@@ -839,11 +874,12 @@ function savePlayer(id){
   if(!name){ toast('Player name is required', true); return }
   const players = DB.get('players');
   const photo = window._tempPhoto;
+  const achievements = document.getElementById('p_achievements').value.trim();
   if(id){
     const idx = players.findIndex(p=>p.id===id);
-    players[idx] = {...players[idx], name, photo};
+    players[idx] = {...players[idx], name, photo, achievements};
   } else {
-    players.push({id:uid(), name, photo});
+    players.push({id:uid(), name, photo, achievements});
   }
   DB.set('players', players);
   window._tempPhoto = null;
@@ -913,11 +949,12 @@ function filterTournaments(status){
 }
 
 /* =========================
-   CREATE TOURNAMENT (with player selection)
+   CREATE TOURNAMENT
    ========================= */
 function openCreateTournament(){
   if(!isAdmin()){ toast('Admin login required', true); return }
   const players = DB.get('players');
+  const stats = calculateAllStats();
   const defaultDT = new Date(Date.now()+24*60*60*1000).toISOString().slice(0,16);
 
   openModal(`
@@ -928,7 +965,7 @@ function openCreateTournament(){
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Tournament Name</label>
-        <input class="form-input" id="t_name" placeholder="e.g. Milandhoo Cup Season 3">
+        <input class="form-input" id="t_name" placeholder="e.g. Milandhoo Champions League Season 5">
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -936,13 +973,17 @@ function openCreateTournament(){
           <input class="form-input" type="datetime-local" id="t_datetime" value="${defaultDT}">
         </div>
         <div class="form-group">
-          <label class="form-label">Format</label>
-          <select class="form-select" id="t_format" onchange="toggleFormatFields()">
-            <option value="group_knockout">Group Stage + Knockout</option>
-            <option value="league">League (Round-Robin)</option>
-            <option value="single_elimination">Single Elimination</option>
-          </select>
+          <label class="form-label">Group Stage Deadline</label>
+          <input class="form-input" type="datetime-local" id="t_deadline" value="${new Date(Date.now()+7*24*60*60*1000).toISOString().slice(0,16)}">
         </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Format</label>
+        <select class="form-select" id="t_format" onchange="toggleFormatFields()">
+          <option value="group_knockout">Group Stage + Knockout</option>
+          <option value="league">League (Round-Robin)</option>
+          <option value="single_elimination">Single Elimination</option>
+        </select>
       </div>
 
       <div id="format-group_knockout">
@@ -990,7 +1031,7 @@ function openCreateTournament(){
         <div class="text-sm text-muted">Players will be placed into a single-elimination bracket. Bracket size auto-adjusts to next power of 2 (byes if needed).</div>
       </div>
 
-      <div class="card mt-16" style="background:var(--bg-2)">
+      <div class="card mt-16" style="background:var(--surface-2)">
         <div class="card-title" style="margin-bottom:12px">💰 Prize Pool</div>
         <div class="form-row-3">
           <div class="form-group"><label class="form-label">🥇 Champion</label><input class="form-input" id="t_prize_1" placeholder="e.g. 5000 MVR"></div>
@@ -1018,8 +1059,7 @@ function openCreateTournament(){
         <textarea class="form-textarea" id="t_desc" placeholder="Tournament rules, format details..."></textarea>
       </div>
 
-      <!-- Player selection at creation -->
-      <div class="card mt-16" style="background:var(--bg-2)">
+      <div class="card mt-16" style="background:var(--surface-2)">
         <div class="flex-between" style="margin-bottom:12px">
           <div class="card-title">👥 Select Participants</div>
           <div class="flex gap-8">
@@ -1028,16 +1068,19 @@ function openCreateTournament(){
           </div>
         </div>
         <div class="player-check-list" id="createPlayerList" style="max-height:280px">
-          ${players.map(p=>`
-            <label class="player-check-item">
-              <input type="checkbox" value="${p.id}" onchange="updateCreateSelection()">
-              ${renderAvatar(p, 34)}
-              <div class="info">
-                <div class="name">${p.name}</div>
-                <div class="meta">${(stats_cache[p.id]?.matches||0)} matches · ${stats_cache[p.id]?.winPct||0}% win</div>
-              </div>
-            </label>
-          `).join('')}
+          ${players.map(p=>{
+            const s = stats[p.id] || {};
+            return `
+              <label class="player-check-item">
+                <input type="checkbox" value="${p.id}" onchange="updateCreateSelection()">
+                ${renderAvatar(p, 34)}
+                <div class="info">
+                  <div class="name">${p.name}</div>
+                  <div class="meta">${s.matches||0} matches · ${s.winPct||0}% win</div>
+                </div>
+              </label>
+            `;
+          }).join('')}
           ${players.length===0?'<div class="empty"><div class="empty-title">No players in database</div><div class="text-sm">Add players from the Players page first.</div></div>':''}
         </div>
         <div class="config-helper mt-16" id="createSelectionSummary"><strong>Selected:</strong> 0 players</div>
@@ -1050,12 +1093,6 @@ function openCreateTournament(){
   `, 'xl');
   updateConfigHelper();
 }
-
-// Cache stats for player list rendering
-const stats_cache = (()=>{
-  const s = calculateAllStats();
-  return s;
-})();
 
 function toggleAllCreateChecks(state){
   document.querySelectorAll('#createPlayerList input[type="checkbox"]').forEach(cb=>{
@@ -1096,7 +1133,6 @@ function updateConfigHelper(){
   const totalQualifiers = numGroups * qualify;
   const bracketSize = nextPow2(totalQualifiers);
 
-  // Seeding preview
   let seedingPreview = '';
   if(qualify >= 2){
     const pairs = [];
@@ -1132,8 +1168,8 @@ function saveTournament(){
   if(!name){ toast('Tournament name is required', true); return }
   const format = document.getElementById('t_format').value;
   const dt = document.getElementById('t_datetime').value;
+  const deadline = document.getElementById('t_deadline').value;
 
-  // Get selected players
   const checked = Array.from(document.querySelectorAll('#createPlayerList input[type="checkbox"]:checked')).map(cb=>cb.value);
   if(checked.length === 0){
     if(!confirm('No players selected. Create tournament without participants?')) return;
@@ -1144,6 +1180,7 @@ function saveTournament(){
     name,
     date: dt.slice(0,10),
     startDateTime: dt,
+    groupDeadline: deadline,
     format,
     game: document.getElementById('t_game').value.trim(),
     prize: {
@@ -1187,6 +1224,7 @@ function renderTournamentDetail(id){
   const players = DB.get('players');
 
   const canEditScores = t.status === 'active' || t.status === 'completed';
+  const isDeadlinePassed = t.groupDeadline && new Date(t.groupDeadline) < new Date();
 
   document.getElementById('main').innerHTML = `
     <div class="topbar">
@@ -1225,10 +1263,20 @@ function renderTournamentDetail(id){
       </div>
     `:''}
 
+    ${t.groupDeadline ? `
+      <div class="deadline-notice" style="${isDeadlinePassed?'background:var(--danger-light);border-color:rgba(255,23,68,0.3)':''}">
+        <div class="deadline-notice-icon">${isDeadlinePassed?'⏰':'📅'}</div>
+        <div class="deadline-notice-content">
+          <div class="deadline-notice-title" style="color:${isDeadlinePassed?'var(--danger)':'var(--primary)'}">${isDeadlinePassed?'Group Stage Deadline Passed':'Group Stage Deadline'}</div>
+          <div class="deadline-notice-text">${fmtDateTime(t.groupDeadline)}${isDeadlinePassed?' · Remaining matches auto-counted as 0-0 draws':''}</div>
+        </div>
+      </div>
+    `:''}
+
     ${(t.prize?.champion || t.prize?.runnerUp || t.prize?.thirdPlace)?`
       <div class="grid grid-3 mb-16">
         <div class="prize-card gold">
-          <div class="prize-icon">🥇</div>
+          <div class="prize-icon"></div>
           <div class="prize-label">Champion</div>
           <div class="prize-value">${t.prize.champion||'—'}</div>
           ${t.champion?`<div class="prize-winner">${players.find(p=>p.id===t.champion)?.name||'—'}</div>`:''}
@@ -1259,7 +1307,7 @@ function renderTournamentDetail(id){
 
     <div id="tab-overview">${renderTournamentOverview(t)}</div>
     <div id="tab-registration" class="hidden">${renderRegistrationTab(t, admin)}</div>
-    ${(t.format==='group_knockout' || t.format==='league') ? `<div id="tab-standings" class="hidden">${renderStandingsTab(t, admin, canEditScores)}</div>` : ''}
+    ${(t.format==='group_knockout' || t.format==='league') ? `<div id="tab-standings" class="hidden">${renderStandingsTab(t, admin, canEditScores, isDeadlinePassed)}</div>` : ''}
     ${(t.format==='group_knockout' || t.format==='single_elimination') ? `<div id="tab-knockout" class="hidden">${renderKnockoutTab(t, admin, canEditScores)}</div>` : ''}
     <div id="tab-fixtures" class="hidden">${renderAllFixturesTab(t, admin, canEditScores)}</div>
     <div id="tab-player" class="hidden">${renderPlayerViewTab(t, admin)}</div>
@@ -1286,10 +1334,9 @@ function startTournament(tid){
 }
 
 function renderTournamentOverview(t){
-  const regCount = (t.registrations||[]).length;
   return `
-    <div class="grid grid-4">
-      <div class="stat"><div class="stat-label">Participants</div><div class="stat-value">${regCount}</div><div class="stat-delta">${t.format==='group_knockout'?`${t.groups||0} groups`:'players'}</div></div>
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div class="stat"><div class="stat-label">Participants</div><div class="stat-value">${(t.registrations||[]).length}</div><div class="stat-delta">${t.format==='group_knockout'?`${t.groups||0} groups`:'players'}</div></div>
       <div class="stat"><div class="stat-label">Format</div><div class="stat-value" style="font-size:18px">${formatLabel(t.format)}</div><div class="stat-delta">${t.game||'eFootball'}</div></div>
       ${t.format==='group_knockout'?`
         <div class="stat"><div class="stat-label">Groups</div><div class="stat-value">${t.groups}</div><div class="stat-delta">Top ${t.qualifyPerGroup} qualify</div></div>
@@ -1307,7 +1354,6 @@ function renderTournamentOverview(t){
 
 function renderRegistrationTab(t, admin){
   const players = DB.get('players');
-  const registeredIds = (t.registrations||[]).map(r=>r.playerId);
 
   return `
     <div class="flex-between mb-16">
@@ -1318,23 +1364,24 @@ function renderRegistrationTab(t, admin){
       <div class="flex gap-8" style="flex-wrap:wrap">
         ${admin && t.status!=='completed' ? `
           <button class="btn btn-primary" onclick="openCheckboxRegisterModal('${t.id}')">✓ Manage Players</button>
-          ${t.format==='group_knockout' && !t.groupsDrawn ? `<button class="btn btn-cyan" onclick="randomDraw('${t.id}')">🎲 Draw Groups</button>`:''}
-          ${t.format==='single_elimination' && !t.knockoutDrawn ? `<button class="btn btn-cyan" onclick="drawSingleElim('${t.id}')">🎲 Draw Bracket</button>`:''}
-          ${t.format==='league' && !t.groupsDrawn ? `<button class="btn btn-cyan" onclick="startLeague('${t.id}')">▶ Start League</button>`:''}
+          ${t.format==='group_knockout' && !t.groupsDrawn ? `<button class="btn btn-secondary" onclick="randomDraw('${t.id}')">🎲 Draw Groups</button>`:''}
+          ${t.format==='single_elimination' && !t.knockoutDrawn ? `<button class="btn btn-secondary" onclick="drawSingleElim('${t.id}')">🎲 Draw Bracket</button>`:''}
+          ${t.format==='league' && !t.groupsDrawn ? `<button class="btn btn-secondary" onclick="startLeague('${t.id}')">▶ Start League</button>`:''}
         `:''}
       </div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>Player</th><th>Registered</th>${admin && t.status!=='completed'?'<th></th>':''}</tr></thead>
+        <thead><tr><th>#</th><th>Player</th><th>Achievements</th><th>Registered</th>${admin && t.status!=='completed'?'<th></th>':''}</tr></thead>
         <tbody>
-          ${(t.registrations||[]).length===0 ? `<tr><td colspan="${admin?4:3}" style="text-align:center;padding:40px;color:var(--muted)">No players registered yet</td></tr>` :
+          ${(t.registrations||[]).length===0 ? `<tr><td colspan="${admin?5:4}" style="text-align:center;padding:40px;color:var(--text-muted)">No players registered yet</td></tr>` :
             t.registrations.map((r,i)=>{
               const p = players.find(x=>x.id===r.playerId);
               if(!p) return '';
               return `<tr>
                 <td>${i+1}</td>
                 <td><div class="flex gap-12" style="align-items:center">${renderAvatar(p, 32)}<strong>${p.name}</strong></div></td>
+                <td class="text-muted text-sm">${p.achievements||'—'}</td>
                 <td class="text-muted text-sm">${fmtDate(r.date)}</td>
                 ${admin && t.status!=='completed'?`<td><button class="btn btn-ghost btn-sm" onclick="unregisterPlayer('${t.id}','${r.playerId}')" style="color:var(--danger)">Remove</button></td>`:''}
               </tr>`;
@@ -1443,14 +1490,14 @@ function unregisterPlayer(tid, playerId){
 }
 
 /* =========================
-   STANDINGS TAB (with flexible groups)
+   STANDINGS TAB
    ========================= */
-function renderStandingsTab(t, admin, canEditScores){
+function renderStandingsTab(t, admin, canEditScores, isDeadlinePassed){
   const players = DB.get('players');
   let content = '';
 
   if(t.format==='group_knockout'){
-    if(!t.groupsDrawn) return `<div class="empty"><div class="empty-title">Groups not drawn yet</div><div class="text-sm">${admin?'Perform a random draw from the Players tab.':'Waiting for admin to draw groups.'}</div></div>`;
+    if(!t.groupData || t.groupData.length===0) return `<div class="empty"><div class="empty-title">Groups not drawn yet</div><div class="text-sm">${admin?'Perform a random draw from the Players tab.':'Waiting for admin to draw groups.'}</div></div>`;
     content = t.groupData.map((g,gi)=>{
       const sorted = [...g.players].sort((a,b)=> b.points-a.points || (b.gf-b.ga)-(a.gf-a.ga) || b.gf-a.gf);
       return `
@@ -1466,9 +1513,9 @@ function renderStandingsTab(t, admin, canEditScores){
                   return `<tr class="${qualifies?'qualify':''}">
                     <td>${i+1}</td>
                     <td><div class="flex gap-8" style="align-items:center">${renderAvatar(p||{name:'?'}, 26)}<strong>${p?p.name:'Unknown'}</strong></div></td>
-                    <td>${row.played}</td><td>${row.wins}</td><td>${row.draws}</td><td>${row.losses}</td>
+                    <td>${row.played}</td><td>${row.wins}</td><td>${row.draws||0}</td><td>${row.losses}</td>
                     <td>${row.gf}</td><td>${row.ga}</td><td>${row.gf-row.ga}</td>
-                    <td><strong style="color:var(--accent)">${row.points}</strong></td>
+                    <td><strong style="color:var(--primary)">${row.points}</strong></td>
                     ${admin && canEditScores?`<td><button class="btn btn-ghost btn-sm" onclick="openMatchModal('${t.id}',${gi},'${row.playerId}')">Update</button></td>`:''}
                   </tr>`;
                 }).join('')}
@@ -1479,7 +1526,7 @@ function renderStandingsTab(t, admin, canEditScores){
       `;
     }).join('');
   } else if(t.format==='league'){
-    if(!t.groupsDrawn) return `<div class="empty"><div class="empty-title">League not started</div></div>`;
+    if(!t.groupData || t.groupData.length===0) return `<div class="empty"><div class="empty-title">League not started</div></div>`;
     const g = t.groupData[0];
     const sorted = [...g.players].sort((a,b)=> b.points-a.points || (b.gf-b.ga)-(a.gf-a.ga) || b.gf-a.gf);
     content = `
@@ -1494,9 +1541,9 @@ function renderStandingsTab(t, admin, canEditScores){
                 return `<tr class="${i===0?'qualify':''}">
                   <td><div class="rank-badge ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other'}">${i+1}</div></td>
                   <td><div class="flex gap-8" style="align-items:center">${renderAvatar(p||{name:'?'}, 26)}<strong>${p?p.name:'Unknown'}</strong></div></td>
-                  <td>${row.played}</td><td>${row.wins}</td><td>${row.draws}</td><td>${row.losses}</td>
+                  <td>${row.played}</td><td>${row.wins}</td><td>${row.draws||0}</td><td>${row.losses}</td>
                   <td>${row.gf}</td><td>${row.ga}</td><td>${row.gf-row.ga}</td>
-                  <td><strong style="color:var(--accent)">${row.points}</strong></td>
+                  <td><strong style="color:var(--primary)">${row.points}</strong></td>
                   ${admin && canEditScores?`<td><button class="btn btn-ghost btn-sm" onclick="openMatchModal('${t.id}',0,'${row.playerId}')">Update</button></td>`:''}
                 </tr>`;
               }).join('')}
@@ -1509,17 +1556,18 @@ function renderStandingsTab(t, admin, canEditScores){
 
   return `
     <div class="flex-between mb-16">
-      <div class="card-title">📊 ${t.format==='league'?'League Standings':'Group Standings'}</div>
+      <div class="card-title"> ${t.format==='league'?'League Standings':'Group Standings'}</div>
       <button class="export-btn" onclick="exportAsJPEG('standingsExport','${t.name.replace(/\s+/g,'_')}_standings')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export as JPEG
       </button>
     </div>
     ${admin && !canEditScores ? `<div class="locked-notice">🔒 Start the tournament to enable score updates</div>`:''}
-    <div id="standingsExport" style="background:var(--bg);padding:16px;border-radius:12px">
-      <div style="text-align:center;margin-bottom:16px">
-        <div style="font-family:'Rajdhani';font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:1px">${t.name}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px">${formatLabel(t.format)} · ${fmtDateTime(t.startDateTime || t.date)}</div>
+    <div id="standingsExport" class="export-container">
+      <div class="export-header">
+        <div class="export-title">${t.name}</div>
+        <div class="export-subtitle">${formatLabel(t.format)} · ${fmtDateTime(t.startDateTime || t.date)}</div>
+        ${t.groupDeadline ? `<div style="margin-top:8px;font-size:13px;color:var(--text-muted)">Group Stage Deadline: ${fmtDateTime(t.groupDeadline)}</div>` : ''}
       </div>
       ${content}
     </div>
@@ -1553,7 +1601,7 @@ function openMatchModal(tid, groupIdx, playerId){
         <div class="form-group"><label class="form-label">Wins</label><input class="form-input" type="number" id="m_w" value="${row.wins}" min="0"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Draws</label><input class="form-input" type="number" id="m_d" value="${row.draws}" min="0"></div>
+        <div class="form-group"><label class="form-label">Draws</label><input class="form-input" type="number" id="m_d" value="${row.draws||0}" min="0"></div>
         <div class="form-group"><label class="form-label">Losses</label><input class="form-input" type="number" id="m_l" value="${row.losses}" min="0"></div>
       </div>
       <div class="form-row">
@@ -1587,7 +1635,7 @@ function saveMatchStats(tid, groupIdx, playerId){
 }
 
 /* =========================
-   RANDOM DRAW (flexible distribution)
+   RANDOM DRAW
    ========================= */
 function randomDraw(tid){
   const tourneys = DB.get('tournaments');
@@ -1595,7 +1643,6 @@ function randomDraw(tid){
   const regs = t.registrations || [];
   if(regs.length < 2){ toast('Need at least 2 players', true); return; }
 
-  // Flexible distribution: distribute players across groups evenly
   const distribution = distributePlayersToGroups(regs.length, t.groups);
   const shuffled = [...regs].sort(()=>Math.random()-0.5);
 
@@ -1614,6 +1661,10 @@ function randomDraw(tid){
   t.groupData = groups;
   t.groupsDrawn = true;
   if(t.status === 'open' || t.status === 'draft') t.status = 'active';
+
+  // Auto-generate fixtures and bracket
+  generateFixturesAndBracket(tid);
+
   DB.set('tournaments', tourneys);
   renderTournamentDetail(tid);
   toast(`Groups drawn: ${distribution.join(', ')} players per group`);
@@ -1636,102 +1687,101 @@ function startLeague(tid){
 }
 
 /* =========================
-   DYNAMIC KNOCKOUT SEEDING
-   Seeding adapts to qualifyPerGroup:
-   - For each group, take top N players by points
-   - Within group: pair 1vN, 2v(N-1), etc.
-   - If N is odd, middle seed gets bye
+   AUTO-GENERATE FIXTURES & BRACKET
    ========================= */
-function drawKnockout(tid){
+function generateFixturesAndBracket(tid){
   const tourneys = DB.get('tournaments');
   const t = tourneys.find(x=>x.id===tid);
-  const N = t.qualifyPerGroup;
 
-  // Collect qualifiers per group
-  const groupQualifiers = [];
+  if(!t.groupData || t.groupData.length===0) return;
+
+  // Generate group stage fixtures (round-robin within each group)
+  const fixtures = [];
   t.groupData.forEach(g=>{
-    const sorted = [...g.players].sort((a,b)=> b.points-a.points || (b.gf-b.ga)-(a.gf-a.ga) || b.gf-a.gf);
-    const qualifiers = sorted.slice(0, N).map((q,i)=>({
-      playerId: q.playerId,
-      group: g.name,
-      seed: i+1,
-      points: q.points,
-      gd: q.gf-q.ga
-    }));
-    groupQualifiers.push(qualifiers);
-  });
-
-  // Build first round: within-group pairings (1vN, 2v(N-1), etc.)
-  const round1 = [];
-  groupQualifiers.forEach(gq=>{
-    const numPairs = Math.floor(N/2);
-    for(let i=0;i<numPairs;i++){
-      const top = gq[i];
-      const bottom = gq[N-1-i];
-      round1.push({
-        id: uid(),
-        team1: top.playerId,
-        team2: bottom.playerId,
-        score1: null, score2: null,
-        leg2Score1: null, leg2Score2: null,
-        winner: null,
-        round: 'R1',
-        label: `Group ${gq[0].group}: ${top.seed}v${bottom.seed}`
-      });
-    }
-    // If odd N, middle seed gets bye
-    if(N % 2 === 1){
-      const middle = gq[Math.floor(N/2)];
-      round1.push({
-        id: uid(),
-        team1: middle.playerId,
-        team2: null,
-        score1: null, score2: null,
-        winner: middle.playerId,
-        round: 'R1',
-        label: `Group ${gq[0].group}: ${middle.seed} (bye)`,
-        isBye: true
-      });
+    for(let i=0;i<g.players.length;i++){
+      for(let j=i+1;j<g.players.length;j++){
+        fixtures.push({
+          group: g.name,
+          team1: g.players[i].playerId,
+          team2: g.players[j].playerId,
+          score1: null,
+          score2: null,
+          played: false
+        });
+      }
     }
   });
+  t.fixtures = fixtures;
 
-  // Build full bracket
-  const totalAfterR1 = round1.filter(m=>!m.isBye).length + round1.filter(m=>m.isBye).length;
-  t.knockoutBracket = buildFullBracketFromR1(round1);
+  // Generate knockout bracket
+  if(t.format==='group_knockout' && t.qualifyPerGroup){
+    const qualifiers = [];
+    t.groupData.forEach(g=>{
+      const sorted = [...g.players].sort((a,b)=> b.points-a.points || (b.gf-b.ga)-(a.gf-a.ga));
+      for(let i=0;i<t.qualifyPerGroup && i<sorted.length;i++){
+        qualifiers.push({playerId: sorted[i].playerId, group: g.name, seed: i+1, points: sorted[i].points, gd: sorted[i].gf-sorted[i].ga});
+      }
+    });
 
-  t.knockoutDrawn = true;
+    if(qualifiers.length >= 2){
+      const N = t.qualifyPerGroup;
+      const round1 = [];
+
+      qualifiers.forEach((q,gi)=>{
+        const groupQualifiers = qualifiers.filter(x=>x.group===q.group);
+        for(let i=0;i<Math.floor(N/2);i++){
+          const top = groupQualifiers[i];
+          const bottom = groupQualifiers[N-1-i];
+          if(top && bottom){
+            round1.push({
+              id: uid(),
+              team1: top.playerId,
+              team2: bottom.playerId,
+              score1: null, score2: null,
+              leg2Score1: null, leg2Score2: null,
+              winner: null,
+              round: 'Round 1',
+              label: `Group ${top.group} ${top.seed} vs Group ${bottom.group} ${bottom.seed}`
+            });
+          }
+        }
+        if(N % 2 === 1){
+          const middle = groupQualifiers[Math.floor(N/2)];
+          if(middle){
+            round1.push({
+              id: uid(),
+              team1: middle.playerId,
+              team2: null,
+              score1: null, score2: null,
+              winner: middle.playerId,
+              round: 'Round 1',
+              label: `Group ${middle.group} ${middle.seed} (Bye)`,
+              isBye: true
+            });
+          }
+        }
+      });
+
+      t.knockoutBracket = buildFullBracketFromR1(round1);
+      t.knockoutDrawn = true;
+    }
+  }
+
   DB.set('tournaments', tourneys);
-  renderTournamentDetail(tid);
-  toast(`Knockout drawn · ${N} qualify per group · 1v${N}, 2v${N-1}... seeding`);
 }
 
 function buildFullBracketFromR1(round1){
-  // Advance byes automatically
-  const afterR1 = [];
-  const byeWinners = [];
-  round1.forEach(m=>{
-    if(m.isBye && m.winner){
-      byeWinners.push(m.winner);
-    } else {
-      afterR1.push(m);
-    }
-  });
-
-  // Combine non-bye matches + byes as "virtual" R2 slots
   const rounds = [round1];
+  let currentRound = round1.filter(m=>!m.isBye);
+  let currentByes = round1.filter(m=>m.isBye).map(m=>m.winner);
 
-  // Build R2+ from non-bye matches + byes
-  let currentMatches = afterR1;
-  let currentByes = byeWinners;
-
-  while(currentMatches.length > 0 || currentByes.length > 1){
+  while(currentRound.length > 1 || currentByes.length > 1){
     const nextRound = [];
     const winners = [...currentByes];
 
-    // Pair up current matches
-    for(let i=0;i<currentMatches.length;i+=2){
-      const m1 = currentMatches[i];
-      const m2 = currentMatches[i+1];
+    for(let i=0;i<currentRound.length;i+=2){
+      const m1 = currentRound[i];
+      const m2 = currentRound[i+1];
       nextRound.push({
         id: uid(),
         team1: m1?.winner || null,
@@ -1744,36 +1794,17 @@ function buildFullBracketFromR1(round1){
       });
     }
 
-    // If odd matches, last one paired with a bye
-    if(currentMatches.length % 2 === 1 && currentByes.length > 0){
-      const lastMatch = currentMatches[currentMatches.length-1];
+    if(currentRound.length % 2 === 1 && currentByes.length > 0){
       const bye = currentByes.shift();
-      // Replace the last "TBD vs TBD" with actual teams
       if(nextRound.length > 0){
         const last = nextRound[nextRound.length-1];
-        if(!last.team1) last.team1 = lastMatch?.winner || null;
         if(!last.team2) last.team2 = bye;
       }
-    } else {
-      // Add remaining byes as direct advances
-      currentByes.forEach(bye=>{
-        nextRound.push({
-          id: uid(),
-          team1: bye,
-          team2: null,
-          score1: null, score2: null,
-          winner: bye,
-          round: 'next',
-          label: 'Bye advance',
-          isBye: true
-        });
-      });
-      currentByes = [];
     }
 
     if(nextRound.length === 0) break;
     rounds.push(nextRound);
-    currentMatches = nextRound.filter(m=>!m.isBye);
+    currentRound = nextRound.filter(m=>!m.isBye);
     currentByes = nextRound.filter(m=>m.isBye).map(m=>m.winner);
   }
 
@@ -1783,19 +1814,17 @@ function buildFullBracketFromR1(round1){
   let size = totalTeams;
   while(size >= 2){
     if(size === 2) labels.push('Final');
-    else if(size === 4) labels.push('Semi-Finals');
-    else if(size === 8) labels.push('Quarter-Finals');
+    else if(size === 4) labels.push('Semi Finals');
+    else if(size === 8) labels.push('Quarter Finals');
     else if(size === 16) labels.push('Round of 16');
     else labels.push('Round of ' + size);
-    size = size / 2;
+    size = Math.ceil(size / 2);
   }
   labels.reverse();
   rounds.forEach((r,i)=>{
     const lbl = labels[i] || ('Round '+(i+1));
-    r.forEach(m=>{ if(m.round === 'next' || m.round === 'R1') m.round = lbl; });
+    r.forEach(m=>{ if(m.round === 'next' || m.round === 'Round 1') m.round = lbl; });
   });
-  // First round keeps its labels
-  rounds[0].forEach(m=>{ /* keep original label */ });
 
   return rounds;
 }
@@ -1853,8 +1882,7 @@ function renderKnockoutTab(t, admin, canEditScores){
       if(!t.groupsDrawn) return `<div class="empty"><div class="empty-title">Complete group stage first</div></div>`;
       return `<div class="empty">
         <div class="empty-title">Knockout bracket not drawn</div>
-        <div class="text-sm">${admin?'Seed qualified players to generate the bracket.':'Waiting for admin.'}</div>
-        ${admin && canEditScores?`<button class="btn btn-primary mt-16" onclick="drawKnockout('${t.id}')">Draw Knockout Fixtures</button>`:''}
+        <div class="text-sm">${admin?'Draw groups to auto-generate the bracket.':'Waiting for admin.'}</div>
       </div>`;
     }
   } else if(t.format==='single_elimination'){
@@ -1880,14 +1908,15 @@ function renderKnockoutTab(t, admin, canEditScores){
       </div>
     </div>
     ${admin && !canEditScores ? `<div class="locked-notice">🔒 Start the tournament to enable score updates</div>`:''}
-    <div id="bracketExport" style="background:var(--bg);padding:16px;border-radius:12px">
-      <div style="text-align:center;margin-bottom:16px">
-        <div style="font-family:'Rajdhani';font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:1px">${t.name} · Knockout</div>
+    <div id="bracketExport" class="export-container" style="overflow-x:auto">
+      <div class="export-header">
+        <div class="export-title">${t.name} · Knockout</div>
+        <div class="export-subtitle">${t.knockoutFormat==='bo3'?'Best of 3':t.knockoutFormat==='2leg'?'2-Leg':'Single Match'}</div>
       </div>
       <div class="bracket">
         ${rounds.map((round,ri)=>`
           <div class="bracket-round">
-            <div class="text-xs text-muted" style="text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700">${round[0]?.round||'Round '+(ri+1)}</div>
+            <div class="bracket-round-title" style="text-align:center;font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px">${round[0]?.round||'Round '+(ri+1)}</div>
             ${round.map(m=>`
               <div class="bracket-match">
                 <div class="bracket-match-title">${m.label||''}</div>
@@ -1926,57 +1955,47 @@ function renderKnockoutTab(t, admin, canEditScores){
 function renderAllFixturesTab(t, admin, canEditScores){
   const players = DB.get('players');
   const getName = id => players.find(p=>p.id===id)?.name || 'TBD';
-  const fixtures = [];
-
-  if(t.knockoutBracket){
-    t.knockoutBracket.forEach((round,ri)=>{
-      round.forEach(m=>{
-        if(m.isBye) return;
-        fixtures.push({
-          stage: m.round || `Round ${ri+1}`,
-          team1: m.team1, team2: m.team2,
-          score1: m.score1, score2: m.score2,
-          winner: m.winner,
-          matchId: m.id,
-          roundIdx: ri,
-          stageType: 'knockout',
-          label: m.label
-        });
-      });
-    });
-  }
+  const fixtures = t.fixtures || [];
 
   if(fixtures.length===0){
-    return `<div class="empty"><div class="empty-title">No fixtures yet</div><div class="text-sm">Fixtures will appear once knockout bracket is drawn.</div></div>`;
+    return `<div class="empty"><div class="empty-title">No fixtures yet</div><div class="text-sm">Fixtures will appear once groups are drawn.</div></div>`;
   }
 
   return `
     <div class="flex-between mb-16">
-      <div class="card-title">📅 All Fixtures & Results</div>
+      <div class="card-title">📅 Group Stage Fixtures</div>
+      <button class="export-btn" onclick="exportAsJPEG('fixturesExport','${t.name.replace(/\s+/g,'_')}_fixtures')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export JPEG
+      </button>
     </div>
     ${admin && !canEditScores ? `<div class="locked-notice">🔒 Start the tournament to update scores</div>`:''}
-    <div>
-      ${fixtures.map(f=>{
+    <div id="fixturesExport" class="export-container">
+      <div class="export-header">
+        <div class="export-title">${t.name}</div>
+        <div class="export-subtitle">Group Stage Fixtures & Results</div>
+        ${t.groupDeadline ? `<div style="margin-top:8px;font-size:13px;color:var(--text-muted)">Deadline: ${fmtDateTime(t.groupDeadline)}</div>` : ''}
+      </div>
+      ${fixtures.map((f,fi)=>{
         const isPlayed = f.score1!==null && f.score1!==undefined;
-        const hasWinner = f.winner;
         return `
           <div class="fixture-card">
-            <div class="fixture-stage">${f.stage}</div>
+            <div class="fixture-stage">Group ${f.group}</div>
             <div class="fixture-teams">
-              <div class="fixture-team ${hasWinner===f.team1?'highlight':''}">
+              <div class="fixture-team">
                 ${renderAvatar(players.find(p=>p.id===f.team1)||{name:'?'}, 28)}
                 ${getName(f.team1)}
               </div>
               <div class="fixture-score ${isPlayed?'':'pending'}">
                 ${isPlayed ? `${f.score1} - ${f.score2}` : 'vs'}
               </div>
-              <div class="fixture-team right ${hasWinner===f.team2?'highlight':''}">
+              <div class="fixture-team right">
                 ${getName(f.team2)}
                 ${renderAvatar(players.find(p=>p.id===f.team2)||{name:'?'}, 28)}
               </div>
             </div>
-            ${admin && f.stageType==='knockout' && t.status!=='completed' && canEditScores ? `
-              <button class="btn btn-ghost btn-sm" onclick="openKnockoutMatchModal('${t.id}',${f.roundIdx},'${f.matchId}')">Edit</button>
+            ${admin && t.status!=='completed' && canEditScores ? `
+              <button class="btn btn-ghost btn-sm" onclick="editFixtureScore('${t.id}',${fi})">Edit</button>
             `:''}
           </div>
         `;
@@ -1985,152 +2004,120 @@ function renderAllFixturesTab(t, admin, canEditScores){
   `;
 }
 
-/* =========================
-   PLAYER VIEW TAB
-   ========================= */
-function renderPlayerViewTab(t, admin){
+function editFixtureScore(tid, fixtureIndex){
+  if(!isAdmin()){ toast('Admin login required', true); return }
+  const tourneys = DB.get('tournaments');
+  const t = tourneys.find(x=>x.id===tid);
+  const f = t.fixtures[fixtureIndex];
   const players = DB.get('players');
-  const registered = (t.registrations||[]).map(r=>r.playerId);
-  const selectedId = selectedPlayerFilter && registered.includes(selectedPlayerFilter) ? selectedPlayerFilter : registered[0];
+  const p1 = players.find(x=>x.id===f.team1);
+  const p2 = players.find(x=>x.id===f.team2);
 
-  if(!selectedId){
-    return `<div class="empty"><div class="empty-title">No players registered</div></div>`;
-  }
-
-  const selectedPlayer = players.find(p=>p.id===selectedId);
-  const fixtures = getPlayerFixtures(t, selectedId);
-  const stats = getPlayerTournamentStats(t, selectedId);
-
-  return `
-    <div class="flex-between mb-16">
-      <div class="card-title">👤 Player View</div>
-      <div>
-        <label class="form-label" style="margin-bottom:4px">Select Player</label>
-        <select class="form-select" style="width:240px" onchange="selectedPlayerFilter=this.value;renderTournamentDetail('${t.id}');switchTab(document.querySelectorAll('.tab')[5],'tab-player')">
-          ${registered.map(pid=>{
-            const p = players.find(x=>x.id===pid);
-            return `<option value="${pid}" ${pid===selectedId?'selected':''}>${p?p.name:'Unknown'}</option>`;
-          }).join('')}
-        </select>
-      </div>
+  openModal(`
+    <div class="modal-head">
+      <div class="modal-title">Edit Score - Group ${f.group}</div>
+      <button class="btn btn-ghost btn-icon" onclick="closeModal()">✕</button>
     </div>
-
-    ${selectedPlayer ? `
-      <div class="grid grid-4 mb-16">
-        <div class="stat"><div class="stat-label">Matches</div><div class="stat-value">${stats.matches}</div></div>
-        <div class="stat"><div class="stat-label">Wins</div><div class="stat-value">${stats.wins}</div></div>
-        <div class="stat"><div class="stat-label">Goals</div><div class="stat-value">${stats.gf}</div><div class="stat-delta">${stats.ga} conceded</div></div>
-        <div class="stat"><div class="stat-label">Win%</div><div class="stat-value">${stats.matches?((stats.wins/stats.matches)*100).toFixed(1):'0.0'}%</div></div>
-      </div>
-
-      <div class="card mb-16">
-        <div class="card-head"><div class="card-title">📊 Player Profile</div></div>
-        <div class="flex gap-16" style="align-items:center">
-          ${renderAvatar(selectedPlayer, 70)}
-          <div>
-            <div style="font-family:'Rajdhani';font-size:24px;font-weight:700;text-transform:uppercase">${selectedPlayer.name}</div>
-            <div class="text-sm text-muted">Tournament participant</div>
-          </div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <div style="text-align:center;flex:1">
+          ${renderAvatar(p1||{name:'?'}, 48)}
+          <div style="font-weight:700;margin-top:8px">${p1?.name||'TBD'}</div>
+        </div>
+        <div style="font-size:24px;color:var(--text-muted);font-weight:700">VS</div>
+        <div style="text-align:center;flex:1">
+          ${renderAvatar(p2||{name:'?'}, 48)}
+          <div style="font-weight:700;margin-top:8px">${p2?.name||'TBD'}</div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-head"><div class="card-title">📅 ${selectedPlayer.name}'s Fixtures</div></div>
-        ${fixtures.length===0 ? `<div class="empty"><div class="empty-title">No fixtures yet</div></div>` :
-          fixtures.map(f=>{
-            const isPlayer1 = f.team1===selectedId;
-            const opponent = isPlayer1 ? f.team2 : f.team1;
-            const playerScore = isPlayer1 ? f.score1 : f.score2;
-            const oppScore = isPlayer1 ? f.score2 : f.score1;
-            const isPlayed = playerScore!==null && playerScore!==undefined;
-            let result = null;
-            if(isPlayed){
-              if(f.winner===selectedId) result = 'win';
-              else if(f.winner && f.winner!==selectedId) result = 'loss';
-              else if(playerScore===oppScore) result = 'draw';
-            }
-            const oppName = players.find(p=>p.id===opponent)?.name || 'TBD';
-            const oppPlayer = players.find(p=>p.id===opponent) || {name:'?'};
-
-            return `
-              <div class="fixture-card">
-                <div class="fixture-stage">${f.stage}</div>
-                <div class="fixture-teams">
-                  <div class="fixture-team highlight">
-                    ${renderAvatar(selectedPlayer, 28)}
-                    ${selectedPlayer.name}
-                  </div>
-                  <div class="fixture-score ${isPlayed?'':'pending'}">
-                    ${isPlayed ? `${playerScore} - ${oppScore}` : 'vs'}
-                  </div>
-                  <div class="fixture-team right">
-                    ${oppName}
-                    ${renderAvatar(oppPlayer, 28)}
-                  </div>
-                </div>
-                ${result?`<div class="fixture-result ${result}">${result}</div>`:''}
-              </div>
-            `;
-          }).join('')
-        }
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">${p1?.name} Score</label>
+          <input class="form-input" type="number" id="fs_score1" value="${f.score1??0}" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">${p2?.name} Score</label>
+          <input class="form-input" type="number" id="fs_score2" value="${f.score2??0}" min="0">
+        </div>
       </div>
-    `:''}
-  `;
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveFixtureScore('${tid}',${fixtureIndex})">Save</button>
+    </div>
+  `);
 }
 
-function getPlayerFixtures(t, playerId){
-  const fixtures = [];
-  if(t.knockoutBracket){
-    t.knockoutBracket.forEach((round,ri)=>{
-      round.forEach(m=>{
-        if(m.isBye) return;
-        if(m.team1===playerId || m.team2===playerId){
-          fixtures.push({
-            stage: m.round || `Round ${ri+1}`,
-            team1: m.team1, team2: m.team2,
-            score1: m.score1, score2: m.score2,
-            winner: m.winner,
-            stageType: 'knockout'
-          });
-        }
-      });
-    });
-  }
-  return fixtures;
-}
+function saveFixtureScore(tid, fixtureIndex){
+  const tourneys = DB.get('tournaments');
+  const t = tourneys.find(x=>x.id===tid);
+  const f = t.fixtures[fixtureIndex];
 
-function getPlayerTournamentStats(t, playerId){
-  let matches=0, wins=0, gf=0, ga=0;
-  if(t.groupData){
-    t.groupData.forEach(g=>{
-      const row = g.players.find(r=>r.playerId===playerId);
-      if(row){ matches+=row.played; wins+=row.wins; gf+=row.gf; ga+=row.ga; }
-    });
-  }
-  if(t.knockoutBracket){
-    t.knockoutBracket.forEach(round=>{
-      round.forEach(m=>{
-        if(m.isBye) return;
-        if(m.team1===playerId || m.team2===playerId){
-          if(m.score1!==null && m.score1!==undefined){
-            matches++;
-            if(m.winner===playerId) wins++;
-            if(m.team1===playerId){ gf+=m.score1; ga+=m.score2; }
-            else { gf+=m.score2; ga+=m.score1; }
-          }
-        }
-      });
-    });
-  }
-  return {matches, wins, gf, ga};
-}
+  const score1 = parseInt(document.getElementById('fs_score1').value)||0;
+  const score2 = parseInt(document.getElementById('fs_score2').value)||0;
 
-function switchTab(el, tabId){
-  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('#main > div[id^="tab-"]').forEach(d=>d.classList.add('hidden'));
-  const target = document.getElementById(tabId);
-  if(target) target.classList.remove('hidden');
+  f.score1 = score1;
+  f.score2 = score2;
+  f.played = true;
+
+  // Update group standings
+  const group = t.groupData.find(g=>g.name===f.group);
+  if(group){
+    const p1 = group.players.find(p=>p.playerId===f.team1);
+    const p2 = group.players.find(p=>p.playerId===f.team2);
+
+    if(p1 && p2){
+      if(f.previousStats){
+        p1.played -= f.previousStats.p1.played;
+        p1.wins -= f.previousStats.p1.wins;
+        p1.draws -= f.previousStats.p1.draws;
+        p1.losses -= f.previousStats.p1.losses;
+        p1.gf -= f.previousStats.p1.gf;
+        p1.ga -= f.previousStats.p1.ga;
+        p1.points -= f.previousStats.p1.points;
+
+        p2.played -= f.previousStats.p2.played;
+        p2.wins -= f.previousStats.p2.wins;
+        p2.draws -= f.previousStats.p2.draws;
+        p2.losses -= f.previousStats.p2.losses;
+        p2.gf -= f.previousStats.p2.gf;
+        p2.ga -= f.previousStats.p2.ga;
+        p2.points -= f.previousStats.p2.points;
+      }
+
+      p1.played += 1;
+      p1.gf += score1;
+      p1.ga += score2;
+      p2.played += 1;
+      p2.gf += score2;
+      p2.ga += score1;
+
+      if(score1 > score2){
+        p1.wins += 1;
+        p1.points += 3;
+        p2.losses += 1;
+      } else if(score2 > score1){
+        p2.wins += 1;
+        p2.points += 3;
+        p1.losses += 1;
+      } else {
+        p1.draws = (p1.draws||0) + 1;
+        p1.points += 1;
+        p2.draws = (p2.draws||0) + 1;
+        p2.points += 1;
+      }
+
+      f.previousStats = {
+        p1: {played:1, wins: score1>score2?1:0, draws: score1===score2?1:0, losses: score1<score2?1:0, gf:score1, ga:score2, points: score1>score2?3:score1===score2?1:0},
+        p2: {played:1, wins: score2>score1?1:0, draws: score1===score2?1:0, losses: score2<score1?1:0, gf:score2, ga:score1, points: score2>score1?3:score1===score2?1:0}
+      };
+    }
+  }
+
+  DB.set('tournaments', tourneys);
+  closeModal();
+  renderTournamentDetail(tid);
+  toast('Score updated');
 }
 
 /* =========================
@@ -2156,7 +2143,7 @@ function openKnockoutMatchModal(tid, roundIdx, matchId){
     </div>
     <div class="modal-body">
       <div class="text-sm text-muted mb-16">${is2leg?'2-Leg · Aggregate decides':t.knockoutFormat==='bo3'?'Best of 3':'Single Match'}</div>
-      <div class="card" style="background:var(--bg-2);margin-bottom:12px">
+      <div class="card" style="background:var(--surface-2);margin-bottom:12px">
         <div class="text-xs text-muted" style="margin-bottom:8px;font-weight:700">${is2leg?'1st Leg':'Match'}</div>
         <div class="form-row">
           <div class="form-group"><label class="form-label">${getName(m.team1)}</label><input class="form-input" type="number" id="km_s1" value="${m.score1??''}" min="0"></div>
@@ -2164,7 +2151,7 @@ function openKnockoutMatchModal(tid, roundIdx, matchId){
         </div>
       </div>
       ${is2leg?`
-        <div class="card" style="background:var(--bg-2)">
+        <div class="card" style="background:var(--surface-2)">
           <div class="text-xs text-muted" style="margin-bottom:8px;font-weight:700">2nd Leg</div>
           <div class="form-row">
             <div class="form-group"><label class="form-label">${getName(m.team1)}</label><input class="form-input" type="number" id="km_l2s1" value="${m.leg2Score1??''}" min="0"></div>
@@ -2216,7 +2203,6 @@ function saveKnockoutMatch(tid, roundIdx, matchId){
     }
   }
 
-  // Advance winner
   if(m.winner && t.knockoutBracket[roundIdx+1]){
     const nextRound = t.knockoutBracket[roundIdx+1];
     const matchIndex = t.knockoutBracket[roundIdx].indexOf(m);
@@ -2314,6 +2300,175 @@ function completeTournament(tid){
 }
 
 /* =========================
+   PLAYER VIEW TAB
+   ========================= */
+function renderPlayerViewTab(t, admin){
+  const players = DB.get('players');
+  const registered = (t.registrations||[]).map(r=>r.playerId);
+  const selectedId = selectedPlayerFilter && registered.includes(selectedPlayerFilter) ? selectedPlayerFilter : registered[0];
+
+  if(!selectedId){
+    return `<div class="empty"><div class="empty-title">No players registered</div></div>`;
+  }
+
+  const selectedPlayer = players.find(p=>p.id===selectedId);
+  const fixtures = getPlayerFixtures(t, selectedId);
+  const stats = getPlayerTournamentStats(t, selectedId);
+
+  return `
+    <div class="flex-between mb-16">
+      <div class="card-title">👤 Player View</div>
+      <div>
+        <label class="form-label" style="margin-bottom:4px">Select Player</label>
+        <select class="form-select" style="width:240px" onchange="selectedPlayerFilter=this.value;renderTournamentDetail('${t.id}');switchTab(document.querySelectorAll('.tab')[5],'tab-player')">
+          ${registered.map(pid=>{
+            const p = players.find(x=>x.id===pid);
+            return `<option value="${pid}" ${pid===selectedId?'selected':''}>${p?p.name:'Unknown'}</option>`;
+          }).join('')}
+        </select>
+      </div>
+    </div>
+
+    ${selectedPlayer ? `
+      <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px">
+        <div class="stat"><div class="stat-label">Matches</div><div class="stat-value">${stats.matches}</div></div>
+        <div class="stat"><div class="stat-label">Wins</div><div class="stat-value">${stats.wins}</div></div>
+        <div class="stat"><div class="stat-label">Goals</div><div class="stat-value">${stats.gf}</div><div class="stat-delta">${stats.ga} conceded</div></div>
+        <div class="stat"><div class="stat-label">Win%</div><div class="stat-value">${stats.matches?((stats.wins/stats.matches)*100).toFixed(1):'0.0'}%</div></div>
+      </div>
+
+      <div class="card mb-16">
+        <div class="card-head"><div class="card-title">📊 Player Profile</div></div>
+        <div class="flex gap-16" style="align-items:center">
+          ${renderAvatar(selectedPlayer, 70)}
+          <div>
+            <div style="font-family:'Rajdhani';font-size:24px;font-weight:700;color:var(--dark);text-transform:uppercase">${selectedPlayer.name}</div>
+            <div class="text-sm text-muted">${selectedPlayer.achievements||'Tournament participant'}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">📅 ${selectedPlayer.name}'s Fixtures</div>
+          <button class="export-btn" onclick="exportAsJPEG('playerFixturesExport','${selectedPlayer.name.replace(/\s+/g,'_')}_fixtures')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export JPEG
+          </button>
+        </div>
+        <div id="playerFixturesExport" class="export-container" style="box-shadow:none;border:none;padding:0">
+          ${fixtures.length===0 ? `<div class="empty"><div class="empty-title">No fixtures yet</div></div>` :
+            fixtures.map(f=>{
+              const isPlayer1 = f.team1===selectedId;
+              const opponent = isPlayer1 ? f.team2 : f.team1;
+              const playerScore = isPlayer1 ? f.score1 : f.score2;
+              const oppScore = isPlayer1 ? f.score2 : f.score1;
+              const isPlayed = playerScore!==null && playerScore!==undefined;
+              let result = null;
+              if(isPlayed){
+                if(f.winner===selectedId) result = 'win';
+                else if(f.winner && f.winner!==selectedId) result = 'loss';
+                else if(playerScore===oppScore) result = 'draw';
+              }
+              const oppName = players.find(p=>p.id===opponent)?.name || 'TBD';
+              const oppPlayer = players.find(p=>p.id===opponent) || {name:'?'};
+
+              return `
+                <div class="fixture-card">
+                  <div class="fixture-stage">${f.stage}</div>
+                  <div class="fixture-teams">
+                    <div class="fixture-team highlight">
+                      ${renderAvatar(selectedPlayer, 28)}
+                      ${selectedPlayer.name}
+                    </div>
+                    <div class="fixture-score ${isPlayed?'':'pending'}">
+                      ${isPlayed ? `${playerScore} - ${oppScore}` : 'vs'}
+                    </div>
+                    <div class="fixture-team right">
+                      ${oppName}
+                      ${renderAvatar(oppPlayer, 28)}
+                    </div>
+                  </div>
+                  ${result?`<div class="fixture-result ${result}">${result}</div>`:''}
+                </div>
+              `;
+            }).join('')
+          }
+        </div>
+      </div>
+    `:''}
+  `;
+}
+
+function getPlayerFixtures(t, playerId){
+  const fixtures = [];
+  if(t.knockoutBracket){
+    t.knockoutBracket.forEach((round,ri)=>{
+      round.forEach(m=>{
+        if(m.isBye) return;
+        if(m.team1===playerId || m.team2===playerId){
+          fixtures.push({
+            stage: m.round || `Round ${ri+1}`,
+            team1: m.team1, team2: m.team2,
+            score1: m.score1, score2: m.score2,
+            winner: m.winner,
+            stageType: 'knockout'
+          });
+        }
+      });
+    });
+  }
+  if(t.fixtures){
+    t.fixtures.forEach(f=>{
+      if(f.team1===playerId || f.team2===playerId){
+        fixtures.push({
+          stage: `Group ${f.group}`,
+          team1: f.team1, team2: f.team2,
+          score1: f.score1, score2: f.score2,
+          winner: f.score1>f.score2?f.team1:(f.score2>f.score1?f.team2:null),
+          stageType: 'group'
+        });
+      }
+    });
+  }
+  return fixtures;
+}
+
+function getPlayerTournamentStats(t, playerId){
+  let matches=0, wins=0, gf=0, ga=0;
+  if(t.groupData){
+    t.groupData.forEach(g=>{
+      const row = g.players.find(r=>r.playerId===playerId);
+      if(row){ matches+=row.played; wins+=row.wins; gf+=row.gf; ga+=row.ga; }
+    });
+  }
+  if(t.knockoutBracket){
+    t.knockoutBracket.forEach(round=>{
+      round.forEach(m=>{
+        if(m.isBye) return;
+        if(m.team1===playerId || m.team2===playerId){
+          if(m.score1!==null && m.score1!==undefined){
+            matches++;
+            if(m.winner===playerId) wins++;
+            if(m.team1===playerId){ gf+=m.score1; ga+=m.score2; }
+            else { gf+=m.score2; ga+=m.score1; }
+          }
+        }
+      });
+    });
+  }
+  return {matches, wins, gf, ga};
+}
+
+function switchTab(el, tabId){
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#main > div[id^="tab-"]').forEach(d=>d.classList.add('hidden'));
+  const target = document.getElementById(tabId);
+  if(target) target.classList.remove('hidden');
+}
+
+/* =========================
    EDIT TOURNAMENT
    ========================= */
 function editTournament(tid){
@@ -2328,6 +2483,9 @@ function editTournament(tid){
       <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="e_name" value="${t.name}"></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Start Date & Time</label><input class="form-input" type="datetime-local" id="e_datetime" value="${t.startDateTime||''}"></div>
+        <div class="form-group"><label class="form-label">Group Stage Deadline</label><input class="form-input" type="datetime-local" id="e_deadline" value="${t.groupDeadline||''}"></div>
+      </div>
+      <div class="form-row">
         <div class="form-group"><label class="form-label">Status</label>
           <select class="form-select" id="e_status">
             <option value="draft" ${t.status==='draft'?'selected':''}>Draft</option>
@@ -2336,8 +2494,8 @@ function editTournament(tid){
             <option value="completed" ${t.status==='completed'?'selected':''}>Completed</option>
           </select>
         </div>
+        <div class="form-group"><label class="form-label">Game</label><input class="form-input" id="e_game" value="${t.game||''}"></div>
       </div>
-      <div class="form-group"><label class="form-label">Game</label><input class="form-input" id="e_game" value="${t.game||''}"></div>
       ${t.format==='group_knockout'?`
         <div class="form-row">
           <div class="form-group"><label class="form-label">Number of Groups</label><input class="form-input" type="number" id="e_groups" value="${t.groups}" min="1"></div>
@@ -2359,7 +2517,7 @@ function editTournament(tid){
           </div>
         </div>
       `:''}
-      <div class="card" style="background:var(--bg-2)">
+      <div class="card" style="background:var(--surface-2)">
         <div class="card-title" style="margin-bottom:12px">💰 Prize Pool</div>
         <div class="form-row-3">
           <div class="form-group"><label class="form-label">🥇 Champion</label><input class="form-input" id="e_p1" value="${t.prize?.champion||''}"></div>
@@ -2383,6 +2541,7 @@ function saveTournamentEdit(tid){
   const dt = document.getElementById('e_datetime').value;
   t.startDateTime = dt;
   t.date = dt ? dt.slice(0,10) : t.date;
+  t.groupDeadline = document.getElementById('e_deadline').value;
   t.status = document.getElementById('e_status').value;
   t.game = document.getElementById('e_game').value.trim();
   t.description = document.getElementById('e_desc').value.trim();
@@ -2426,7 +2585,7 @@ function renderLeaderboard(){
         <div class="page-sub">Real-time rankings · Updates instantly when match results are entered</div>
       </div>
       <div class="top-actions">
-        <span class="admin-indicator" style="background:rgba(16,185,129,0.12);color:var(--success);border-color:rgba(16,185,129,0.3)">
+        <span class="admin-indicator" style="background:var(--success-light);color:var(--success);border-color:rgba(0,200,83,0.25)">
           <span style="background:var(--success);box-shadow:0 0 8px var(--success)"></span> Live
         </span>
         <button class="export-btn" onclick="exportAsJPEG('leaderboardExport','milandhoo_leaderboard')">
@@ -2436,25 +2595,25 @@ function renderLeaderboard(){
       </div>
     </div>
 
-    <div class="grid grid-4">
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
       <div class="stat"><div class="stat-label">Players</div><div class="stat-value">${players.length}</div></div>
       <div class="stat"><div class="stat-label">Total Matches</div><div class="stat-value">${totalMatches}</div></div>
       <div class="stat"><div class="stat-label">Total Wins</div><div class="stat-value">${totalWins}</div></div>
       <div class="stat"><div class="stat-label">Tournaments</div><div class="stat-value">${tourneys.filter(t=>t.status==='completed').length}</div><div class="stat-delta">Completed</div></div>
     </div>
 
-    <div id="leaderboardExport" style="background:var(--bg);padding:20px;border-radius:12px;margin-top:20px">
-      <div style="text-align:center;margin-bottom:20px">
-        <div style="font-family:'Rajdhani';font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px">🏆 Milandhoo eFootball · Community Leaderboard</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:6px">Live rankings · ${fmtDate(new Date())}</div>
+    <div id="leaderboardExport" class="export-container" style="margin-top:20px">
+      <div class="export-header">
+        <div class="export-title"> Milandhoo eFootball · Community Leaderboard</div>
+        <div class="export-subtitle">Live rankings · ${fmtDate(new Date())}</div>
       </div>
-      <div class="table-wrap">
+      <div class="table-wrap" style="box-shadow:none">
         <table>
           <thead>
             <tr><th>Rank</th><th>Player</th><th>Matches</th><th>Wins</th><th>Win%</th><th>Titles</th><th>Runner-up</th><th>3rd</th></tr>
           </thead>
           <tbody>
-            ${enriched.length===0 ? `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--muted)">No players yet</td></tr>` :
+            ${enriched.length===0 ? `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted)">No players yet</td></tr>` :
               enriched.map((x,i)=>`
                 <tr>
                   <td><div class="rank-badge ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-other'}">${i+1}</div></td>
@@ -2469,9 +2628,9 @@ function renderLeaderboard(){
                   </td>
                   <td>${x.s.matches}</td>
                   <td><strong>${x.s.wins}</strong></td>
-                  <td><span style="color:var(--accent);font-weight:700">${x.s.winPct}%</span></td>
-                  <td>${x.s.tourneyWins>0 ? `<span class="badge badge-open">🏆 ${x.s.tourneyWins}</span>` : '<span class="text-muted">0</span>'}</td>
-                  <td>${x.s.tourneyRunnerUp>0 ? `<span class="text-cyan">${x.s.tourneyRunnerUp}</span>` : '<span class="text-muted">0</span>'}</td>
+                  <td><span style="color:var(--primary);font-weight:700">${x.s.winPct}%</span></td>
+                  <td>${x.s.tourneyWins>0 ? `<span class="badge badge-open"> ${x.s.tourneyWins}</span>` : '<span class="text-muted">0</span>'}</td>
+                  <td>${x.s.tourneyRunnerUp>0 ? `<span class="text-primary">${x.s.tourneyRunnerUp}</span>` : '<span class="text-muted">0</span>'}</td>
                   <td>${x.s.tourneyThird>0 ? `<span style="color:#cd7f32">${x.s.tourneyThird}</span>` : '<span class="text-muted">0</span>'}</td>
                 </tr>
               `).join('')
@@ -2493,13 +2652,7 @@ function renderAdmin(){
       <div class="login-wrap">
         <div class="login-card">
           <div class="login-brand">
-            <div class="brand-logo">
-              <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-                <path d="M30 4 L52 14 L52 34 Q52 48 30 56 Q8 48 8 34 L8 14 Z" fill="#fff" opacity="0.15"/>
-                <path d="M30 4 L52 14 L52 34 Q52 48 30 56 Q8 48 8 34 L8 14 Z" fill="none" stroke="#fff" stroke-width="2" opacity="0.9"/>
-                <path d="M17 42 L17 20 L24 32 L30 22 L36 32 L43 20 L43 42" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
+            <div class="brand-icon">M</div>
             <h1>Admin Portal</h1>
             <p>Sign in to manage the community database</p>
           </div>
@@ -2526,7 +2679,7 @@ function renderAdmin(){
   document.getElementById('main').innerHTML = `
     <div class="topbar">
       <div>
-        <div class="page-title">Admin Portal</div>
+        <div class="page-title">Admin Panel</div>
         <div class="page-sub">Signed in as <strong>${session.username}</strong> · Full control over the community</div>
       </div>
       <div class="top-actions">
@@ -2541,17 +2694,17 @@ function renderAdmin(){
     <div class="grid grid-3">
       <div class="card" onclick="navigate('players')" style="cursor:pointer">
         <div class="card-title">👥 Manage Players</div>
-        <div class="stat-value mt-16">${players.length}</div>
+        <div class="stat-value mt-16" style="margin-top:16px">${players.length}</div>
         <div class="text-sm text-muted">Add, edit, delete player profiles with photos</div>
       </div>
       <div class="card" onclick="navigate('tournaments')" style="cursor:pointer">
         <div class="card-title">🏆 Manage Tournaments</div>
-        <div class="stat-value mt-16">${tourneys.length}</div>
+        <div class="stat-value mt-16" style="margin-top:16px">${tourneys.length}</div>
         <div class="text-sm text-muted">Create, edit, run tournaments</div>
       </div>
       <div class="card" onclick="openChangePassword()" style="cursor:pointer">
         <div class="card-title">🔐 Security</div>
-        <div class="text-sm text-muted mt-16">Change admin password</div>
+        <div class="text-sm text-muted mt-16" style="margin-top:16px">Change admin password</div>
         <div class="text-xs text-muted" style="margin-top:8px">Current: ${admin.username}</div>
       </div>
     </div>
@@ -2652,6 +2805,47 @@ function importData(e){
 
 /* Init */
 navigate('dashboard');
+
+// Check deadlines periodically
+setInterval(()=>{
+  const tourneys = DB.get('tournaments');
+  tourneys.forEach(t=>{
+    if(t.status==='active' && t.groupDeadline && !t.deadlineProcessed){
+      if(new Date(t.groupDeadline) < new Date()){
+        // Auto-set remaining fixtures as 0-0 draws
+        if(t.fixtures){
+          t.fixtures.forEach(f=>{
+            if(f.score1===null || f.score1===undefined){
+              f.score1 = 0;
+              f.score2 = 0;
+              f.played = true;
+
+              const group = t.groupData?.find(g=>g.name===f.group);
+              if(group){
+                const p1 = group.players.find(p=>p.playerId===f.team1);
+                const p2 = group.players.find(p=>p.playerId===f.team2);
+                if(p1 && p2){
+                  p1.played += 1;
+                  p1.draws = (p1.draws||0) + 1;
+                  p1.points += 1;
+                  p2.played += 1;
+                  p2.draws = (p2.draws||0) + 1;
+                  p2.points += 1;
+                }
+              }
+            }
+          });
+        }
+        t.deadlineProcessed = true;
+        DB.set('tournaments', tourneys);
+        if(currentView==='tournament-detail' && currentTournamentId===t.id){
+          renderTournamentDetail(t.id);
+        }
+        toast('Group stage deadline processed');
+      }
+    }
+  });
+}, 30000);
 </script>
 </body>
 </html>
